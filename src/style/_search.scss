@@ -1,0 +1,12 @@
+.search-input {
+    background-color: rgb(230, 236, 240);
+    border: 1px solid transparent;
+    border-radius: 100px;
+    outline: none;
+    
+}
+
+.search-input:focus {
+    background-color: white;
+    border: 1px solid $sitecolor;
+}

@@ -9,8 +9,16 @@ import Feed from "./reusables/Feed";
 const Home = () => {
 	return (
 		<div className="main">
-			<div className="home"><Composer /><Feed /></div>
-            <div className="sidebar"><Search /><FollowSuggests /><TOS /></div>
+			<div className="home">
+				<h3 className="home-title">Home</h3>
+				<Composer />
+				<Feed />
+			</div>
+			<div className="sidebar">
+				<Search />
+				<FollowSuggests />
+				<TOS />
+			</div>
 		</div>
 	);
 };

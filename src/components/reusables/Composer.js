@@ -2,7 +2,7 @@ import React from "react";
 
 const Composer = () => {
 	return (
-		<form>
+		<form className="composer">
 			<img src="#" alt="user-profile" className="img-left" />
 			<div className="compose-right">
 				<input maxLength={240} required className="compose-input" />

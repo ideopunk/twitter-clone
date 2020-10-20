@@ -1,15 +1,31 @@
 .menu {
 	display: flex;
 	flex-direction: column;
-	width: 200px;
+	border-right: $siteborder;
+	box-sizing: border-box;
+	padding: 1rem 1rem 1rem 4rem;
+}
+
+.menu-logo {
+	fill: $sitecolor;
 }
 
 .menu-item {
 	color: black;
 	font-size: $sitebold;
+	font-weight: bold;
 	transition: all linear 0.1s;
 	width: 200px;
 	text-decoration: none;
+	font-size: 1.2rem;
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	margin-bottom: 0.25rem;
+	border-radius: 100px;
+	box-sizing: border-box;
+	padding: 0.5rem;
+	transition: $lighttransition;
 }
 
 .menu-item:visited {
@@ -21,7 +37,46 @@
 	background-color: lighten($sitecolor, 40%);
 }
 
-.menu-item-active, .menu-item-active:visited {
+.menu-item-active,
+.menu-item-active:visited {
 	color: $sitecolor;
-	// background-color: lighten($sitecolor, 10%);
+	fill: $sitecolor;
+}
+
+.menu-icon {
+	width: 2rem;
+	margin-right: 1rem;
+}
+
+.menu-tweet-button {
+	width: 100%;
+	background-color: $sitecolor;
+	border-radius: 100px;
+	height: 3rem;
+	border: 0;
+	font-weight: bold;
+	color: white;
+	transition: $lighttransition;
+}
+
+.menu-tweet-button:hover {
+	background-color: darken($sitecolor, 10%);
+}
+
+@media (max-width: 1280px) {
+	.menu-logo {
+		width: 2rem;
+	}
+
+	.menu-item {
+		width: 3rem;
+	}
+
+	.menu-item-text {
+		display: none;
+	}
+
+	.menu-tweet-button {
+		width: 3rem;
+	}
 }

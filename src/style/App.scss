@@ -1,14 +1,44 @@
+$testborder: 1px solid red;
+$lighttransition: all linear 0.1s;
 $sitecolor: rgb(29, 242, 161);
 $sitebold: 1.5rem;
+$siteborder: 1px solid rgb(230, 236, 240);;
 
 @import "./reset";
 @import "./menu";
+@import "./home";
+@import "./tos";
+@import "./composer";
+@import "./search";
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
+    font-size: 15px;
+}
 
 .App {
     display: flex;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .main {
     display: flex;
+    width: 100%;
 }
 
+.sidebar {
+    width: 40%;
+    box-sizing: border-box;
+    padding-left: 1rem;
+    padding-right: 6rem;
+}
+
+h3 {
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.mrg-btm {
+    margin-top: auto;
+}
