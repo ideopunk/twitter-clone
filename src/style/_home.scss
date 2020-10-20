@@ -1,7 +1,7 @@
 .home {
-    width: 60%;
+    flex: 1.2;
     border-right: $siteborder;
-
+    box-sizing: border-box;
 }
 
 .home-title {

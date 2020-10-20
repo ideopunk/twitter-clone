@@ -10,6 +10,7 @@ $siteborder: 1px solid rgb(230, 236, 240);;
 @import "./tos";
 @import "./composer";
 @import "./search";
+@import "./tweet";
 
 body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
@@ -28,7 +29,7 @@ body {
 }
 
 .sidebar {
-    width: 40%;
+    flex: 1;
     box-sizing: border-box;
     padding-left: 1rem;
     padding-right: 6rem;
