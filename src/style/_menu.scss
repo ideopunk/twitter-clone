@@ -1,0 +1,27 @@
+.menu {
+	display: flex;
+	flex-direction: column;
+	width: 200px;
+}
+
+.menu-item {
+	color: black;
+	font-size: $sitebold;
+	transition: all linear 0.1s;
+	width: 200px;
+	text-decoration: none;
+}
+
+.menu-item:visited {
+	color: black;
+}
+
+.menu-item:hover {
+	color: $sitecolor;
+	background-color: lighten($sitecolor, 40%);
+}
+
+.menu-item-active, .menu-item-active:visited {
+	color: $sitecolor;
+	// background-color: lighten($sitecolor, 10%);
+}

@@ -3,15 +3,15 @@ import React from "react";
 const Composer = () => {
 	return (
 		<form>
-			<img src="#" alt="user-profile" className="img-left"/>
+			<img src="#" alt="user-profile" className="img-left" />
 			<div className="compose-right">
-				<input maxLength={240} required className="compose-input"/>
+				<input maxLength={240} required className="compose-input" />
 				<div className="compose-options">
-                    <image></image>
-                    <image></image>
-                    <image></image>
-                    <image></image>
-                    <image></image>
+					<img alt=""/>
+					<img alt="" />
+					<img alt="" />
+					<img alt="" />
+					<img alt="" />
 					<input type="submit" value="Tweet" placeholder="What's happening?" />
 				</div>
 			</div>

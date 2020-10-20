@@ -1,7 +1,14 @@
-$color: blue;
+$sitecolor: rgb(29, 242, 161);
+$sitebold: 1.5rem;
 
 @import "./reset";
+@import "./menu";
 
 .App {
     display: flex;
 }
+
+.main {
+    display: flex;
+}
+
