@@ -1,4 +1,47 @@
 .composer {
-    border-bottom: $siteborder;
-    border-bottom-width: 0.5rem;
+	width: 100%;
+	border-bottom: $siteborder;
+	border-bottom-width: 0.5rem;
+	display: flex;
+	padding: 1rem;
+	box-sizing: border-box;
+}
+
+.composer-right {
+	width: 100%;
+}
+
+.composer-input {
+	font-size: $sitebold;
+	width: 100%;
+	border: 0;
+	border-bottom: $siteborder;
+	outline: none;
+	padding-bottom: 0.75rem;
+}
+
+.composer-options {
+	padding: 0.5rem 0;
+	display: flex;
+	justify-content: start;
+	align-items: center;
+}
+
+.composer-icon-div {
+    height: 2rem;
+    width: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 2rem;
+    border-radius: 50%;
+}
+
+.composer-svg {
+	fill: $sitecolor;
+    width: 1.5rem;
+}
+
+.composer-icon-div:hover {
+    background-color: lighten($sitecolor, 40%);
 }

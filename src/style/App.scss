@@ -43,3 +43,19 @@ h3 {
 .mrg-btm {
     margin-top: auto;
 }
+
+.tweet-button {
+	width: 100%;
+	background-color: $sitecolor;
+	border-radius: 100px;
+	height: 2.5rem;
+    border: 0;
+    font-size: 1rem;
+	font-weight: bold;
+	color: white;
+	transition: $lighttransition;
+}
+
+.tweet-button:hover {
+	background-color: darken($sitecolor, 10%);
+}

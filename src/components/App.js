@@ -128,7 +128,7 @@ function App() {
 							activeClassName="menu-item-active"
 							to="/compose/tweet"
 						>
-							<button className="menu-tweet-button">Tweet</button>
+							<button className="tweet-button">Tweet</button>
 						</NavLink>
 					</li>
 					<li className="menu-item mrg-btm">
