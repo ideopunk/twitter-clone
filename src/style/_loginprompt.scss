@@ -1,0 +1,50 @@
+.login-prompt {
+	position: fixed;
+	bottom: 0;
+	width: 100vw;
+	background-color: $sitecolor;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	height: 4rem;
+}
+
+.login-prompt-text {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+}
+
+.login-prompt-buttons {
+	display: flex;
+	width: 10rem;
+	justify-content: space-between;
+}
+
+.lg-btn {
+	border: 1px solid white;
+	padding: 0.65rem 0.65rem;
+	font-size: 15px;
+	font-weight: bold;
+	// height: 2.5rem;
+	border-radius: 35px;
+}
+
+.log-in-button {
+	background-color: $sitecolor;
+	color: white;
+}
+
+.sign-up-button {
+	color: $sitecolor;
+	background-color: white;
+}
+
+.log-in-button:hover {
+	background-color: darken($sitecolor, 5%);
+}
+
+.sign-up-button:hover {
+    background-color: darken(white, 5%);
+}

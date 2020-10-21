@@ -1,12 +1,34 @@
+.search-label {
+	position: relative;
+}
+
 .search-input {
-    background-color: rgb(230, 236, 240);
-    border: 1px solid transparent;
-    border-radius: 100px;
-    outline: none;
-    
+	background-color: rgb(230, 236, 240);
+	border: 1px solid transparent;
+	border-radius: 100px;
+	outline: none;
+	height: 2rem;
+    text-indent: 3rem;
+	width: 100%;
+	font-size: 15px;
+	margin-bottom: 4rem;
 }
 
 .search-input:focus {
-    background-color: white;
-    border: 1px solid $sitecolor;
+	background-color: white;
+	border: 1px solid $sitecolor;
+}
+
+.search-icon {
+	fill: grey;
+	width: 1.5rem;
+	position: absolute;
+	margin-top: auto;
+	margin-bottom: auto;
+	top: -2px;
+	left: 6px;
+}
+
+.search-icon:hover {
+	fill: $sitecolor;
 }

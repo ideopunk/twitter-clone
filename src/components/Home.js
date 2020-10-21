@@ -5,6 +5,7 @@ import Search from "./reusables/Search";
 import TOS from "./reusables/TOS";
 import Tweet from "./reusables/Tweet";
 import Feed from "./reusables/Feed";
+import LoginCard from "./reusables/LoginCard";
 
 const Home = () => {
 	return (
@@ -16,6 +17,7 @@ const Home = () => {
 			</div>
 			<div className="sidebar">
 				<Search />
+				<LoginCard />
 				<FollowSuggests />
 				<TOS />
 			</div>

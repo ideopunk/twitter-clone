@@ -1,7 +1,13 @@
 import React from "react";
 import Tweet from "./Tweet";
-import headshot from "../../assets/headshot.png"
-const Feed = () => {
+import headshot from "../../assets/headshot.png";
+const Feed = (props) => {
+	// const { tweets } = [props];
+
+	// const JSXtweets = tweets.map((tweet) => (
+	// 	<Tweet image={tweet.pic} name={tweet.name} at={tweet.at} time={tweet.time} text={tweet.text} retweets={tweet.retweets} likes={tweet.likes}/>
+	// ));
+
 	return (
 		<div>
 			<Tweet

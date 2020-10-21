@@ -3,14 +3,18 @@ $lighttransition: all linear 0.1s;
 $sitecolor: rgb(29, 242, 161);
 $sitebold: 1.5rem;
 $siteborder: 1px solid rgb(230, 236, 240);;
+$smallfont: 13px;
 
 @import "./reset";
+@import "./loginprompt";
+@import "./logincard";
 @import "./menu";
 @import "./home";
 @import "./tos";
 @import "./composer";
 @import "./search";
 @import "./tweet";
+@import "./sidebar";
 
 body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
@@ -19,7 +23,7 @@ body {
 
 .App {
     display: flex;
-    width: 100%;
+    width: 100vw;
     box-sizing: border-box;
 }
 
@@ -28,12 +32,6 @@ body {
     width: 100%;
 }
 
-.sidebar {
-    flex: 1;
-    box-sizing: border-box;
-    padding-left: 1rem;
-    padding-right: 6rem;
-}
 
 h3 {
     font-size: 19px;

@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter, NavLink, Switch, Route } from "react-router-dom";
 import { db, auth } from "../config/fbConfig";
-// import Menu from "./Menu";
 import Home from "./Home";
+import LoginPrompt from "./LoginPrompt";
 import Profile from "./Profile";
 import Explore from "./Explore";
 import Notifications from "./Notifications";
@@ -143,6 +143,7 @@ function App() {
 					<Route exact path="/profile" component={Profile} />
 				</Switch>
 			</BrowserRouter>
+			<LoginPrompt />
 		</div>
 	);
 }

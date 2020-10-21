@@ -1,0 +1,20 @@
+.sidebar {
+    flex: 1;
+    padding-top: 0.5rem;
+    padding-left: 2rem;
+    padding-right: 10rem;
+    box-sizing: border-box;
+
+}
+
+.side-box {
+    background-color: rgb(245, 248, 250);
+    padding: 0.75rem;
+    box-sizing: border-box;
+    border-radius: 15px;
+}
+
+.side-box-title {
+    border-bottom: $siteborder;
+    padding-bottom: 0.75rem;
+}
