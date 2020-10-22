@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Redirect, Switch, Route } from "react-router-dom";
 import { db, auth } from "../config/fbConfig";
 import Main from "./Main";
 import LoginPage from "./LoginPage";
@@ -24,13 +24,21 @@ const App = () => {
 			<div className="App">
 				{!user ? (
 					<Switch>
-						<Route exact path="/login" component={LoginPage} />
-						<Route exact path="/signup" component={SignupPage} />
-						<Route path="/" render={(props) => <Main {...props} user={user} />} />
+						<Route exact path="/login">
+							{user ? <Redirect to="/" /> : <LoginPage />}
+						</Route>
+						<Route exact path="/signup">
+							{user ? <Redirect to="/" /> : <SignupPage />}
+						</Route>
+						<Route path="/">
+							<Main user={user} />
+						</Route>
 					</Switch>
 				) : (
 					<Switch>
-						<Route path="/" render={(props) => <Main {...props} user={user} />} />
+						<Route path="/">
+							<Main user={user} />
+						</Route>
 					</Switch>
 				)}
 			</div>

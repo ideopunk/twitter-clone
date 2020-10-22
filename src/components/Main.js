@@ -17,11 +17,21 @@ const Main = (props) => {
 			{user ? "" : <LoginPrompt />}
 
 			<Switch>
-				<Route exact path="/" render={(props) => <Home {...props} user={user} />} />
-				<Route exact path="/explore" component={Explore} />
-				<Route exact path="/notifications" component={Notifications} />
-				<Route exact path="/messages" component={Messages} />
-				<Route exact path="/profile" component={Profile} />
+				<Route exact path="/explore">
+					<Explore />
+				</Route>
+				<Route exact path="/notifications">
+					<Notifications />
+				</Route>
+				<Route exact path="/messages">
+					<Messages />
+				</Route>
+				<Route exact path="/profile">
+					<Profile />
+				</Route>
+				<Route path="/">
+					<Home user={user} />
+				</Route>
 			</Switch>
 		</div>
 	);
