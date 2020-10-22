@@ -18,17 +18,18 @@
 
 .login-prompt-buttons {
 	display: flex;
-	width: 10rem;
+	width: 12rem;
 	justify-content: space-between;
 }
 
 .lg-btn {
 	border: 1px solid white;
-	padding: 0.65rem 0.65rem;
-	font-size: 15px;
-	font-weight: bold;
-	// height: 2.5rem;
-	border-radius: 35px;
+	display: flex;
+	width: 5rem;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
+
 }
 
 .log-in-button {
@@ -36,7 +37,7 @@
 	color: white;
 }
 
-.sign-up-button {
+.sign-up-btn {
 	color: $sitecolor;
 	background-color: white;
 }

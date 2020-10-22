@@ -10,10 +10,10 @@ const LoginPrompt = () => {
 				<p>People on Fake Twitter are the first to know.</p>
 			</div>
 			<div className="login-prompt-buttons">
-				<Link className="btn" to="/login">
+				<Link className="btn lg-btn" to="/login">
 					Log in
 				</Link>
-				<Link className="btn" to="/signup">
+				<Link className="btn lg-btn sign-up-btn" to="/signup">
 					Sign up
 				</Link>
 			</div>
