@@ -84,7 +84,7 @@ const Menu = () => {
 				</li>
 				<li>
 					<NavLink activeClassName="menu-item-active" to="/compose/tweet">
-						<button className="tweet-button">Tweet</button>
+						<button className="btn">Tweet</button>
 					</NavLink>
 				</li>
 				<li className="">

@@ -72,11 +72,10 @@ const Composer = () => {
 						</svg>
 					</div>
 					<input
-						className="tweet-button"
+						className="btn"
 						style={{width: "100px", marginLeft: "auto"}}
 						type="submit"
 						value="Tweet"
-						placeholder="What's happening?"
 					/>
 				</div>
 			</div>
