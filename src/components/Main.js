@@ -8,15 +8,16 @@ import Notifications from "./Notifications";
 import Messages from "./Messages";
 import Menu from "./Menu";
 
-const Main = () => {
+const Main = (props) => {
+	const { user } = props;
 	return (
 		<div className="main">
 			<Menu />
 
-			<LoginPrompt />
+			{user ? "" : <LoginPrompt />}
 
 			<Switch>
-				<Route exact path="/" component={Home} />
+				<Route exact path="/" render={(props) => <Home {...props} user={user} />} />
 				<Route exact path="/explore" component={Explore} />
 				<Route exact path="/notifications" component={Notifications} />
 				<Route exact path="/messages" component={Messages} />

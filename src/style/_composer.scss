@@ -12,7 +12,7 @@
 }
 
 .composer-input {
-	font-size: $sitebold;
+	font-size: $bigfont;
 	width: 100%;
 	border: 0;
 	border-bottom: $siteborder;
@@ -28,22 +28,22 @@
 }
 
 .composer-icon-div {
-    height: 2rem;
-    width: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 2rem;
-    border-radius: 50%;
+	height: 2rem;
+	width: 2rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-right: 2rem;
+	border-radius: 50%;
 }
 
 .composer-svg {
 	fill: $sitecolor;
-    width: 1.5rem;
+	width: 1.5rem;
 }
 
 .composer-icon-div:hover {
-    background-color: lighten($sitecolor, 40%);
+	background-color: lighten($sitecolor, 40%);
 }
 
 .tweet-btn {

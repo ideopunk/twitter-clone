@@ -4,7 +4,7 @@ import { BrowserRouter, Link, Switch, Route } from "react-router-dom";
 const TOS = () => {
 	return (
 		<div>
-			<BrowserRouter>
+			{/* <BrowserRouter>
 				<Link className="TOS-link">Terms of Service</Link>
 				<Link className="TOS-link">Privacy Policy</Link>
 				<Link className="TOS-link">Cookie Policy</Link>
@@ -16,7 +16,7 @@ const TOS = () => {
 				</Link>
 				<Switch>
 				</Switch>
-			</BrowserRouter>
+			</BrowserRouter> */}
 		</div>
 	);
 };

@@ -1,12 +1,8 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch, NavLink } from "react-router-dom";
+import {  NavLink } from "react-router-dom";
 import { db, auth } from "../config/fbConfig";
-import Home from "./Home";
 import LoginPrompt from "./LoginPrompt";
-import Profile from "./Profile";
-import Explore from "./Explore";
-import Notifications from "./Notifications";
-import Messages from "./Messages";
+
 import fish from "../assets/fish-outline.svg";
 import { ReactComponent as HomeIcon } from "../assets/home-outline.svg";
 import { ReactComponent as ExploreIcon } from "../assets/explore-outline.svg";
@@ -14,10 +10,17 @@ import { ReactComponent as NotificationsIcon } from "../assets/notifications-out
 import { ReactComponent as MessagesIcon } from "../assets/messages-outline.svg";
 import { ReactComponent as ProfileIcon } from "../assets/profile-outline.svg";
 import { ReactComponent as MoreIcon } from "../assets/more-outline.svg";
+import { ReactComponent as PowerIcon } from "../assets/power-outline.svg";
 import headshot from "../assets/headshot.png";
-import { ReactComponent as ArrowIcon } from "../assets/arrow.svg";
 
 const Menu = () => {
+
+	const signOut = () => {
+		auth.signOut().then(() => {
+			console.log("user signed out")
+		})
+	}
+
 	return (
 		<>
 			<ul className="menu">
@@ -88,17 +91,16 @@ const Menu = () => {
 					</NavLink>
 				</li>
 				<li className="">
-					<button className="menu-profile-button">
+					<button className="menu-profile-button" onClick={signOut}>
 						<img src={headshot} alt="user-profile" className="profile-image" />
 						<div className="menu-profile-button-text">
 							<p>Conor</p>
 							<p>@ideopunk</p>
 						</div>
-						<ArrowIcon className="menu-icon arrow" />
+						<PowerIcon className="menu-icon arrow" />
 					</button>
 				</li>
 			</ul>
-			<LoginPrompt />
 
 			</>
 			

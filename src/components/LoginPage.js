@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import fish from "../assets/fish-outline.svg";
+import { auth } from "../config/fbConfig";
 
 const LoginPage = () => {
-	const [user, setUser] = useState("");
+	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
-	const handleUserChange = (e) => {
-		setUser(e.target.value);
+	const handleEmailChange = (e) => {
+		setEmail(e.target.value);
 	};
 
 	const handlePasswordChange = (e) => {
@@ -15,7 +16,12 @@ const LoginPage = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(user, password);
+		console.log(email, password);
+		auth.signInWithEmailAndPassword(email, password).then((cred) => {
+			console.log(cred.user);
+			setEmail("");
+			setPassword("");
+		});
 	};
 
 	return (
@@ -32,12 +38,12 @@ const LoginPage = () => {
 				<h3>Log in to Fake Twitter</h3>
 				<form className="login-form" onSubmit={(e) => handleSubmit(e)}>
 					<label>
-						Phone, email, or username
-						<input onChange={(e) => handleUserChange(e)} />
+						Email or username
+						<input required onChange={(e) => handleEmailChange(e)} />
 					</label>
 					<label>
 						Password
-						<input type="password" onChange={(e) => handlePasswordChange(e)} />
+						<input type="password" required onChange={(e) => handlePasswordChange(e)} />
 					</label>
 					<input className="lg-btn" style={{}} type="submit" value="Log in" />
 					<div>

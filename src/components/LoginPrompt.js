@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Link, Switch, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 const LoginPrompt = () => {
