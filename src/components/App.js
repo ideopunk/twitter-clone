@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Redirect, Switch, Route } from "react-router-dom";
 import { db, auth } from "../config/fbConfig";
 import Main from "./Main";
@@ -7,40 +7,38 @@ import SignupPage from "./SignupPage";
 import "../style/App.scss";
 
 const App = () => {
-	const [user, setUser] = useState(null);
+	const [userID, setUserID] = useState(null);
+	const [userData, setUserData] = useState(null)
 
 	// listen for auth status changes
-	auth.onAuthStateChanged((user) => {
-		console.log(user);
-		if (!user) {
-			setUser(null);
-		} else {
-			setUser(user.uid);
-		}
-	});
+	useEffect(() => {
+		console.log('use effect')
+		auth.onAuthStateChanged((user) => {
+			console.log(user);
+			if (!user) {
+				setUserID(null);
+			} else {
+				setUserID(user.uid);
+			}
+			
+		});
+	}, [])
+	
 
 	return (
 		<BrowserRouter>
 			<div className="App">
-				{!user ? (
-					<Switch>
-						<Route exact path="/login">
-							{user ? <Redirect to="/" /> : <LoginPage />}
-						</Route>
-						<Route exact path="/signup">
-							{user ? <Redirect to="/" /> : <SignupPage />}
-						</Route>
-						<Route path="/">
-							<Main user={user} />
-						</Route>
-					</Switch>
-				) : (
-					<Switch>
-						<Route path="/">
-							<Main user={user} />
-						</Route>
-					</Switch>
-				)}
+				<Switch>
+					<Route exact path="/login">
+						{userID ? <Redirect to="/" /> : <LoginPage />}
+					</Route>
+					<Route exact path="/signup">
+						{userID ? <Redirect to="/" /> : <SignupPage />}
+					</Route>
+					<Route path="/">
+						<Main user={userID} />
+					</Route>
+				</Switch>
 			</div>
 		</BrowserRouter>
 	);

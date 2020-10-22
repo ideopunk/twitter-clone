@@ -22,11 +22,11 @@ const SignupPage = () => {
 		e.preventDefault();
 		console.log(user, password, email);
 		auth.createUserWithEmailAndPassword(email, password).then((cred) => {
-			console.log(cred);
-			// add cred to database....
-			setUser("")
-			setEmail("")
+			return db.collection("users").doc(cred.user.uid).set({at: user})
+		}).then(() => {
 			setPassword("")
+			setEmail("")
+			setUser("")
 		});
 	};
 

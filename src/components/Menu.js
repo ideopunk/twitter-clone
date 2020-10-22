@@ -1,5 +1,5 @@
 import React from "react";
-import {  NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { db, auth } from "../config/fbConfig";
 import LoginPrompt from "./LoginPrompt";
 
@@ -13,13 +13,13 @@ import { ReactComponent as MoreIcon } from "../assets/more-outline.svg";
 import { ReactComponent as PowerIcon } from "../assets/power-outline.svg";
 import headshot from "../assets/headshot.png";
 
-const Menu = () => {
-
+const Menu = (props) => {
+	const { user } = props;
 	const signOut = () => {
 		auth.signOut().then(() => {
-			console.log("user signed out")
-		})
-	}
+			console.log("user signed out");
+		});
+	};
 
 	return (
 		<>
@@ -95,15 +95,13 @@ const Menu = () => {
 						<img src={headshot} alt="user-profile" className="profile-image" />
 						<div className="menu-profile-button-text">
 							<p>Conor</p>
-							<p>@ideopunk</p>
+							<p>Ideopunk</p>
 						</div>
 						<PowerIcon className="menu-icon arrow" />
 					</button>
 				</li>
 			</ul>
-
-			</>
-			
+		</>
 	);
 };
 

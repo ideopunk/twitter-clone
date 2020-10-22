@@ -12,7 +12,7 @@ const Main = (props) => {
 	const { user } = props;
 	return (
 		<div className="main">
-			<Menu />
+			<Menu user={user} />
 
 			{user ? "" : <LoginPrompt />}
 
