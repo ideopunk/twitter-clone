@@ -3,5 +3,9 @@
     border: $siteborder;
     border-radius: 15px;
     box-sizing: border-box;
+    margin-bottom: 1rem;
+}
 
+.login-card > * {
+    margin-bottom: 0.75rem;
 }

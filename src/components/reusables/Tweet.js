@@ -1,16 +1,17 @@
 import React from "react";
+import {ReactComponent as Arrow} from "../../assets/arrow.svg"
 
 const Tweet = (props) => {
 	const { image, name, at, time, text, retweets, likes, replying } = props;
 	return (
 		<div className="tweet">
 			<img className="profile-image" alt="user-profile" src={image} />
-			<div>
+			<div className="tweet-main">
 				<p className="tweet-top-data">
 					<span className="tweeter-name">{name}</span>
 					<span className="tweeter-at">{at}</span>
 					<span className="tweet-time">{time}</span>
-					<span className="tweet-options"></span>
+					<Arrow className="little-arrow"/>
 				</p>
 				{replying ? <p className="tweet-reply">Replying to {replying}</p> : ""}
 				<p className="tweet-text">{text}</p>

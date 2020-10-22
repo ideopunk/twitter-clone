@@ -6,6 +6,7 @@ $siteborder: 1px solid rgb(230, 236, 240);;
 $smallfont: 13px;
 
 @import "./reset";
+@import "./feed";
 @import "./loginprompt";
 @import "./logincard";
 @import "./menu";
@@ -38,9 +39,7 @@ h3 {
     font-weight: bold;
 }
 
-.mrg-btm {
-    margin-top: auto;
-}
+
 
 .tweet-button {
 	width: 100%;
@@ -56,4 +55,14 @@ h3 {
 
 .tweet-button:hover {
 	background-color: darken($sitecolor, 10%);
+}
+
+.arrow {
+    width: 1.5rem;
+    padding-left: 1.5rem;
+}
+
+.little-arrow {
+    width: 1.25rem;
+    position: relative;
 }

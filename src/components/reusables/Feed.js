@@ -9,7 +9,7 @@ const Feed = (props) => {
 	// ));
 
 	return (
-		<div>
+		<div className="feed">
 			<Tweet
 				image={headshot}
 				name="Conor"
