@@ -36,7 +36,7 @@ const App = () => {
 						{userID ? <Redirect to="/" /> : <SignupPage />}
 					</Route>
 					<Route path="/">
-						<Main user={userID} />
+						<Main userID={userID} />
 					</Route>
 				</Switch>
 			</div>

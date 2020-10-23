@@ -9,12 +9,12 @@ import Messages from "./Messages";
 import Menu from "./Menu";
 
 const Main = (props) => {
-	const { user } = props;
+	const { userID } = props;
 	return (
 		<div className="main">
-			<Menu user={user} />
+			<Menu userID={userID} />
 
-			{user ? "" : <LoginPrompt />}
+			{userID ? "" : <LoginPrompt />}
 
 			<Switch>
 				<Route exact path="/explore">
@@ -27,10 +27,10 @@ const Main = (props) => {
 					<Messages />
 				</Route>
 				<Route exact path="/profile">
-					<Profile />
+					<Profile userID={userID}/>
 				</Route>
 				<Route path="/">
-					<Home user={user} />
+					<Home userID={userID} />
 				</Route>
 			</Switch>
 		</div>
