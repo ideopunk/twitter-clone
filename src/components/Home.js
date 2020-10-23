@@ -10,12 +10,14 @@ import LoginCard from "./reusables/LoginCard";
 
 const Home = (props) => {
 	const { user } = props;
+
+
 	return (
 		<div className="main">
 			<div className="home">
 				<h3 className="home-title">Home</h3>
 				<Composer />
-				<Feed />
+				{/* <Feed /> */}
 			</div>
 			<div className="sidebar">
 				<Search />
