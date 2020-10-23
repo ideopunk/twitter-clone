@@ -13,10 +13,10 @@ import FollowSuggests from "./reusables/FollowSuggests";
 import TOS from "./reusables/TOS";
 
 const Main = (props) => {
-	const { userID } = props;
+	const { userID, userImage } = props;
 	return (
 		<div className="main">
-			<Menu userID={userID} />
+			<Menu userID={userID} userImage={userImage} />
 
 			{userID ? "" : <LoginPrompt />}
 
@@ -31,13 +31,13 @@ const Main = (props) => {
 					<Messages />
 				</Route>
 				<Route exact path="/profile">
-					<Profile userID={userID} />
+					<Profile userID={userID} userImage={userImage} />
 				</Route>
 				<Route path="/">
-					<Home userID={userID} />
+					<Home userID={userID} userImage={userImage} />
 				</Route>
 			</Switch>
-			
+
 			<div className="sidebar">
 				<Search />
 				{userID ? "" : <LoginCard />}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Redirect, Switch, Route } from "react-router-dom";
-import { db, auth } from "../config/fbConfig";
+import { db, auth, storage } from "../config/fbConfig";
 import Main from "./Main";
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
@@ -8,22 +8,26 @@ import "../style/App.scss";
 
 const App = () => {
 	const [userID, setUserID] = useState(null);
-	const [userData, setUserData] = useState(null)
+	const [userImage, setUserImage] = useState(null);
+	const [userData, setUserData] = useState(null);
 
 	// listen for auth status changes
 	useEffect(() => {
-		console.log('use effect')
+		console.log("use effect");
 		auth.onAuthStateChanged((user) => {
 			console.log(user);
 			if (!user) {
 				setUserID(null);
+				setUserImage(null);
 			} else {
 				setUserID(user.uid);
+				storage
+					.ref("profile_pictures/" + user.uid + ".png") 
+					.getDownloadURL()
+					.then((url) => setUserImage(url));
 			}
-			
 		});
-	}, [])
-	
+	}, []);
 
 	return (
 		<BrowserRouter>
@@ -36,7 +40,7 @@ const App = () => {
 						{userID ? <Redirect to="/" /> : <SignupPage />}
 					</Route>
 					<Route path="/">
-						<Main userID={userID} />
+						<Main userID={userID} userImage={userImage} />
 					</Route>
 				</Switch>
 			</div>

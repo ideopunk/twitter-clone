@@ -1,6 +1,5 @@
 import React from "react";
 import Tweet from "./Tweet";
-import headshot from "../../assets/headshot.png";
 
 const Feed = (props) => {
 	const { tweetDatas } = props;
@@ -24,7 +23,7 @@ const Feed = (props) => {
 	return (
 		<div className="feed">
 			<Tweet
-				image={headshot}
+				image=""
 				name="Conor"
 				at={"@ideopunk"}
 				time={{seconds: 1585008000}}

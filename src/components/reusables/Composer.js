@@ -1,10 +1,10 @@
 import React from "react";
-import headshot from "../../assets/headshot.png";
 
-const Composer = () => {
+const Composer = (props) => {
+	const {userImage} = props
 	return (
 		<form className="composer">
-			<img src={headshot} alt="user-profile" className="profile-image" />
+			<img src={userImage} alt="user-profile" className="profile-image" />
 			<div className="composer-right">
 				<input
 					maxLength={240}

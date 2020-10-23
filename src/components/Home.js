@@ -9,12 +9,12 @@ import Feed from "./reusables/Feed";
 import LoginCard from "./reusables/LoginCard";
 
 const Home = (props) => {
-	const { user } = props;
+	const { userID, userImage } = props;
 
 	return (
 		<div className="home center-feed">
 			<h3 className="home-title">Home</h3>
-			<Composer />
+			<Composer userImage={userImage} />
 			{/* <Feed /> */}
 		</div>
 	);

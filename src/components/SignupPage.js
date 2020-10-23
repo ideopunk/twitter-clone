@@ -1,10 +1,15 @@
-import React, { useState } from "react";
-import { auth, db } from "../config/fbConfig";
+import React, { useState, useRef } from "react";
+import { auth, db, storage } from "../config/fbConfig";
 
 const SignupPage = () => {
 	const [user, setUser] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [image, setImage] = useState(null);
+
+	const handleFileChange = (e) => {
+		e.target.files[0] ? setImage(e.target.files[0]) : console.log("naw");
+	};
 
 	const handleUserChange = (e) => {
 		setUser(e.target.value);
@@ -21,19 +26,47 @@ const SignupPage = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		console.log(user, password, email);
-		auth.createUserWithEmailAndPassword(email, password).then((cred) => {
-			return db.collection("users").doc(cred.user.uid).set({at: user})
-		}).then(() => {
-			setPassword("")
-			setEmail("")
-			setUser("")
-		});
+		auth.createUserWithEmailAndPassword(email, password)
+			.then((cred) => {
+				db.collection("users").doc(cred.user.uid).set({ at: user });
+				return cred.user.uid
+			})
+			.then((uid) => {
+
+				const storageRef = storage.ref("profile_pictures/" + uid);
+				const uploadTask = storageRef.put(image);
+				uploadTask.on(
+					"state_changed",
+
+					// how it's going
+					(snapshot) => {},
+
+					// how it goofed it
+					(error) => {
+						console.log(error);
+					},
+
+					// how it succeeded
+					() => {
+						console.log("success");
+					}
+				);
+			})
+			.then(() => {
+				setPassword("");
+				setEmail("");
+				setUser("");
+			});
 	};
 
 	return (
 		<div className="signup-page">
 			<h3>Create your account</h3>
 			<form onSubmit={(e) => handleSubmit(e)}>
+				<label>
+					Profile picture
+					<input type="file" onChange={handleFileChange} />
+				</label>
 				<label>
 					Name
 					<input required onChange={(e) => handleUserChange(e)} />

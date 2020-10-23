@@ -11,10 +11,10 @@ import { ReactComponent as MessagesIcon } from "../assets/messages-outline.svg";
 import { ReactComponent as ProfileIcon } from "../assets/profile-outline.svg";
 import { ReactComponent as MoreIcon } from "../assets/more-outline.svg";
 import { ReactComponent as PowerIcon } from "../assets/power-outline.svg";
-import headshot from "../assets/headshot.png";
+// import headshot from "../assets/headshot.png";
 
 const Menu = (props) => {
-	const { user } = props;
+	const { userID, userImage } = props;
 	const signOut = () => {
 		auth.signOut().then(() => {
 			console.log("user signed out");
@@ -92,7 +92,7 @@ const Menu = (props) => {
 				</li>
 				<li className="">
 					<button className="menu-profile-button" onClick={signOut}>
-						<img src={headshot} alt="user-profile" className="profile-image" />
+						<img src={userImage} alt="user-profile" className="profile-image" />
 						<div className="menu-profile-button-text">
 							<p>Conor</p>
 							<p>Ideopunk</p>
