@@ -9,6 +9,7 @@ const Feed = (props) => {
 		return (
 			<Tweet
 				key={tweet.id}
+				userID={tweet.userID}
 				image={tweet.pic}
 				name={tweet.name}
 				at={tweet.at}
@@ -22,15 +23,6 @@ const Feed = (props) => {
 
 	return (
 		<div className="feed">
-			<Tweet
-				image=""
-				name="Conor"
-				at={"@ideopunk"}
-				time={{seconds: 1585008000}}
-				text="This is a tweet! Woo!"
-				retweets={4}
-				likes={4}
-			/>
 			{tweets}
 		</div>
 	);
