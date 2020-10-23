@@ -27,7 +27,7 @@ const Profile = (props) => {
 	}, [userID]);
 
 	return (
-		<div>
+		<div className="profile center-feed">
 			<Feed tweetDatas={tweetDatas} />
 		</div>
 	);

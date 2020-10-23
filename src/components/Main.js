@@ -7,6 +7,10 @@ import Explore from "./Explore";
 import Notifications from "./Notifications";
 import Messages from "./Messages";
 import Menu from "./Menu";
+import Search from "./reusables/Search";
+import LoginCard from "./reusables/LoginCard";
+import FollowSuggests from "./reusables/FollowSuggests";
+import TOS from "./reusables/TOS";
 
 const Main = (props) => {
 	const { userID } = props;
@@ -27,12 +31,19 @@ const Main = (props) => {
 					<Messages />
 				</Route>
 				<Route exact path="/profile">
-					<Profile userID={userID}/>
+					<Profile userID={userID} />
 				</Route>
 				<Route path="/">
 					<Home userID={userID} />
 				</Route>
 			</Switch>
+			
+			<div className="sidebar">
+				<Search />
+				{userID ? "" : <LoginCard />}
+				<FollowSuggests />
+				<TOS />
+			</div>
 		</div>
 	);
 };

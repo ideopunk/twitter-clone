@@ -24,7 +24,7 @@ const Explore = () => {
 
 	
 	return (
-		<div>
+		<div className="explore center-feed">
 			<Feed tweetDatas={tweetDatas} />
 		</div>
 	);
