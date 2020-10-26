@@ -1,7 +1,9 @@
-import React, {useContext} from "react";
+import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { db, auth } from "../config/fbConfig";
 import LoginPrompt from "./LoginPrompt";
+import Composer from "./reusables/Composer";
+import Cover from "./reusables/Cover";
 import UserContext from "./context/context.js";
 
 import fish from "../assets/fish-outline.svg";
@@ -16,10 +18,17 @@ import { ReactComponent as PowerIcon } from "../assets/power-outline.svg";
 
 const Menu = (props) => {
 	const { userName, userAt, userID, userImage } = useContext(UserContext);
+
+	const [composer, setComposer] = useState(false);
+
 	const signOut = () => {
 		auth.signOut().then(() => {
 			console.log("user signed out");
 		});
+	};
+
+	const toggleComposer = () => {
+		setComposer(!composer);
 	};
 
 	return (
@@ -87,9 +96,9 @@ const Menu = (props) => {
 					</NavLink>
 				</li>
 				<li>
-					<NavLink activeClassName="menu-item-active" to="/compose/tweet">
-						<button className="btn">Tweet</button>
-					</NavLink>
+					<button className="btn" onClick={toggleComposer}>
+						Tweet
+					</button>
 				</li>
 				<li className="">
 					<button className="menu-profile-button" onClick={signOut}>
@@ -102,6 +111,13 @@ const Menu = (props) => {
 					</button>
 				</li>
 			</ul>
+			{composer ? (
+				<Cover toggleComposer={toggleComposer}>
+					<Composer modal={true} />
+				</Cover>
+			) : (
+				""
+			)}
 		</>
 	);
 };

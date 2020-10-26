@@ -1,4 +1,4 @@
-import React, {useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { ReactComponent as Picture } from "../../assets/picture-icon.svg";
 import { ReactComponent as Gif } from "../../assets/gif-icon.svg";
 import { ReactComponent as Poll } from "../../assets/poll-icon.svg";
@@ -8,7 +8,7 @@ import { db } from "../../config/fbConfig";
 import UserContext from "../context/context.js";
 
 const Composer = (props) => {
-	// const { userName, userAt, userID, userImage } = props;
+	const { modal } = props;
 	const { userName, userAt, userID, userImage } = useContext(UserContext);
 
 	const [text, setText] = useState("");
@@ -16,7 +16,13 @@ const Composer = (props) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		console.log("hand sub");
-		db.collection("tweets").add({ name: userName, text: text, at: userAt, userID: userID, timeStamp: new Date() });
+		db.collection("tweets").add({
+			name: userName,
+			text: text,
+			at: userAt,
+			userID: userID,
+			timeStamp: new Date(),
+		});
 	};
 
 	const handleChange = (e) => {
@@ -25,7 +31,7 @@ const Composer = (props) => {
 	};
 
 	return (
-		<form className="composer">
+		<form className={`composer ${modal ? `composer-modal` : ""}`}>
 			<img src={userImage} alt="user-profile" className="profile-image" />
 			<div className="composer-right">
 				<input

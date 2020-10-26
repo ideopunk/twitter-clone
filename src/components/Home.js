@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import { BrowserRouter as Router, Route, Switch, NavLink } from "react-router-dom";
 
 import Composer from "./reusables/Composer";
 import FollowSuggests from "./reusables/FollowSuggests";
