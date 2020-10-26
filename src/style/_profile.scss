@@ -22,3 +22,31 @@
 .profile-home-link-text > *{
     text-decoration: none;
 }
+
+.profile-header-image {
+    max-width: 600px;
+    max-height: 200px;
+}
+
+.main-image {
+    border: 3px solid white;
+    position: relative;
+    top: -4rem;
+    left: 2rem;
+    z-index: 1;
+}
+
+.editor-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border-bottom: $siteborder;
+}
+
+.edit-form {
+    padding: 1rem;
+    box-sizing: border-box;
+    // overflow-y: scroll;
+    width: 100%;
+}

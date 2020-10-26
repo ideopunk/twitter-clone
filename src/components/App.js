@@ -6,6 +6,7 @@ import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
 import UserContext from "./context/context.js";
 import "../style/App.scss";
+import Leaf from "../assets/leaf-outline.svg";
 
 const App = () => {
 	const [userID, setUserID] = useState(null);
@@ -35,13 +36,19 @@ const App = () => {
 						setUserName(data.name);
 
 						// set follows/ers if we have any.
-						userFollows && setUserFollows(data.follows);
-						userFollowers && setUserFollowers(data.followers);
+						data.follows && setUserFollows(data.follows);
+						data.followers && setUserFollowers(data.followers);
 					});
+
+				// set user image and header, 
 				storage
 					.ref("profile_pictures/" + user.uid + ".png")
 					.getDownloadURL()
-					.then((url) => setUserImage(url));
+					.then((url) => setUserImage(url))
+					.catch(() => {
+						setUserImage(Leaf)
+					});
+				
 			}
 		});
 	}, []);

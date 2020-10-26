@@ -1,18 +1,37 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import Feed from "./reusables/Feed";
-import { db } from "../config/fbConfig";
+import { db, storage } from "../config/fbConfig";
 import UserContext from "./context/context.js";
 import { ReactComponent as SideArrow } from "../assets/side-arrow-icon.svg";
 import Cover from "./reusables/Cover";
 import Editor from "./reusables/Editor";
+import EllipsisFilled from "../assets/ellipsis-horizontal.svg";
 
 const Profile = (props) => {
-	const { userImage, userName, userAt, userID, userFollows, userFollowers } = useContext(
-		UserContext
-	);
+	const {
+		userImage,
+		userHeader,
+		userName,
+		userAt,
+		userID,
+		userFollows,
+		userFollowers,
+	} = useContext(UserContext);
 	const [tweetDatas, setTweetDatas] = useState([]);
-	const [editor, setEditor] = useState(false);
+
+	// temporarily set to true while editing editor lol.
+	const [editor, setEditor] = useState(true);
+	const [header, setHeader] = useState(null);
+
+	storage
+		.ref("header_pictures/" + userID + ".png")
+		.getDownloadURL()
+		.then((url) => {
+			console.log(url);
+			setHeader(url);
+		})
+		.catch(() => setHeader(EllipsisFilled));
 
 	useEffect(() => {
 		db.collection("tweets")
@@ -35,8 +54,8 @@ const Profile = (props) => {
 	}, [userID]);
 
 	const toggleEditor = () => {
-		setEditor(!editor)
-	}
+		setEditor(!editor);
+	};
 
 	return (
 		<div className="profile center-feed">
@@ -52,10 +71,12 @@ const Profile = (props) => {
 						<p>{tweetDatas.length} tweets</p>
 					</div>
 				</Link>
-				<img className="profile-header-image" src="#" alt="header" />
+				<img className="profile-header-image" src={header} alt="header" />
 				<div className="profile-card">
 					<img className="profile-image" src={userImage} alt="profile" />
-					<button className="profile-edit-button" onClick={toggleEditor}>Edit profile</button>
+					<button className="profile-edit-button" onClick={toggleEditor}>
+						Edit profile
+					</button>
 					<h3>{userName}</h3>
 					<p>{userAt}</p>
 					<p className="bio">Bio</p>
@@ -70,10 +91,13 @@ const Profile = (props) => {
 				</div>
 			</div>
 			<Feed tweetDatas={tweetDatas} />
-			{editor?
-			<Cover toggle={toggleEditor}>
-				<Editor />
-			</Cover> : ""}
+			{editor ? (
+				<Cover toggle={toggleEditor}>
+					<Editor header={header}/>
+				</Cover>
+			) : (
+				""
+			)}
 		</div>
 	);
 };
