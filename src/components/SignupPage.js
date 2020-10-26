@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { auth, db, storage } from "../config/fbConfig";
 
 const SignupPage = () => {
@@ -7,15 +7,33 @@ const SignupPage = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [image, setImage] = useState(null);
+	const [allAts, setAllAts] = useState([]);
+	const [legitAt, setLegitAt] = useState(true);
+
+	// on pageload, grab all the usernames, to be sure they're unique.
+	useEffect(() => {
+		let tempArray = [];
+		db.collection("users")
+			.get()
+			.then((snapshot) =>
+				snapshot.forEach((user) => {
+					console.log(user.data().at);
+					tempArray.push(user.data().at);
+				})
+			)
+			.then(setAllAts(tempArray));
+	}, []);
 
 	const handleFileChange = (e) => {
 		e.target.files[0] ? setImage(e.target.files[0]) : console.log("naw");
 	};
 
 	const handleUserAtChange = (e) => {
+		console.log(e.target.value);
+		allAts.includes(`@${e.target.value}`) ? setLegitAt(false) : setLegitAt(true);
 		setUserAt(e.target.value);
 	};
-	
+
 	const handleUserNameChange = (e) => {
 		setUserAt(e.target.value);
 	};
@@ -29,40 +47,43 @@ const SignupPage = () => {
 	};
 
 	const handleSubmit = (e) => {
-		e.preventDefault();
-		console.log(userAt, userName, password, email);
-		auth.createUserWithEmailAndPassword(email, password)
-			.then((cred) => {
-				db.collection("users").doc(cred.user.uid).set({ at: `@${userAt}` , name: userName});
-				return cred.user.uid
-			})
-			.then((uid) => {
+		if (legitAt) {
+			e.preventDefault();
+			console.log(userAt, userName, password, email);
+			auth.createUserWithEmailAndPassword(email, password)
+				.then((cred) => {
+					db.collection("users")
+						.doc(cred.user.uid)
+						.set({ at: `@${userAt}`, name: userName });
+					return cred.user.uid;
+				})
+				.then((uid) => {
+					const storageRef = storage.ref("profile_pictures/" + uid);
+					const uploadTask = storageRef.put(image);
+					uploadTask.on(
+						"state_changed",
 
-				const storageRef = storage.ref("profile_pictures/" + uid);
-				const uploadTask = storageRef.put(image);
-				uploadTask.on(
-					"state_changed",
+						// how it's going
+						(snapshot) => {},
 
-					// how it's going
-					(snapshot) => {},
+						// how it goofed it
+						(error) => {
+							console.log(error);
+						},
 
-					// how it goofed it
-					(error) => {
-						console.log(error);
-					},
-
-					// how it succeeded
-					() => {
-						console.log("success");
-					}
-				);
-			})
-			.then(() => {
-				setPassword("");
-				setEmail("");
-				setUserAt("");
-				setUserName("");
-			});
+						// how it succeeded
+						() => {
+							console.log("success");
+						}
+					);
+				})
+				.then(() => {
+					setPassword("");
+					setEmail("");
+					setUserAt("");
+					setUserName("");
+				});
+		}
 	};
 
 	return (
@@ -75,6 +96,7 @@ const SignupPage = () => {
 				</label>
 				<label>
 					At
+					{!legitAt ? <p className="signup-warning">Username has been taken!</p> : ""}
 					<input required onChange={(e) => handleUserAtChange(e)} />
 				</label>
 				<label>
@@ -95,10 +117,7 @@ const SignupPage = () => {
 					/>
 				</label>
 
-				<p>
-					By signing up, you agree to the <a href="#">Terms of Service</a> and{" "}
-					<a href="#">Privacy policy</a>.
-				</p>
+				<p>This is all fake! It's all for a portfolio! Have fun!</p>
 				<input type="submit" value="Sign up" />
 			</form>
 		</div>
