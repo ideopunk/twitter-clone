@@ -12,9 +12,7 @@ const Tweet = (props) => {
 
 	const { name, at, time, text, retweets, likes, replying, userID } = props;
 	console.log(userID);
-	console.log(time);
 	const date = new Date(time.seconds * 1000);
-	console.log(date);
 	const likeAmount = likes ? likes.length : "";
 	const retweetsAmount = retweets ? retweets.length : "";
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Redirect, Switch, Route } from "react-router-dom";
 import { db, auth, storage } from "../config/fbConfig";
+import LoaderContainer from "./reusables/LoaderContainer";
 import Main from "./Main";
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
@@ -40,15 +41,14 @@ const App = () => {
 						data.followers && setUserFollowers(data.followers);
 					});
 
-				// set user image and header, 
+				// set user image and header,
 				storage
 					.ref("profile_pictures/" + user.uid + ".png")
 					.getDownloadURL()
 					.then((url) => setUserImage(url))
 					.catch(() => {
-						setUserImage(Leaf)
+						setUserImage(Leaf);
 					});
-				
 			}
 		});
 	}, []);
@@ -74,7 +74,11 @@ const App = () => {
 							{userID ? <Redirect to="/" /> : <SignupPage />}
 						</Route>
 						<Route path="/">
-							<Main userID={userID} userAt={userAt} userImage={userImage} />
+							{userID ? (
+								<Main userID={userID} userAt={userAt} userImage={userImage} />
+							) : (
+								<LoaderContainer />
+							)}
 						</Route>
 					</Switch>
 				</UserContext.Provider>

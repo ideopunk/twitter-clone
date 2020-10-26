@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import Feed from "./reusables/Feed";
-import { db, storage } from "../config/fbConfig";
+import { auth, db, storage } from "../config/fbConfig";
 import UserContext from "./context/context.js";
 import { ReactComponent as SideArrow } from "../assets/side-arrow-icon.svg";
 import Cover from "./reusables/Cover";
@@ -11,7 +11,6 @@ import EllipsisFilled from "../assets/ellipsis-horizontal.svg";
 const Profile = (props) => {
 	const {
 		userImage,
-		userHeader,
 		userName,
 		userAt,
 		userID,
@@ -23,17 +22,20 @@ const Profile = (props) => {
 	// temporarily set to true while editing editor lol.
 	const [editor, setEditor] = useState(true);
 	const [header, setHeader] = useState(null);
-
-	storage
-		.ref("header_pictures/" + userID + ".png")
-		.getDownloadURL()
-		.then((url) => {
-			console.log(url);
-			setHeader(url);
-		})
-		.catch(() => setHeader(EllipsisFilled));
+	const [bio, setBio] = useState("");
+	const [website, setWebsite] = useState("");
+	const [joinDate, setJoinDate] = useState(null)
 
 	useEffect(() => {
+		storage
+			.ref("header_pictures/" + userID + ".png")
+			.getDownloadURL()
+			.then((url) => {
+				console.log(url);
+				setHeader(url);
+			})
+			.catch(() => setHeader(EllipsisFilled));
+
 		db.collection("tweets")
 			.where("userID", "==", userID)
 			.orderBy("timeStamp")
@@ -42,7 +44,6 @@ const Profile = (props) => {
 			.then((snapshot) => {
 				let tempArray = [];
 				snapshot.forEach((doc) => {
-					console.log(doc.data());
 					console.log(doc.id);
 					tempArray.push({ ...doc.data(), id: doc.id });
 				});
@@ -51,6 +52,21 @@ const Profile = (props) => {
 			.then((tempArray) => {
 				setTweetDatas(tempArray);
 			});
+
+		db.collection("users")
+			.doc(userID)
+			.get()
+			.then((doc) => {
+				const data = doc.data();
+
+				// if they've got bio and website, add em in.
+				data.bio && setBio(data.bio);
+				data.website && setWebsite(data.website);
+			});
+
+		setJoinDate(auth.currentUser.metadata.creationTime.slice(4, 16))
+
+
 	}, [userID]);
 
 	const toggleEditor = () => {
@@ -79,10 +95,10 @@ const Profile = (props) => {
 					</button>
 					<h3>{userName}</h3>
 					<p>{userAt}</p>
-					<p className="bio">Bio</p>
+					<p className="bio">{bio}</p>
 					<p>
-						<span>Website</span>
-						<span>Join date</span>
+						<span>{website}</span>
+						<span> Joined {joinDate}</span>
 					</p>
 					<p>
 						<span>{userFollows.length} Following</span>
@@ -93,7 +109,7 @@ const Profile = (props) => {
 			<Feed tweetDatas={tweetDatas} />
 			{editor ? (
 				<Cover toggle={toggleEditor}>
-					<Editor header={header}/>
+					<Editor header={header} bio={bio} website={website} />
 				</Cover>
 			) : (
 				""
