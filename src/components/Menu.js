@@ -14,7 +14,6 @@ import { ReactComponent as MessagesIcon } from "../assets/messages-outline.svg";
 import { ReactComponent as ProfileIcon } from "../assets/profile-outline.svg";
 import { ReactComponent as MoreIcon } from "../assets/more-outline.svg";
 import { ReactComponent as PowerIcon } from "../assets/power-outline.svg";
-// import headshot from "../assets/headshot.png";
 
 const Menu = (props) => {
 	const { userName, userAt, userID, userImage } = useContext(UserContext);
@@ -112,7 +111,7 @@ const Menu = (props) => {
 				</li>
 			</ul>
 			{composer ? (
-				<Cover toggleComposer={toggleComposer}>
+				<Cover toggle={toggleComposer}>
 					<Composer modal={true} />
 				</Cover>
 			) : (

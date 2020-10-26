@@ -4,7 +4,9 @@ const Cover = (props) => {
 	const handleClick = (e) => {
 		e.stopPropagation();
 		console.log(e.target.id);
-		e.target.id === "cover" && props.toggleComposer();
+
+		// if you're clicking inside the modal, don't fire. 
+		e.target.id === "cover" && props.toggle();
     };
     
 	return (

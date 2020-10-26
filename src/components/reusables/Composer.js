@@ -31,7 +31,7 @@ const Composer = (props) => {
 	};
 
 	return (
-		<form className={`composer ${modal ? `composer-modal` : ""}`}>
+		<form className={`composer ${modal ? `modal` : ""}`}>
 			<img src={userImage} alt="user-profile" className="profile-image" />
 			<div className="composer-right">
 				<input

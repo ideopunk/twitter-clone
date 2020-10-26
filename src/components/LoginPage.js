@@ -38,7 +38,7 @@ const LoginPage = () => {
 				<h3>Log in to Fake Twitter</h3>
 				<form className="login-form" onSubmit={(e) => handleSubmit(e)}>
 					<label>
-						Email or username
+						Email
 						<input required onChange={(e) => handleEmailChange(e)} />
 					</label>
 					<label>

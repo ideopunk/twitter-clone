@@ -7,12 +7,13 @@ import SignupPage from "./SignupPage";
 import UserContext from "./context/context.js";
 import "../style/App.scss";
 
-
 const App = () => {
 	const [userID, setUserID] = useState(null);
 	const [userImage, setUserImage] = useState(null);
 	const [userAt, setUserAt] = useState(null);
 	const [userName, setUserName] = useState(null);
+	const [userFollows, setUserFollows] = useState(0);
+	const [userFollowers, setUserFollowers] = useState(0);
 
 	// listen for auth status changes
 	useEffect(() => {
@@ -32,6 +33,10 @@ const App = () => {
 						console.log(data);
 						setUserAt(data.at);
 						setUserName(data.name);
+
+						// set follows/ers if we have any.
+						userFollows && setUserFollows(data.follows);
+						userFollowers && setUserFollowers(data.followers);
 					});
 				storage
 					.ref("profile_pictures/" + user.uid + ".png")
@@ -45,7 +50,14 @@ const App = () => {
 		<BrowserRouter>
 			<div className="App">
 				<UserContext.Provider
-					value={{ userID: userID, userImage: userImage, userAt: userAt, userName: userName }}
+					value={{
+						userID: userID,
+						userImage: userImage,
+						userAt: userAt,
+						userName: userName,
+						userFollows: userFollows,
+						userFollowers: userFollowers,
+					}}
 				>
 					<Switch>
 						<Route exact path="/login">

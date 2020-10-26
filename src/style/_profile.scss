@@ -1,0 +1,24 @@
+.profile-header {
+    border-bottom: $siteborder;
+}
+
+.profile-home-link {
+    display: flex;
+}
+
+.side-arrow {
+    fill: $sitecolor;
+    width: 1.5rem;
+    margin: 1rem;
+}
+
+.profile-home-link-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 0.25rem;
+}
+
+.profile-home-link-text > *{
+    text-decoration: none;
+}
