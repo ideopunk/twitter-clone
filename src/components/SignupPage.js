@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { auth, db, storage } from "../config/fbConfig";
 
 const SignupPage = () => {
-	const [user, setUser] = useState("");
+	const [userAt, setUserAt] = useState("");
+	const [userName, setUserName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [image, setImage] = useState(null);
@@ -11,8 +12,12 @@ const SignupPage = () => {
 		e.target.files[0] ? setImage(e.target.files[0]) : console.log("naw");
 	};
 
-	const handleUserChange = (e) => {
-		setUser(e.target.value);
+	const handleUserAtChange = (e) => {
+		setUserAt(e.target.value);
+	};
+	
+	const handleUserNameChange = (e) => {
+		setUserAt(e.target.value);
 	};
 
 	const handleEmailChange = (e) => {
@@ -25,10 +30,10 @@ const SignupPage = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(user, password, email);
+		console.log(userAt, userName, password, email);
 		auth.createUserWithEmailAndPassword(email, password)
 			.then((cred) => {
-				db.collection("users").doc(cred.user.uid).set({ at: user });
+				db.collection("users").doc(cred.user.uid).set({ at: `@${userAt}` , name: userName});
 				return cred.user.uid
 			})
 			.then((uid) => {
@@ -55,7 +60,8 @@ const SignupPage = () => {
 			.then(() => {
 				setPassword("");
 				setEmail("");
-				setUser("");
+				setUserAt("");
+				setUserName("");
 			});
 	};
 
@@ -68,8 +74,12 @@ const SignupPage = () => {
 					<input type="file" onChange={handleFileChange} />
 				</label>
 				<label>
+					At
+					<input required onChange={(e) => handleUserAtChange(e)} />
+				</label>
+				<label>
 					Name
-					<input required onChange={(e) => handleUserChange(e)} />
+					<input required onChange={(e) => handleUserNameChange(e)} />
 				</label>
 				<label>
 					Email

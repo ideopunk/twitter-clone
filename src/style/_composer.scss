@@ -49,3 +49,7 @@
 .tweet-btn {
 	background-color: lighten($sitecolor, 30%);
 }
+
+.active-button {
+	background-color: $sitecolor;
+}

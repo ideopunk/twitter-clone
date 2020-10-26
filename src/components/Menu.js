@@ -14,7 +14,7 @@ import { ReactComponent as PowerIcon } from "../assets/power-outline.svg";
 // import headshot from "../assets/headshot.png";
 
 const Menu = (props) => {
-	const { userID, userImage } = props;
+	const { userAt, userID, userImage } = props;
 	const signOut = () => {
 		auth.signOut().then(() => {
 			console.log("user signed out");
@@ -95,7 +95,7 @@ const Menu = (props) => {
 						<img src={userImage} alt="user-profile" className="profile-image" />
 						<div className="menu-profile-button-text">
 							<p>Conor</p>
-							<p>Ideopunk</p>
+							<p>{userAt}</p>
 						</div>
 						<PowerIcon className="menu-icon arrow" />
 					</button>
