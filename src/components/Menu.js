@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useContext} from "react";
 import { NavLink } from "react-router-dom";
 import { db, auth } from "../config/fbConfig";
 import LoginPrompt from "./LoginPrompt";
+import UserContext from "./context/context.js";
 
 import fish from "../assets/fish-outline.svg";
 import { ReactComponent as HomeIcon } from "../assets/home-outline.svg";
@@ -14,7 +15,7 @@ import { ReactComponent as PowerIcon } from "../assets/power-outline.svg";
 // import headshot from "../assets/headshot.png";
 
 const Menu = (props) => {
-	const { userAt, userID, userImage } = props;
+	const { userName, userAt, userID, userImage } = useContext(UserContext);
 	const signOut = () => {
 		auth.signOut().then(() => {
 			console.log("user signed out");
@@ -94,7 +95,7 @@ const Menu = (props) => {
 					<button className="menu-profile-button" onClick={signOut}>
 						<img src={userImage} alt="user-profile" className="profile-image" />
 						<div className="menu-profile-button-text">
-							<p>Conor</p>
+							<p>{userName}</p>
 							<p>{userAt}</p>
 						</div>
 						<PowerIcon className="menu-icon arrow" />

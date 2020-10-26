@@ -9,7 +9,6 @@ import Feed from "./reusables/Feed";
 import LoginCard from "./reusables/LoginCard";
 
 const Home = (props) => {
-	const { userAt, userID, userImage } = props;
 
 	return (
 		<div className="home center-feed">

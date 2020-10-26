@@ -12,6 +12,7 @@ const App = () => {
 	const [userID, setUserID] = useState(null);
 	const [userImage, setUserImage] = useState(null);
 	const [userAt, setUserAt] = useState(null);
+	const [userName, setUserName] = useState(null);
 
 	// listen for auth status changes
 	useEffect(() => {
@@ -30,6 +31,7 @@ const App = () => {
 						const data = snapshot.data();
 						console.log(data);
 						setUserAt(data.at);
+						setUserName(data.name);
 					});
 				storage
 					.ref("profile_pictures/" + user.uid + ".png")
@@ -43,7 +45,7 @@ const App = () => {
 		<BrowserRouter>
 			<div className="App">
 				<UserContext.Provider
-					value={{ userID: userID, userImage: userImage, userAt: userAt }}
+					value={{ userID: userID, userImage: userImage, userAt: userAt, userName: userName }}
 				>
 					<Switch>
 						<Route exact path="/login">

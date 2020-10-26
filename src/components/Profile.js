@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Feed from "./reusables/Feed";
 import { db } from "../config/fbConfig";
+import UserContext from "./context/context.js";
 
 const Profile = (props) => {
-	const { userID } = props;
+	const { userID } = useContext(UserContext);
 	const [tweetDatas, setTweetDatas] = useState([]);
 
 	useEffect(() => {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Switch, Route } from "react-router-dom";
 import Home from "./Home";
 import LoginPrompt from "./LoginPrompt";
@@ -11,12 +11,13 @@ import Search from "./reusables/Search";
 import LoginCard from "./reusables/LoginCard";
 import FollowSuggests from "./reusables/FollowSuggests";
 import TOS from "./reusables/TOS";
+import UserContext from "./context/context.js";
 
 const Main = (props) => {
-	const { userAt, userID, userImage } = props;
+	const { userID } = useContext(UserContext);
 	return (
 		<div className="main">
-			<Menu userID={userID} userAt={userAt} userImage={userImage} />
+			<Menu />
 
 			{userID ? "" : <LoginPrompt />}
 
@@ -31,10 +32,10 @@ const Main = (props) => {
 					<Messages />
 				</Route>
 				<Route exact path="/profile">
-					<Profile userID={userID} userAt={userAt} userImage={userImage} />
+					<Profile />
 				</Route>
 				<Route path="/">
-					<Home userID={userID} userAt={userAt} userImage={userImage} />
+					<Home />
 				</Route>
 			</Switch>
 
