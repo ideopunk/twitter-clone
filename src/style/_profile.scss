@@ -28,8 +28,24 @@
     max-height: 200px;
 }
 
+.profile-card {
+    padding: 1.5rem;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.profile-card > * {
+    margin-bottom: 0.75rem;
+}
+
+.profile-edit-button {
+    position: absolute;
+    right: 1rem;
+}
+
 .main-image {
     border: 3px solid white;
+    box-sizing: border-box;
     position: relative;
     top: -4rem;
     left: 2rem;
@@ -41,6 +57,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 0.5rem;
+    box-sizing: border-box;
+
     border-bottom: $siteborder;
 }
 

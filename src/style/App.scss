@@ -15,7 +15,6 @@ body {
 
 .App {
 	display: flex;
-	width: 100vw;
 	box-sizing: border-box;
 }
 
@@ -144,6 +143,7 @@ h3 {
 @import "./menu";
 @import "./main";
 @import "./home";
+
 @import "./tos";
 @import "./composer";
 @import "./search";

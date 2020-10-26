@@ -19,8 +19,7 @@ const Profile = (props) => {
 	} = useContext(UserContext);
 	const [tweetDatas, setTweetDatas] = useState([]);
 
-	// temporarily set to true while editing editor lol.
-	const [editor, setEditor] = useState(true);
+	const [editor, setEditor] = useState(false);
 	const [header, setHeader] = useState(null);
 	const [bio, setBio] = useState("");
 	const [website, setWebsite] = useState("");
@@ -38,7 +37,7 @@ const Profile = (props) => {
 
 		db.collection("tweets")
 			.where("userID", "==", userID)
-			.orderBy("timeStamp")
+			.orderBy("timeStamp", "desc")
 			.limit(50)
 			.get()
 			.then((snapshot) => {
@@ -90,7 +89,7 @@ const Profile = (props) => {
 				<img className="profile-header-image" src={header} alt="header" />
 				<div className="profile-card">
 					<img className="profile-image" src={userImage} alt="profile" />
-					<button className="profile-edit-button" onClick={toggleEditor}>
+					<button className="btn profile-edit-button" style={{width: "8rem"}} onClick={toggleEditor}>
 						Edit profile
 					</button>
 					<h3>{userName}</h3>
