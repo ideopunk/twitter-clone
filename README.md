@@ -4,3 +4,4 @@ Twitter clone.
 - user file upload
 - complex database
 - lots of promise practice
+- code splitting
