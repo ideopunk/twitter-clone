@@ -24,19 +24,20 @@
 }
 
 .profile-header-image {
-    max-width: 600px;
+    width: 100%;
     max-height: 200px;
+    background-color: grey;
 }
 
 .profile-card {
-    padding: 1.5rem;
+    padding: 1rem;
     position: relative;
     box-sizing: border-box;
 }
 
-.profile-card > * {
-    margin-bottom: 0.75rem;
-}
+// .profile-card > * {
+//     margin-bottom: 0.75rem;
+// }
 
 .profile-edit-button {
     position: absolute;
@@ -44,12 +45,17 @@
 }
 
 .main-image {
+    object-fit: contain;
+	width: 7rem;
+	height: 7rem;
+	border-radius: 50%;
     border: 3px solid white;
+    background: white;
     box-sizing: border-box;
-    position: relative;
-    top: -4rem;
-    left: 2rem;
-    z-index: 1;
+    position: absolute;
+    top: -3rem;
+    left: 1rem;
+    // z-index: 1;
 }
 
 .editor-header {
@@ -63,8 +69,20 @@
 }
 
 .edit-form-text {
+    position: relative;
     padding: 1rem;
+    padding-top: 5rem;
     box-sizing: border-box;
     // overflow-y: scroll;
     width: 100%;
+}
+
+.form-length {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.form-length > * {
+    padding: 0.5rem;
 }

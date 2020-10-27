@@ -9,23 +9,21 @@ import Editor from "./reusables/Editor";
 import EllipsisFilled from "../assets/ellipsis-horizontal.svg";
 
 const Profile = (props) => {
-	const {
-		userImage,
-		userName,
-		userAt,
-		userID,
-		userFollows,
-		userFollowers,
-	} = useContext(UserContext);
+	const { userImage, userName, userAt, userID, userFollows, userFollowers } = useContext(
+		UserContext
+	);
 	const [tweetDatas, setTweetDatas] = useState([]);
 
-	const [editor, setEditor] = useState(false);
+	// temporarily set to true
+	const [editor, setEditor] = useState(true);
+	
 	const [header, setHeader] = useState(null);
 	const [bio, setBio] = useState("");
 	const [website, setWebsite] = useState("");
-	const [joinDate, setJoinDate] = useState(null)
+	const [joinDate, setJoinDate] = useState(null);
 
 	useEffect(() => {
+
 		storage
 			.ref("header_pictures/" + userID + ".png")
 			.getDownloadURL()
@@ -63,9 +61,7 @@ const Profile = (props) => {
 				data.website && setWebsite(data.website);
 			});
 
-		setJoinDate(auth.currentUser.metadata.creationTime.slice(4, 16))
-
-
+		setJoinDate(auth.currentUser.metadata.creationTime.slice(4, 16));
 	}, [userID]);
 
 	const toggleEditor = () => {
@@ -88,10 +84,16 @@ const Profile = (props) => {
 				</Link>
 				<img className="profile-header-image" src={header} alt="header" />
 				<div className="profile-card">
-					<img className="profile-image" src={userImage} alt="profile" />
-					<button className="btn profile-edit-button" style={{width: "8rem"}} onClick={toggleEditor}>
-						Edit profile
-					</button>
+					<img className="main-image" src={userImage} alt="profile" />
+					<div style={{height: "3rem"}}>
+						<button
+							className="btn profile-edit-button"
+							style={{ width: "8rem" }}
+							onClick={toggleEditor}
+						>
+							Edit profile
+						</button>
+					</div>
 					<h3>{userName}</h3>
 					<p>{userAt}</p>
 					<p className="bio">{bio}</p>
@@ -100,7 +102,7 @@ const Profile = (props) => {
 						<span> Joined {joinDate}</span>
 					</p>
 					<p>
-						<span>{userFollows.length} Following</span>
+						<span style={{marginRight: "1rem"}}>{userFollows.length} Following</span>
 						<span>{userFollowers.length} Followers</span>
 					</p>
 				</div>

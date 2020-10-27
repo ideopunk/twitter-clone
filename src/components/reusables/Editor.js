@@ -6,13 +6,23 @@ import { ReactComponent as CloseIcon } from "../../assets/close.svg";
 
 const Editor = (props) => {
 	const { header, bio, website } = props;
-    const { userImage, userName, userAt, userID } = useContext(UserContext);
-    
-	const [name, setName] = useState("");
-	const [newBio, setNewBio] = useState(bio);
-	const [newWebsite, setNewWebsite] = useState(website);
+	const { userImage, userName, userAt, userID } = useContext(UserContext);
 
-	useEffect(() => {setName(userName)}, [userName]);
+	const [name, setName] = useState("");
+	const [newBio, setNewBio] = useState("");
+	const [newWebsite, setNewWebsite] = useState("");
+
+	useEffect(() => {
+		setName(userName);
+		setNewBio(bio);
+		setNewWebsite(website);
+	}, [userName, bio, website]);
+
+	useEffect(() => {
+		console.log(name);
+		console.log(newBio);
+		console.log(newWebsite);
+	}, [name, newBio, newWebsite]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -54,38 +64,48 @@ const Editor = (props) => {
 				/>
 			</div>
 			<img src={header} className="profile-header-image" alt="header" />
-			<img src={userImage} className="profile-image main-image" alt="profile" />
 			<div className="edit-form-text">
+				<img src={userImage} className="main-image" alt="profile" />
+
 				<label className="form-label">
 					<span className="form-name">Name</span>
 					<input
 						className="form-input"
 						placeholder="Add your name"
 						maxLength={50}
-                        onChange={handleNameChange}
-                        value={name}
+						onChange={handleNameChange}
+						value={name}
 					/>
 				</label>
+				<div className="form-length">
+					<span>{name? name.length : 0}/50</span>
+				</div>
 				<label className="form-label">
 					<span className="form-name">Bio</span>
 					<input
 						className="form-input"
 						placeholder="Add your bio"
 						maxLength={160}
-                        onChange={handleBioChange}
-                        value={bio}
+						onChange={handleBioChange}
+						value={newBio}
 					/>
 				</label>
+				<div className="form-length">
+					<span>{newBio? newBio.length : 0}/160</span>
+				</div>
 				<label className="form-label">
 					<span className="form-name">Website</span>
 					<input
 						className="form-input"
 						placeholder="Add your website"
 						maxLength={100}
-                        onChange={handleWebsiteChange}
-                        value={website}
+						onChange={handleWebsiteChange}
+						value={newWebsite}
 					/>
 				</label>
+				<div className="form-length">
+					<span>{newWebsite? newWebsite.length : 0}/100</span>
+				</div>
 			</div>
 		</form>
 	);

@@ -14,8 +14,8 @@ const App = () => {
 	const [userImage, setUserImage] = useState(null);
 	const [userAt, setUserAt] = useState(null);
 	const [userName, setUserName] = useState(null);
-	const [userFollows, setUserFollows] = useState(0);
-	const [userFollowers, setUserFollowers] = useState(0);
+	const [userFollows, setUserFollows] = useState([]);
+	const [userFollowers, setUserFollowers] = useState([]);
 
 	// listen for auth status changes
 	useEffect(() => {
