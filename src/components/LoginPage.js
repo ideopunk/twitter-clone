@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
 import fish from "../assets/fish-outline.svg";
 import { auth } from "../config/fbConfig";
 
@@ -48,7 +50,7 @@ const LoginPage = () => {
 					<input className="lg-btn" style={{}} type="submit" value="Log in" />
 					<div>
 						<a href="#">Forgot password?</a>
-						<a href="#">Sign up for Fake Twitter</a>
+						<Link to="signup">Sign up for Fake Twitter</Link>
 					</div>
 				</form>
 			</div>

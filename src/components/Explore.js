@@ -7,6 +7,7 @@ const Explore = () => {
 
 	useEffect(() => {
 		db.collection("tweets")
+			.orderBy("timeStamp", "desc")
 			.get()
 			.then((snapshot) => {
 				let tempArray = [];
@@ -22,7 +23,6 @@ const Explore = () => {
 			});
 	}, []);
 
-	
 	return (
 		<div className="explore center-feed">
 			<Feed tweetDatas={tweetDatas} />

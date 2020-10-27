@@ -80,6 +80,7 @@ const App = () => {
 							{userID ? <Redirect to="/" /> : <SignupPage />}
 						</Route>
 						<Route path="/">
+							{/* This is bad for unlogged-in users */}
 							{userID ? (
 								<Main userID={userID} userAt={userAt} userImage={userImage} />
 							) : (

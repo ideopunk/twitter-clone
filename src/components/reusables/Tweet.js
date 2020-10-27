@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { db, auth, storage } from "../../config/fbConfig";
 import UserContext from "../context/context.js";
+import Leaf from "../../assets/leaf-outline.svg";
 
 import { ReactComponent as Quote } from "../../assets/quote-outline.svg";
 import { ReactComponent as Retweet } from "../../assets/retweet-icon.svg";
@@ -17,7 +18,7 @@ const Tweet = (props) => {
 	const { userLikes, userFollows, userTweets } = useContext(UserContext);
 
 	const liked = likes && likes.includes(userID); // has the user liked this tweet?
-	const followed = userFollows.includes(tweeterID)
+	const followed = userFollows.includes(tweeterID);
 	const date = new Date(time.seconds * 1000);
 	const likeAmount = likes ? likes.length : "";
 	const retweetsAmount = retweets ? retweets.length : "";
@@ -32,37 +33,47 @@ const Tweet = (props) => {
 		storage
 			.ref("profile_pictures/" + tweeterID + ".png")
 			.getDownloadURL()
-			.then((url) => setImage(url));
+			.then((url) => {
+				setImage(url)
+			})
+			.catch((err) => {
+				console.log(err);
+				setImage(Leaf)
+			});
 	}, [tweeterID]);
 
 	const toggleDropdown = () => {
 		setDropdown(!dropdown);
 	};
 
-	const deleteTweet = e => {
-		e.persist()
-		import("../functions/deleteTweet.js").then((likeDB) => likeDB.default(e, userTweets, userID));
+	const deleteTweet = (e) => {
+		e.persist();
+		import("../functions/deleteTweet.js").then((likeDB) =>
+			likeDB.default(e, userTweets, userID)
+		);
 	};
 
 	const like = (e) => {
-		e.persist()
+		e.persist();
 		import("../functions/likeDB.js").then((likeDB) => likeDB.default(e, userID, userLikes));
 	};
 
 	const unlike = (e) => {
-		e.persist()
+		e.persist();
 		import("../functions/unlike.js").then((unlike) => unlike.default(e, userID, userLikes));
 	};
 
-	const follow = e => {
-		e.persist()
+	const follow = (e) => {
+		e.persist();
 		import("../functions/follow.js").then((follow) => follow.default(e, userID, userFollows));
-	}
+	};
 
-	const unfollow = e => {
-		e.persist()
-		import("../functions/unfollow.js").then((unfollow) => unfollow.default(e, userID, userFollows));
-	}
+	const unfollow = (e) => {
+		e.persist();
+		import("../functions/unfollow.js").then((unfollow) =>
+			unfollow.default(e, userID, userFollows)
+		);
+	};
 
 	return (
 		<div className="tweet">
@@ -99,8 +110,12 @@ const Tweet = (props) => {
 						<Retweet />
 						{retweetsAmount}
 					</div>
-					<div value={tweetID} className={`tweet-svg-div grey ${liked && "liked"}`} onClick={liked ? unlike : like}>
-						{liked? <LikeFilled value={tweetID} /> : <Like value={tweetID}  />}
+					<div
+						value={tweetID}
+						className={`tweet-svg-div grey ${liked && "liked"}`}
+						onClick={liked ? unlike : like}
+					>
+						{liked ? <LikeFilled value={tweetID} /> : <Like value={tweetID} />}
 						{likeAmount}
 					</div>
 					<div className="tweet-svg-div grey">
@@ -120,15 +135,13 @@ const Dropdown = (props) => {
 		userID === tweeterID && setUserTweet(true);
 	}, [userID, tweeterID]);
 
-
-
 	return userTweet ? (
 		<div className="tweet-dropdown" value={tweetID} onClick={props.deleteTweet}>
 			Delete this tweet
 		</div>
 	) : (
-		<div className="tweet-dropdown" onClick={followed? props.unfollow : props.follow}>
-			{followed? "Unfollow this account" : "Follow this account"}
+		<div className="tweet-dropdown" onClick={followed ? props.unfollow : props.follow}>
+			{followed ? "Unfollow this account" : "Follow this account"}
 		</div>
 	);
 };

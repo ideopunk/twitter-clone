@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { auth, db, storage } from "../config/fbConfig";
 
 const SignupPage = () => {
@@ -117,6 +118,9 @@ const SignupPage = () => {
 					/>
 				</label>
 
+				<div>
+						<Link to="login">Already have an account? Login here!</Link>
+					</div>
 				<p>This is all fake! It's all for a portfolio! Have fun!</p>
 				<input type="submit" value="Sign up" />
 			</form>

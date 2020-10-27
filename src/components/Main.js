@@ -12,7 +12,6 @@ import LoginCard from "./reusables/LoginCard";
 import FollowSuggests from "./reusables/FollowSuggests";
 import TOS from "./reusables/TOS";
 import UserContext from "./context/context.js";
-import Composer from "./reusables/Composer";
 
 const Main = (props) => {
 	const { userID } = useContext(UserContext);
