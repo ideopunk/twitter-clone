@@ -3,19 +3,27 @@ import UserContext from "../context/context.js";
 import { auth, db, storage } from "../../config/fbConfig";
 
 import { ReactComponent as CloseIcon } from "../../assets/close.svg";
-
+import { ReactComponent as CameraIcon } from "../../assets/camera-icon.svg";
 const Editor = (props) => {
 	const { header, bio, website } = props;
-	const { userImage, userName, userAt, userID } = useContext(UserContext);
+	const { userImage, userName, userID } = useContext(UserContext);
 
 	const [name, setName] = useState("");
 	const [newBio, setNewBio] = useState("");
 	const [newWebsite, setNewWebsite] = useState("");
 
+	const [newProPic, setNewProPic] = useState(null);
+	const [newHeader, setNewHeader] = useState(null);
+
+	const [picChanged, setPicChanged] = useState(false);
+	const [headerChanged, setHeaderChanged] = useState(false);
+
 	useEffect(() => {
 		setName(userName);
 		setNewBio(bio);
 		setNewWebsite(website);
+		setNewProPic(userImage);
+		setNewHeader(header);
 	}, [userName, bio, website]);
 
 	useEffect(() => {
@@ -26,7 +34,54 @@ const Editor = (props) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		db.collection("users").doc(userID).update({ name: name, bio: newBio, website: newWebsite });
+		console.log(newHeader, newProPic);
+		db.collection("users")
+			.doc(userID)
+			.update({ name: name, bio: newBio, website: newWebsite })
+			.then(() => {
+				if (picChanged) {
+					const profileRef = storage.ref("profile_pictures/" + userID + ".png");
+					const uploadTask = profileRef.put(newProPic);
+					uploadTask.on(
+						"state_changed",
+
+						// how it's going
+						(snapshot) => {},
+
+						// how it goofed it
+						(error) => {
+							console.log(error);
+						},
+
+						// how it succeeded
+						() => {
+							console.log("success");
+						}
+					);
+				}
+			})
+			.then(() => {
+				if (headerChanged) {
+					const headerRef = storage.ref("header_pictures/" + userID + ".png");
+					const uploadTask = headerRef.put(newHeader);
+					uploadTask.on(
+						"state_changed",
+
+						// how it's going
+						(snapshot) => {},
+
+						// how it goofed it
+						(error) => {
+							console.log(error);
+						},
+
+						// how it succeeded
+						() => {
+							console.log("success");
+						}
+					);
+				}
+			});
 
 		// stuff for images
 	};
@@ -41,6 +96,17 @@ const Editor = (props) => {
 
 	const handleWebsiteChange = (e) => {
 		setNewWebsite(e.target.value);
+	};
+
+	const handleHeaderPicChange = (e) => {
+		console.log(e.target.files[0]);
+		e.target.files[0] ? setNewHeader(e.target.files[0]) : console.log("naw");
+		setHeaderChanged(true);
+	};
+
+	const handleProfilePicChange = (e) => {
+		e.target.files[0] ? setNewProPic(e.target.files[0]) : console.log("naw");
+		setPicChanged(true);
 	};
 
 	return (
@@ -63,9 +129,25 @@ const Editor = (props) => {
 					value="Save"
 				/>
 			</div>
-			<img src={header} className="profile-header-image" alt="header" />
+			<div style={{ position: "relative" }}>
+				<img src={newHeader} className="profile-header-image" alt="header" />
+				<div className="header-icons">
+					<label for="header-input">
+						<CameraIcon />
+					</label>
+					<input id="header-input" type="file" onChange={handleHeaderPicChange} />
+
+					<CloseIcon />
+				</div>
+			</div>
 			<div className="edit-form-text">
-				<img src={userImage} className="main-image" alt="profile" />
+				<div>
+					<img src={newProPic} className="main-image" alt="profile" />
+					<label for="profile-pic-input">
+						<CameraIcon className="main-image main-image-camera" />
+					</label>
+					<input id="profile-pic-input" type="file" onChange={handleProfilePicChange} />
+				</div>
 
 				<label className="form-label">
 					<span className="form-name">Name</span>
@@ -78,7 +160,7 @@ const Editor = (props) => {
 					/>
 				</label>
 				<div className="form-length">
-					<span>{name? name.length : 0}/50</span>
+					<span>{name ? name.length : 0}/50</span>
 				</div>
 				<label className="form-label">
 					<span className="form-name">Bio</span>
@@ -91,7 +173,7 @@ const Editor = (props) => {
 					/>
 				</label>
 				<div className="form-length">
-					<span>{newBio? newBio.length : 0}/160</span>
+					<span>{newBio ? newBio.length : 0}/160</span>
 				</div>
 				<label className="form-label">
 					<span className="form-name">Website</span>
@@ -104,7 +186,7 @@ const Editor = (props) => {
 					/>
 				</label>
 				<div className="form-length">
-					<span>{newWebsite? newWebsite.length : 0}/100</span>
+					<span>{newWebsite ? newWebsite.length : 0}/100</span>
 				</div>
 			</div>
 		</form>

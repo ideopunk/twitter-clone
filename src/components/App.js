@@ -16,6 +16,7 @@ const App = () => {
 	const [userName, setUserName] = useState(null);
 	const [userFollows, setUserFollows] = useState([]);
 	const [userFollowers, setUserFollowers] = useState([]);
+	const [userTweets, setUserTweets] = useState([])
 
 	// listen for auth status changes
 	useEffect(() => {
@@ -39,6 +40,7 @@ const App = () => {
 						// set follows/ers if we have any.
 						data.follows && setUserFollows(data.follows);
 						data.followers && setUserFollowers(data.followers);
+						data.tweets && setUserTweets(data.tweets);
 					});
 
 				// set user image and header,
@@ -64,6 +66,7 @@ const App = () => {
 						userName: userName,
 						userFollows: userFollows,
 						userFollowers: userFollowers,
+						userTweets: userTweets
 					}}
 				>
 					<Switch>

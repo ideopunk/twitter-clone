@@ -1,88 +1,134 @@
 .profile-header {
-    border-bottom: $siteborder;
+	border-bottom: $siteborder;
 }
 
 .profile-home-link {
-    display: flex;
+	display: flex;
 }
 
 .side-arrow {
-    fill: $sitecolor;
-    width: 1.5rem;
-    margin: 1rem;
+	fill: $sitecolor;
+	width: 1.5rem;
+	margin: 1rem;
 }
 
 .profile-home-link-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    row-gap: 0.25rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding-left: 0.5rem;
+	row-gap: 0.25rem;
 }
 
-.profile-home-link-text > *{
-    text-decoration: none;
+.profile-home-link-text > * {
+	text-decoration: none;
 }
 
 .profile-header-image {
-    width: 100%;
-    max-height: 200px;
-    background-color: grey;
+	width: 100%;
+	max-height: 200px;
+	background-color: grey;
 }
 
 .profile-card {
-    padding: 1rem;
-    position: relative;
-    box-sizing: border-box;
+	padding: 1rem;
+	position: relative;
+	box-sizing: border-box;
 }
 
-// .profile-card > * {
-//     margin-bottom: 0.75rem;
-// }
+.profile-card > * {
+    margin-bottom: 0.75rem;
+}
 
 .profile-edit-button {
-    position: absolute;
-    right: 1rem;
+	position: absolute;
+	right: 1rem;
 }
 
 .main-image {
-    object-fit: contain;
+	object-fit: contain;
 	width: 7rem;
 	height: 7rem;
 	border-radius: 50%;
-    border: 3px solid white;
-    background: white;
-    box-sizing: border-box;
-    position: absolute;
-    top: -3rem;
-    left: 1rem;
-    // z-index: 1;
+	border: 3px solid white;
+	background: white;
+	box-sizing: border-box;
+	position: absolute;
+	top: -3rem;
+	left: 1rem;
+	// z-index: 1;
+}
+
+.main-image-camera {
+    // opacity: 0.5;
+    fill: white;
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    border: 0;
+    margin: auto;
+    left: 3.5rem;
+    top: -0.5rem;
+}
+
+.main-image-camera:hover {
+    fill: $sitecolor;
 }
 
 .editor-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem;
-    box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.5rem;
+	box-sizing: border-box;
 
-    border-bottom: $siteborder;
+	border-bottom: $siteborder;
 }
 
 .edit-form-text {
-    position: relative;
-    padding: 1rem;
-    padding-top: 5rem;
-    box-sizing: border-box;
-    // overflow-y: scroll;
-    width: 100%;
+	position: relative;
+	padding: 1rem;
+	padding-top: 5rem;
+	box-sizing: border-box;
+	// overflow-y: scroll;
+	width: 100%;
 }
 
 .form-length {
-    margin-bottom: 1.5rem;
-    display: flex;
-    justify-content: flex-end;
+	margin-bottom: 1.5rem;
+	display: flex;
+	justify-content: flex-end;
 }
 
 .form-length > * {
-    padding: 0.5rem;
+	padding: 0.5rem;
+}
+
+.header-icons {
+	position: absolute;
+	display: flex;
+
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+	fill: white;
+}
+
+.header-icons > * {
+	fill: white;
+}
+
+.header-icons > *:hover {
+	fill: $sitecolor;
+}
+
+#header-input {
+    display: none;
+}
+
+#profile-pic-input {
+    display: none;
 }

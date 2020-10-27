@@ -14,16 +14,14 @@ const Profile = (props) => {
 	);
 	const [tweetDatas, setTweetDatas] = useState([]);
 
-	// temporarily set to true
-	const [editor, setEditor] = useState(true);
-	
+	const [editor, setEditor] = useState(false);
+
 	const [header, setHeader] = useState(null);
 	const [bio, setBio] = useState("");
 	const [website, setWebsite] = useState("");
 	const [joinDate, setJoinDate] = useState(null);
 
 	useEffect(() => {
-
 		storage
 			.ref("header_pictures/" + userID + ".png")
 			.getDownloadURL()
@@ -31,7 +29,10 @@ const Profile = (props) => {
 				console.log(url);
 				setHeader(url);
 			})
-			.catch(() => setHeader(EllipsisFilled));
+			.catch((e) => {
+				console.log(e)
+				setHeader(EllipsisFilled);
+			});
 
 		db.collection("tweets")
 			.where("userID", "==", userID)
@@ -79,13 +80,13 @@ const Profile = (props) => {
 					<SideArrow />
 					<div className="profile-home-link-text">
 						<h3 className="no-dec">{userName}</h3>
-						<p>{tweetDatas.length} tweets</p>
+						<p className="grey">{tweetDatas.length} tweets</p>
 					</div>
 				</Link>
 				<img className="profile-header-image" src={header} alt="header" />
 				<div className="profile-card">
 					<img className="main-image" src={userImage} alt="profile" />
-					<div style={{height: "3rem"}}>
+					<div style={{ height: "3rem" }}>
 						<button
 							className="btn profile-edit-button"
 							style={{ width: "8rem" }}
@@ -95,15 +96,15 @@ const Profile = (props) => {
 						</button>
 					</div>
 					<h3>{userName}</h3>
-					<p>{userAt}</p>
+					<p className="grey">{userAt}</p>
 					<p className="bio">{bio}</p>
-					<p>
+					<p className="grey">
 						<span>{website}</span>
 						<span> Joined {joinDate}</span>
 					</p>
 					<p>
-						<span style={{marginRight: "1rem"}}>{userFollows.length} Following</span>
-						<span>{userFollowers.length} Followers</span>
+						<span style={{ marginRight: "1rem" }}>{userFollows.length} <span className="grey">Following</span></span>
+						<span>{userFollowers.length} <span className="grey">Followers</span></span>
 					</p>
 				</div>
 			</div>
