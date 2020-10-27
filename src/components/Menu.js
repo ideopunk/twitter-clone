@@ -106,7 +106,7 @@ const Menu = (props) => {
 							<p>{userName}</p>
 							<p className="grey">{userAt}</p>
 						</div>
-						<PowerIcon className="menu-icon arrow" />
+						<PowerIcon className="menu-icon power-button" />
 					</button>
 				</li>
 			</ul>

@@ -4,6 +4,7 @@ import { db, auth, storage } from "../../config/fbConfig";
 import { ReactComponent as Quote } from "../../assets/quote-outline.svg";
 import { ReactComponent as Retweet } from "../../assets/retweet-icon.svg";
 import { ReactComponent as Like } from "../../assets/like-icon.svg";
+import { ReactComponent as LikeFilled } from "../../assets/like-icon-filled.svg";
 import { ReactComponent as Copy } from "../../assets/copy-icon.svg";
 import { ReactComponent as Dots } from "../../assets/dots.svg";
 
@@ -12,12 +13,15 @@ const Tweet = (props) => {
 	const [dropdown, setDropdown] = useState(false);
 
 	const { name, at, time, text, retweets, likes, replying, tweetID, tweeterID, userID } = props;
+	const liked = likes && likes.includes(userID); // has the user liked this tweet?
 	const date = new Date(time.seconds * 1000);
 	const likeAmount = likes ? likes.length : "";
 	const retweetsAmount = retweets ? retweets.length : "";
 
 	// tweet rendered
-	useEffect(() => {console.log('rendered')}, [])
+	useEffect(() => {
+		console.log("rendered");
+	}, []);
 
 	// listen for auth status changes
 	useEffect(() => {
@@ -30,7 +34,6 @@ const Tweet = (props) => {
 	const toggleDropdown = () => {
 		setDropdown(!dropdown);
 	};
-
 
 	return (
 		<div className="tweet">
@@ -64,8 +67,8 @@ const Tweet = (props) => {
 						<Retweet />
 						{retweetsAmount}
 					</div>
-					<div className="tweet-svg-div grey">
-						<Like />
+					<div value={tweetID} className={`tweet-svg-div grey ${liked && "liked"}`} onClick={liked ? props.unlike : props.like}>
+						{liked? <LikeFilled value={tweetID} /> : <Like value={tweetID}  />}
 						{likeAmount}
 					</div>
 					<div className="tweet-svg-div grey">
@@ -85,7 +88,6 @@ const Dropdown = (props) => {
 		userID === tweeterID && setUserTweet(true);
 	}, [userID, tweeterID]);
 
-
 	const unfollowAccount = () => {
 		console.log("unfol");
 	};
@@ -95,7 +97,7 @@ const Dropdown = (props) => {
 			Delete this tweet
 		</div>
 	) : (
-		<div className="tweet-dropdown"   onClick={unfollowAccount}>
+		<div className="tweet-dropdown" onClick={unfollowAccount}>
 			Unfollow this account
 		</div>
 	);
