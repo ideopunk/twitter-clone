@@ -18,7 +18,7 @@ const Home = (props) => {
 
 	useEffect(() => {
 		db.collection("users")
-			.where("follows", "array-contains", userID)
+			.where("followers", "array-contains", userID)
 			.get()
 			.then((snapshot) => {
 				console.log(snapshot);

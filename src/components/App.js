@@ -24,10 +24,7 @@ const App = () => {
 		console.log("use effect");
 		auth.onAuthStateChanged((user) => {
 			console.log(user);
-			if (!user) {
-				setUserID(null);
-				setUserImage(null);
-			} else {
+			if (user) {
 				setUserID(user.uid);
 				db.collection("users")
 					.doc(user.uid)

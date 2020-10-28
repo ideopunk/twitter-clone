@@ -18,7 +18,7 @@ const Tweet = (props) => {
 	const { userLikes, userFollows, userTweets } = useContext(UserContext);
 
 	const liked = likes && likes.includes(userID); // has the user liked this tweet?
-	const followed = userFollows.includes(tweeterID);
+	const followed = userFollows.includes(tweeterID); // does the user follow this tweet?
 	const date = new Date(time.seconds * 1000);
 	const likeAmount = likes ? likes.length : "";
 	const retweetsAmount = retweets ? retweets.length : "";
@@ -28,17 +28,17 @@ const Tweet = (props) => {
 		console.log("rendered");
 	}, []);
 
-	// listen for auth status changes
+	// get picture for tweet, set to Leaf if no picture found.
 	useEffect(() => {
 		storage
 			.ref("profile_pictures/" + tweeterID + ".png")
 			.getDownloadURL()
 			.then((url) => {
-				setImage(url)
+				setImage(url);
 			})
 			.catch((err) => {
 				console.log(err);
-				setImage(Leaf)
+				setImage(Leaf);
 			});
 	}, [tweeterID]);
 
@@ -140,7 +140,11 @@ const Dropdown = (props) => {
 			Delete this tweet
 		</div>
 	) : (
-		<div className="tweet-dropdown" value={tweeterID} onClick={followed ? props.unfollow : props.follow}>
+		<div
+			className="tweet-dropdown"
+			value={tweeterID}
+			onClick={followed ? props.unfollow : props.follow}
+		>
 			{followed ? "Unfollow this account" : "Follow this account"}
 		</div>
 	);
