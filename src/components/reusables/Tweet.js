@@ -140,7 +140,7 @@ const Dropdown = (props) => {
 			Delete this tweet
 		</div>
 	) : (
-		<div className="tweet-dropdown" onClick={followed ? props.unfollow : props.follow}>
+		<div className="tweet-dropdown" value={tweeterID} onClick={followed ? props.unfollow : props.follow}>
 			{followed ? "Unfollow this account" : "Follow this account"}
 		</div>
 	);

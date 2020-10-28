@@ -9,20 +9,27 @@ import UserContext from "../context/context.js";
 
 const Composer = (props) => {
 	const { modal } = props;
-	const { userName, userAt, userID, userImage } = useContext(UserContext);
+	const { userName, userAt, userID, userImage, userTweets } = useContext(UserContext);
 
 	const [text, setText] = useState("");
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		console.log("hand sub");
-		db.collection("tweets").add({
-			name: userName,
-			text: text,
-			at: userAt,
-			userID: userID,
-			timeStamp: new Date(),
-		});
+		db.collection("tweets")
+			.add({
+				name: userName,
+				text: text,
+				at: userAt,
+				userID: userID,
+				timeStamp: new Date(),
+			})
+			.then((newTweet) => {
+				console.log(newTweet);
+				db.collection("users")
+					.doc(userID)
+					.update({ tweets: [...userTweets, newTweet.id] });
+			});
 	};
 
 	const handleChange = (e) => {
