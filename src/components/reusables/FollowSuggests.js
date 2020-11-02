@@ -22,59 +22,72 @@ const FollowSuggest = () => {
 			);
 		};
 
-		db.collection("users")
-			.get()
-			.then((snapshot) => {
-				let num = 0;
-				snapshot.forEach((user) => {
-					console.log(user.data());
-					if (num < 2 && !userFollows.includes(user.id)) {
-						const data = user.data();
-						storage
-							.ref("profile_pictures/" + user.id + ".png")
-							.getDownloadURL()
-							.then((url) => {
-								setArray((a) => [
-									...a,
-									<div className="tweet">
-										<img src={url} alt="suggest" className="profile-image" />
-										<div className="tweet-main">
-											<p className="tweeter-name">{data.name}</p>
-											<p className="tweeter-at">{data.at}</p>
-										</div>
-										<button
-											value={user.id}
-											onClick={follow}
-											className="btn follow-btn"
-										>
-											Follow
-										</button>
-									</div>,
-								]);
-							})
-							.catch((err) => {
-								setArray((a) => [
-									...a,
+		// only do this once userFollows is filled, or else the check won't work later in this. 
+		userFollows.length &&
+			db
+				.collection("users")
+				.get()
+				.then((snapshot) => {
+					let num = 0;
+					snapshot.forEach((user) => {
+						console.log(user.id, userFollows);
+						console.log(userFollows.includes(user.id));
+						console.log(!userFollows.includes(user.id));
+						if (!userFollows.includes(user.id) && user.id !== userID && num < 2) {
+							const data = user.data();
+							storage
+								.ref("profile_pictures/" + user.id + ".png")
+								.getDownloadURL()
+								.then((url) => {
+									setArray((a) => [
+										...a,
+										<div className="tweet">
+											<img
+												src={url}
+												alt="suggest"
+												className="profile-image"
+											/>
+											<div className="tweet-main">
+												<p className="tweeter-name">{data.name}</p>
+												<p className="tweeter-at">{data.at}</p>
+											</div>
+											<button
+												value={user.id}
+												onClick={follow}
+												className="btn follow-btn"
+											>
+												Follow
+											</button>
+										</div>,
+									]);
+								})
+								.catch((err) => {
+									setArray((a) => [
+										...a,
 
-									<div className="tweet">
-										<img src={Leaf} alt="suggest" className="profile-image" />
-										<div className="tweet-main">
-											<p className="tweeter-name">{data.name}</p>
-											<p className="tweeter-at">{data.at}</p>
-										</div>
-										<button
-											value={user.id}
-											onClick={follow}
-											className="btn follow-btn"
-										>
-											Follow
-										</button>
-									</div>,
-								]);
-							});
-					}
+										<div className="tweet">
+											<img
+												src={Leaf}
+												alt="suggest"
+												className="profile-image"
+											/>
+											<div className="tweet-main">
+												<p className="tweeter-name">{data.name}</p>
+												<p className="tweeter-at">{data.at}</p>
+											</div>
+											<button
+												value={user.id}
+												onClick={follow}
+												className="btn follow-btn"
+											>
+												Follow
+											</button>
+										</div>,
+									]);
+								});
+						}
+					});
 				});
-			});
 	}, [userFollows, userID]);
 
 	return (
