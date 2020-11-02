@@ -15,7 +15,7 @@ const Explore = lazy(() => import("./Explore"));
 const Notifications = lazy(() => import("./Notifications"));
 
 const Main = (props) => {
-	const { userID } = useContext(UserContext);
+	const { userID, userAt } = useContext(UserContext);
 	return (
 		<div className="main">
 			<Menu />
@@ -32,7 +32,7 @@ const Main = (props) => {
 					<Route exact path="/messages">
 						<Messages />
 					</Route>
-					<Route exact path="/profile">
+					<Route exact path="/:userAt">
 						<Profile />
 					</Route>
 					<Route path="/">

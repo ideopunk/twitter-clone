@@ -55,7 +55,7 @@ const SignupPage = () => {
 				.then((cred) => {
 					db.collection("users")
 						.doc(cred.user.uid)
-						.set({ at: `@${userAt}`, name: userName, likes: [], follows: [], followers: [] });
+						.set({ at: `@${userAt}`, name: userName, likes: [], follows: [], followers: [], joinDate: new Date() });
 					return cred.user.uid;
 				})
 				.then((uid) => {

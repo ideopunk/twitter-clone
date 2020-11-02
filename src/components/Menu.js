@@ -83,7 +83,7 @@ const Menu = (props) => {
 					</NavLink>
 				</li>
 				<li>
-					<NavLink activeClassName="menu-item-active" to="/profile" className="menu-item">
+					<NavLink activeClassName="menu-item-active" to={`/${userAt}`} className="menu-item">
 						<ProfileIcon />
 						<span className="menu-item-text">Profile</span>
 					</NavLink>

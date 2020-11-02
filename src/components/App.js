@@ -18,6 +18,7 @@ const App = () => {
 	const [userFollowers, setUserFollowers] = useState([]);
 	const [userTweets, setUserTweets] = useState([]);
 	const [userLikes, setUserLikes] = useState([]);
+	const [checked, setChecked] = useState(false);
 
 	// listen for auth status changes
 	useEffect(() => {
@@ -40,6 +41,7 @@ const App = () => {
 						data.followers && setUserFollowers(data.followers);
 						data.tweets && setUserTweets(data.tweets);
 						data.likes && setUserLikes(data.likes);
+						setChecked(true);
 					});
 
 				// set user image and header,
@@ -50,6 +52,8 @@ const App = () => {
 					.catch(() => {
 						setUserImage(Leaf);
 					});
+			} else {
+				setChecked(true);
 			}
 		});
 	}, []);
@@ -57,35 +61,39 @@ const App = () => {
 	return (
 		<BrowserRouter>
 			<div className="App">
-				<UserContext.Provider
-					value={{
-						userID: userID,
-						userImage: userImage,
-						userAt: userAt,
-						userName: userName,
-						userFollows: userFollows,
-						userFollowers: userFollowers,
-						userTweets: userTweets,
-						userLikes: userLikes,
-					}}
-				>
-					<Switch>
-						<Route exact path="/login">
-							{userID ? <Redirect to="/" /> : <LoginPage />}
-						</Route>
-						<Route exact path="/signup">
-							{userID ? <Redirect to="/" /> : <SignupPage />}
-						</Route>
-						<Route path="/">
-							{/* This is bad for unlogged-in users */}
-							{userID ? (
-								<Main userID={userID} userAt={userAt} userImage={userImage} />
-							) : (
-								<LoaderContainer />
-							)}
-						</Route>
-					</Switch>
-				</UserContext.Provider>
+
+				{/* If the user is logged in, wait to render until the context is set */}
+				{checked && (
+					<UserContext.Provider
+						value={{
+							userID: userID,
+							userImage: userImage,
+							userAt: userAt,
+							userName: userName,
+							userFollows: userFollows,
+							userFollowers: userFollowers,
+							userTweets: userTweets,
+							userLikes: userLikes,
+						}}
+					>
+						<Switch>
+							<Route exact path="/login">
+								{userID ? <Redirect to="/" /> : <LoginPage />}
+							</Route>
+							<Route exact path="/signup">
+								{userID ? <Redirect to="/" /> : <SignupPage />}
+							</Route>
+							<Route path="/">
+								{/* This is bad for unlogged-in users */}
+								{userID ? (
+									<Main userID={userID} userAt={userAt} userImage={userImage} />
+								) : (
+									<LoaderContainer />
+								)}
+							</Route>
+						</Switch>
+					</UserContext.Provider>
+				)}
 			</div>
 		</BrowserRouter>
 	);
