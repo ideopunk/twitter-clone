@@ -8,23 +8,23 @@ const Editor = (props) => {
 	const { header, bio, website } = props;
 	const { userImage, userName, userID } = useContext(UserContext);
 
-	const [name, setName] = useState("");
-	const [newBio, setNewBio] = useState("");
-	const [newWebsite, setNewWebsite] = useState("");
+	const [name, setName] = useState(userName);
+	const [newBio, setNewBio] = useState(bio);
+	const [newWebsite, setNewWebsite] = useState(website);
 
-	const [newProPic, setNewProPic] = useState(null);
-	const [newHeader, setNewHeader] = useState(null);
+	const [newProPic, setNewProPic] = useState(userImage);
+	const [newHeader, setNewHeader] = useState(header);
 
 	const [picChanged, setPicChanged] = useState(false);
 	const [headerChanged, setHeaderChanged] = useState(false);
 
-	useEffect(() => {
-		setName(userName);
-		setNewBio(bio);
-		setNewWebsite(website);
-		setNewProPic(userImage);
-		setNewHeader(header);
-	}, [userName, bio, website]);
+	// useEffect(() => {
+	// 	setName(userName);
+	// 	setNewBio(bio);
+	// 	setNewWebsite(website);
+	// 	setNewProPic(userImage);
+	// 	setNewHeader(header);
+	// }, [userName, bio, website]);
 
 	useEffect(() => {
 		console.log(name);

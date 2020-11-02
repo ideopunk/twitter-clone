@@ -159,3 +159,11 @@ h3 {
 .no-dec:active {
 	text-decoration: none;
 }
+
+.follow-btn {
+	color: $sitecolor;
+	border: 2px solid $sitecolor;
+	box-sizing: border-box;
+	background-color: inherit;
+}
+

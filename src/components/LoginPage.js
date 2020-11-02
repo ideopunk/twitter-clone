@@ -7,6 +7,7 @@ import { auth } from "../config/fbConfig";
 const LoginPage = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [reset, setReset] = useState(false);
 
 	const handleEmailChange = (e) => {
 		setEmail(e.target.value);
@@ -24,6 +25,10 @@ const LoginPage = () => {
 			setEmail("");
 			setPassword("");
 		});
+	};
+
+	const toggleReset = () => {
+		setReset(true);
 	};
 
 	return (
@@ -49,7 +54,7 @@ const LoginPage = () => {
 					</label>
 					<input className="lg-btn" style={{}} type="submit" value="Log in" />
 					<div>
-						<a href="#">Forgot password?</a>
+						<p onClick={toggleReset}>Forgot password?</p>
 						<Link to="signup">Sign up for Fake Twitter</Link>
 					</div>
 				</form>
