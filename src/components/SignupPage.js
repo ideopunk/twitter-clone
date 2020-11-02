@@ -55,7 +55,14 @@ const SignupPage = () => {
 				.then((cred) => {
 					db.collection("users")
 						.doc(cred.user.uid)
-						.set({ at: `@${userAt}`, name: userName, likes: [], follows: [], followers: [], joinDate: new Date() });
+						.set({
+							at: `@${userAt}`,
+							name: userName,
+							likes: [],
+							follows: [cred.user.id],
+							followers: [cred.user.id],
+							joinDate: new Date(),
+						});
 					return cred.user.uid;
 				})
 				.then((uid) => {
@@ -119,8 +126,8 @@ const SignupPage = () => {
 				</label>
 
 				<div>
-						<Link to="login">Already have an account? Login here!</Link>
-					</div>
+					<Link to="login">Already have an account? Login here!</Link>
+				</div>
 				<p>This is all fake! It's all for a portfolio! Have fun!</p>
 				<input type="submit" value="Sign up" />
 			</form>

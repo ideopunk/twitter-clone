@@ -14,6 +14,7 @@ import { ReactComponent as Dots } from "../../assets/dots.svg";
 
 const Tweet = (props) => {
 	const [image, setImage] = useState("");
+	const [timeSince, setTimeSince] = useState(null);
 	const [dropdown, setDropdown] = useState(false);
 
 	const { name, at, time, text, retweets, likes, replying, tweetID, tweeterID, userID } = props;
@@ -42,7 +43,11 @@ const Tweet = (props) => {
 				console.log(err);
 				setImage(Leaf);
 			});
-	}, [tweeterID]);
+
+		const elapsed = time - Date.now();
+		console.log(elapsed);
+		import("../functions/elapser.js").then((elapser) => setTimeSince(elapser.default(time)));
+	}, [tweeterID, time]);
 
 	const toggleDropdown = () => {
 		setDropdown(!dropdown);
@@ -50,8 +55,8 @@ const Tweet = (props) => {
 
 	const deleteTweet = (e) => {
 		e.persist();
-		import("../functions/deleteTweet.js").then((likeDB) =>
-			likeDB.default(e, userTweets, userID)
+		import("../functions/deleteTweet.js").then((deleteTweet) =>
+			deleteTweet.default(e, userTweets, userID)
 		);
 	};
 
@@ -77,7 +82,6 @@ const Tweet = (props) => {
 		);
 	};
 
-
 	return (
 		<div className="tweet">
 			<Link to={`/${at}`}>
@@ -87,7 +91,7 @@ const Tweet = (props) => {
 				<div className="tweet-top-data">
 					<span className="tweeter-name">{name}</span>
 					<span className="tweeter-at">{at}</span>
-					<span className="tweet-time grey">{date.toDateString()}</span>
+					<span className="tweet-time grey">{timeSince}</span>
 					<div style={{ marginLeft: "auto" }}>
 						{dropdown ? (
 							<Dropdown
