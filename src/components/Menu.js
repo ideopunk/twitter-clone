@@ -99,6 +99,7 @@ const Menu = (props) => {
 						Tweet
 					</button>
 				</li>
+				{userID && 
 				<li className="">
 					<button className="menu-profile-button" onClick={signOut}>
 						<img src={userImage} alt="user-profile" className="profile-image" />
@@ -108,7 +109,7 @@ const Menu = (props) => {
 						</div>
 						<PowerIcon className="menu-icon power-button" />
 					</button>
-				</li>
+				</li>}
 			</ul>
 			{composer ? (
 				<Cover toggle={toggleComposer}>

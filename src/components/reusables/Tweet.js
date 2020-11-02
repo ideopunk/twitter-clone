@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
+
 import { db, auth, storage } from "../../config/fbConfig";
 import UserContext from "../context/context.js";
 import Leaf from "../../assets/leaf-outline.svg";
@@ -75,9 +77,12 @@ const Tweet = (props) => {
 		);
 	};
 
+
 	return (
 		<div className="tweet">
-			<img className="profile-image" alt="user-profile" src={image} />
+			<Link to={`/${at}`}>
+				<img className="profile-image" alt="user-profile" src={image} />
+			</Link>
 			<div className="tweet-main">
 				<div className="tweet-top-data">
 					<span className="tweeter-name">{name}</span>

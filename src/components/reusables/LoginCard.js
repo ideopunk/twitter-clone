@@ -1,5 +1,4 @@
 import React from "react";
-import LoginPrompt from "../LoginPrompt";
 
 const LoginCard = () => {
 	return (

@@ -1,4 +1,6 @@
 import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+
 import { ReactComponent as Picture } from "../../assets/picture-icon.svg";
 import { ReactComponent as Gif } from "../../assets/gif-icon.svg";
 import { ReactComponent as Poll } from "../../assets/poll-icon.svg";
@@ -37,9 +39,13 @@ const Composer = (props) => {
 		setText(e.target.value);
 	};
 
+
+
 	return (
 		<form className={`composer ${modal ? `modal` : ""}`}>
-			<img src={userImage} alt="user-profile" className="profile-image" />
+			<Link to={`/${userAt}`}>
+				<img src={userImage} alt="user-profile" className="profile-image" />
+			</Link>
 			<div className="composer-right">
 				<input
 					maxLength={240}

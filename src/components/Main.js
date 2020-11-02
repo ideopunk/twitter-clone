@@ -1,5 +1,5 @@
 import React, { useContext, Suspense, lazy } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Redirect, Route } from "react-router-dom";
 import LoginPrompt from "./LoginPrompt";
 import LoaderContainer from "./reusables/LoaderContainer";
 import Messages from "./Messages";
@@ -20,30 +20,35 @@ const Main = (props) => {
 		<div className="main">
 			<Menu />
 
-			{userID ? "" : <LoginPrompt />}
-			<Suspense fallback={<LoaderContainer />}>
-				<Switch>
-					<Route exact path="/explore">
-						<Explore />
-					</Route>
-					<Route exact path="/notifications">
-						<Notifications />
-					</Route>
-					<Route exact path="/messages">
-						<Messages />
-					</Route>
-					<Route exact path="/:userAt">
-						<Profile />
-					</Route>
-					<Route path="/">
-						<Home />
-					</Route>
-				</Switch>
-			</Suspense>
+			{!userID && <LoginPrompt />}
+
+			{userID ? (
+				<Suspense fallback={<LoaderContainer />}>
+					<Switch>
+						<Route exact path="/explore">
+							<Explore />
+						</Route>
+						<Route exact path="/notifications">
+							<Notifications />
+						</Route>
+						<Route exact path="/messages">
+							<Messages />
+						</Route>
+						<Route exact path="/:userAt">
+							<Profile />
+						</Route>
+						<Route path="/">
+							<Home />
+						</Route>
+					</Switch>
+				</Suspense>
+			) : (
+				<Explore/>
+			)}
 
 			<div className="sidebar">
 				<Search />
-				{userID ? "" : <LoginCard />}
+				{!userID && <LoginCard />}
 				<FollowSuggests />
 				<TOS />
 			</div>
