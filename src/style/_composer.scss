@@ -43,6 +43,8 @@
 	border-radius: 50%;
 }
 
+
+
 .composer-svg {
 	fill: $sitecolor;
 	width: 1.5rem;
@@ -58,4 +60,37 @@
 
 .active-button {
 	background-color: $sitecolor;
+}
+
+.composer-circle-container {
+	width: 1.5rem;
+	height: 1.5rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}
+
+.composer-circle-container > svg {
+	width: inherit;
+	height: inherit;
+
+}
+
+circle {
+	fill: none;
+	stroke-width: 2;
+}
+
+.grey-circle {
+	stroke: $sitegrey;
+}
+
+.color-circle {
+	// stroke: $sitecolor;
+}
+
+.circle-warning {
+	position: absolute;
+	font-size: $smallfont;
 }

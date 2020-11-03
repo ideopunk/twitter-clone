@@ -144,6 +144,11 @@ h3 {
 	fill: $sitegrey;
 }
 
+.site-color {
+	color: $sitecolor;
+	fill: $sitecolor
+}
+
 @import "./feed";
 @import "./loginpage";
 @import "./loginprompt";

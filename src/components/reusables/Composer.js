@@ -8,6 +8,7 @@ import { ReactComponent as Emoji } from "../../assets/emoji-icon.svg";
 import { ReactComponent as Schedule } from "../../assets/schedule-icon.svg";
 import { db } from "../../config/fbConfig";
 import UserContext from "../context/context.js";
+import ComposerCircle from './ComposerCircle';
 
 const Composer = (props) => {
 	const { modal } = props;
@@ -46,7 +47,7 @@ const Composer = (props) => {
 			</Link>
 			<div className="composer-right">
 				<input
-					maxLength={240}
+					maxLength={280}
 					required
 					className="composer-input"
 					placeholder="What's happening?"
@@ -67,6 +68,9 @@ const Composer = (props) => {
 					</div>
 					<div className="composer-icon-div">
 						<Schedule />
+					</div>
+					<div className="composer-circle-container">
+						{text && <ComposerCircle length={text.length}/>}
 					</div>
 					<input
 						className={`btn tweet-btn ${text ? `active-button` : ""}`}
