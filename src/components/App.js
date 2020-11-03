@@ -19,6 +19,8 @@ const App = () => {
 	const [userTweets, setUserTweets] = useState([]);
 	const [userLikes, setUserLikes] = useState([]);
 	const [userRetweets, setUserRetweets] = useState([]);
+	const [userBio, setUserBio] = useState("");
+	const [userJoinDate, setUserJoinDate] = useState({});
 	const [checked, setChecked] = useState(false);
 	const [allAts, setAllAts] = useState([]);
 
@@ -39,11 +41,14 @@ const App = () => {
 						setUserName(data.name);
 
 						// set optional data if we have it.
+						console.log(data.joinDate)
 						data.follows && setUserFollows(data.follows);
 						data.followers && setUserFollowers(data.followers);
 						data.tweets && setUserTweets(data.tweets);
 						data.likes && setUserLikes(data.likes);
 						data.retweets && setUserRetweets(data.retweets);
+						data.bio && setUserBio(data.bio);
+						setUserJoinDate(data.joinDate);
 						setChecked(true);
 					});
 
@@ -77,6 +82,8 @@ const App = () => {
 						userTweets: userTweets,
 						userLikes: userLikes,
 						userRetweets: userRetweets,
+						userBio: userBio,
+						userJoinDate: userJoinDate,
 					}}
 				>
 					<Switch>

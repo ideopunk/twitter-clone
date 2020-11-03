@@ -13,21 +13,17 @@ import Leaf from "../assets/leaf-outline.svg";
 import LoaderContainer from "./reusables/LoaderContainer";
 
 const ProfileMain = (props) => {
-	const { userImage, userName, userAt, userID, userFollows, userFollowers } = useContext(
+	const { userImage, userName, userAt, userID, userFollows, userFollowers, userBio, userJoinDate } = useContext(
 		UserContext
 	);
 
-	const { path, url, params } = useRouteMatch();
-	const urlAt = params.profile;
+	const { path, url } = useRouteMatch();
 
 	const { userProfile, profileID } = props;
-	console.log(userProfile, profileID);
+
 	const [profileData, setProfileData] = useState({ follows: [], followers: [] });
-
 	const [tweetDatas, setTweetDatas] = useState([]);
-
 	const [editor, setEditor] = useState(false);
-
 	const [followed, setFollowed] = useState("");
 
 	// consoling
@@ -39,7 +35,7 @@ const ProfileMain = (props) => {
 	// set user data
 	useEffect(() => {
 		console.log("set user data");
-
+		console.log(userJoinDate)
 		userProfile
 			? setProfileData({
 					at: userAt,
@@ -48,6 +44,8 @@ const ProfileMain = (props) => {
 					followers: userFollowers || [],
 					id: userID,
 					image: userImage,
+					bio: userBio,
+					joinDate: new Date(userJoinDate.seconds * 1000)
 			  })
 			: db
 					.collection("users")
@@ -76,7 +74,7 @@ const ProfileMain = (props) => {
 							joinDate: new Date(data.joinDate.seconds * 1000),
 						}));
 					});
-	}, [userProfile, profileID, userImage, userAt, userID, userName, userFollowers, userFollows]);
+	}, [userProfile, profileID, userImage, userAt, userID, userName, userBio, userJoinDate, userFollowers, userFollows]);
 
 	// set header
 	useEffect(() => {
