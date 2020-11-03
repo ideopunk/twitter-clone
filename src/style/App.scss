@@ -56,8 +56,6 @@ h3 {
 	background-color: darken($sitecolor, 10%);
 }
 
-
-
 .little-arrow {
 	width: 1.25rem;
 	margin-left: auto;
@@ -70,15 +68,16 @@ h3 {
 	width: 100vw;
 	height: 100vh;
 	background-color: rgba(128, 128, 128, 0.5);
+	z-index: 1;
 }
 
-.modal {
+* > .modal {
 	position: absolute;
 	background-color: white;
-	z-index: 2;
+	opacity: 1;
 	min-width: 500px;
 	width: 40%;
-	height: fit-content;
+	// height: fit-content;
 	margin-left: auto;
 	margin-right: auto;
 	left: 0;
@@ -86,7 +85,8 @@ h3 {
 	top: 5%;
 	border-radius: 1rem;
 	border-width: 0;
-	min-height: 600px;
+	min-height: 200px;
+	z-index: 20;
 }
 
 .form-label {
@@ -166,4 +166,3 @@ h3 {
 	box-sizing: border-box;
 	background-color: inherit;
 }
-

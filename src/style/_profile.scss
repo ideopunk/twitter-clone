@@ -33,6 +33,7 @@
 .profile-card {
 	padding: 1rem;
 	position: relative;
+	z-index: 0;
 	box-sizing: border-box;
 }
 
@@ -56,7 +57,6 @@
 	position: absolute;
 	top: -3rem;
 	left: 1rem;
-	// z-index: 1;
 }
 
 .main-image-camera {
@@ -136,4 +136,26 @@
 .profile-filler-icon {
 	width: 1rem;
 	fill: red;
+}
+
+.profile-feed-selector-container {
+	display: flex;
+	height: 3rem;
+	border-bottom: $siteborder;
+}
+
+.profile-feed-selector {
+	flex: 1;
+	text-decoration: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: bold;
+	color: $sitegrey;
+	transition: $lighttransition;
+}
+
+.profile-feed-selector:hover {
+	color: $sitecolor;
+	background-color: lighten($sitecolor, 40%);
 }

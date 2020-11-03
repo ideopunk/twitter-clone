@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 
-import { db, auth, storage } from "../../config/fbConfig";
+import { storage } from "../../config/fbConfig";
 import UserContext from "../context/context.js";
 import Leaf from "../../assets/leaf-outline.svg";
 
@@ -22,7 +22,6 @@ const Tweet = (props) => {
 
 	const liked = likes && likes.includes(userID); // has the user liked this tweet?
 	const followed = userFollows.includes(tweeterID); // does the user follow this tweet?
-	const date = new Date(time.seconds * 1000);
 	const likeAmount = likes ? likes.length : "";
 	const retweetsAmount = retweets ? retweets.length : "";
 
@@ -44,8 +43,6 @@ const Tweet = (props) => {
 				setImage(Leaf);
 			});
 
-		const elapsed = time - Date.now();
-		console.log(elapsed);
 		import("../functions/elapser.js").then((elapser) => setTimeSince(elapser.default(time)));
 	}, [tweeterID, time]);
 

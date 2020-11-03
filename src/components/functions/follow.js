@@ -1,11 +1,10 @@
 import { db } from "../../config/fbConfig";
 
-
-const follow = (e, userID, userFollows) => {
-    const account = e.target.getAttribute("value");
+const follow = (followID, userID, userFollows) => {
+    // const account = e.target.getAttribute("value");
 
     db.collection("users")
-        .doc(account)
+        .doc(followID)
         .get()
         .then((snapshot) => {
             return snapshot.data().followers;
@@ -15,11 +14,11 @@ const follow = (e, userID, userFollows) => {
         })
         .then((newFollowers) => {
             console.log(newFollowers);
-            db.collection("users").doc(account).update({ followers: newFollowers });
+            db.collection("users").doc(followID).update({ followers: newFollowers });
         })
         .then(() => console.log("added to followers list"));
 
-    const newList = [...userFollows, account];
+    const newList = [...userFollows, followID];
 
     db.collection("users")
         .doc(userID)

@@ -12,8 +12,6 @@ const Explore = () => {
 			.then((snapshot) => {
 				let tempArray = [];
 				snapshot.forEach((doc) => {
-					console.log(doc.data());
-					console.log(doc.id);
 					tempArray.push({ ...doc.data(), id: doc.id });
 				});
 				return tempArray;

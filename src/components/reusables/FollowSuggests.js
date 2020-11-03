@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import UserContext from "../context/context.js";
-
+import FollowButton from "../reusables/FollowButton"
 import { db, storage } from "../../config/fbConfig";
 import Leaf from "../../assets/leaf-outline.svg";
 
@@ -30,9 +30,6 @@ const FollowSuggest = () => {
 				.then((snapshot) => {
 					let num = 0;
 					snapshot.forEach((user) => {
-						console.log(user.id, userFollows);
-						console.log(userFollows.includes(user.id));
-						console.log(!userFollows.includes(user.id));
 						if (!userFollows.includes(user.id) && user.id !== userID && num < 2) {
 							const data = user.data();
 							storage
@@ -51,13 +48,8 @@ const FollowSuggest = () => {
 												<p className="tweeter-name">{data.name}</p>
 												<p className="tweeter-at">{data.at}</p>
 											</div>
-											<button
-												value={user.id}
-												onClick={follow}
-												className="btn follow-btn"
-											>
-												Follow
-											</button>
+											<FollowButton tweeterID={user.id} followed={false}/>
+											
 										</div>,
 									]);
 								})

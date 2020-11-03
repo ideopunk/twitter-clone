@@ -82,12 +82,18 @@ const Menu = (props) => {
 						<span className="menu-item-text">Messages</span>
 					</NavLink>
 				</li>
+
 				<li>
-					<NavLink activeClassName="menu-item-active" to={`/${userAt}`} className="menu-item">
+					<NavLink
+						activeClassName="menu-item-active"
+						to={`/${userAt}`}
+						className="menu-item"
+					>
 						<ProfileIcon />
 						<span className="menu-item-text">Profile</span>
 					</NavLink>
 				</li>
+				
 				<li>
 					<NavLink activeClassName="menu-item-active" to="/more" className="menu-item">
 						<MoreIcon />
@@ -99,17 +105,18 @@ const Menu = (props) => {
 						Tweet
 					</button>
 				</li>
-				{userID && 
-				<li className="">
-					<button className="menu-profile-button" onClick={signOut}>
-						<img src={userImage} alt="user-profile" className="profile-image" />
-						<div className="menu-profile-button-text">
-							<p>{userName}</p>
-							<p className="grey">{userAt}</p>
-						</div>
-						<PowerIcon className="menu-icon power-button" />
-					</button>
-				</li>}
+				{userID && (
+					<li className="">
+						<button className="menu-profile-button" onClick={signOut}>
+							<img src={userImage} alt="user-profile" className="profile-image" />
+							<div className="menu-profile-button-text">
+								<p>{userName}</p>
+								<p className="grey">{userAt}</p>
+							</div>
+							<PowerIcon className="menu-icon power-button" />
+						</button>
+					</li>
+				)}
 			</ul>
 			{composer ? (
 				<Cover toggle={toggleComposer}>

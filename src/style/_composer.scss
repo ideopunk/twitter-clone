@@ -1,13 +1,13 @@
 .composer {
-	width: 100%;
+	// width: 100%;
 	border-bottom: $siteborder;
 	border-bottom-width: 0.5rem;
 	display: flex;
 	padding: 1rem;
 	box-sizing: border-box;
+	max-height: 400px;
+	// height: fit-content;
 }
-
-
 
 
 .composer-right {

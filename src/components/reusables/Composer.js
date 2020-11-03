@@ -39,10 +39,8 @@ const Composer = (props) => {
 		setText(e.target.value);
 	};
 
-
-
 	return (
-		<form className={`composer ${modal ? `modal` : ""}`}>
+		<form className={`${modal && `modal`} composer`}>
 			<Link to={`/${userAt}`}>
 				<img src={userImage} alt="user-profile" className="profile-image" />
 			</Link>

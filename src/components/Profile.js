@@ -1,29 +1,29 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, Switch, Route, useRouteMatch, NavLink } from "react-router-dom";
 import Feed from "./reusables/Feed";
-import { auth, db, storage } from "../config/fbConfig";
+import { db, storage } from "../config/fbConfig";
 import UserContext from "./context/context.js";
 import { ReactComponent as SideArrow } from "../assets/side-arrow-icon.svg";
 import Cover from "./reusables/Cover";
 import Editor from "./reusables/Editor";
+import FollowButton from "./reusables/FollowButton";
 import EllipsisFilled from "../assets/ellipsis-horizontal.svg";
+import Leaf from "../assets/leaf-outline.svg";
 
-const Profile = (props) => {
+const Profile = () => {
 	const { userImage, userName, userAt, userID, userFollows, userFollowers } = useContext(
 		UserContext
 	);
 
-	const routedata = useRouteMatch();
-	const urlAt = routedata.params.userAt;
+	const { path, url, params } = useRouteMatch();
+	console.log(path, url, params);
+	const urlAt = params.profile;
 
 	const [userProfile, setUserProfile] = useState(false);
 	const [profileID, setProfileID] = useState("");
+	const [followed, setFollowed] = useState("");
 
 	useEffect(() => {
-		db.collection("users")
-			.get()
-			.then((snapshot) => console.log(snapshot.docs));
-
 		const itsCurrent = () => {
 			setUserProfile(true);
 			setProfileID(userID);
@@ -40,9 +40,6 @@ const Profile = (props) => {
 					.where("at", "==", urlAt)
 					.get()
 					.then((snapshot) => {
-						console.log(urlAt);
-						console.log(typeof(urlAt))
-						console.log(snapshot.docs);
 						snapshot.forEach((doc) => {
 							console.log(doc);
 							setProfileID(doc.id);
@@ -68,7 +65,6 @@ const Profile = (props) => {
 				.ref("header_pictures/" + profileID + ".png")
 				.getDownloadURL()
 				.then((url) => {
-					console.log(url);
 					setHeader(url);
 				})
 				.catch((e) => {
@@ -82,12 +78,11 @@ const Profile = (props) => {
 						.ref("profile_pictures/" + profileID + ".png")
 						.getDownloadURL()
 						.then((url) => {
-							console.log(url);
 							setPropic(url);
 						})
 						.catch((e) => {
 							console.log(e);
-							setPropic(EllipsisFilled);
+							setPropic(Leaf);
 						});
 
 			db.collection("tweets")
@@ -98,7 +93,6 @@ const Profile = (props) => {
 				.then((snapshot) => {
 					let tempArray = [];
 					snapshot.forEach((doc) => {
-						console.log(doc.id);
 						tempArray.push({ ...doc.data(), id: doc.id });
 					});
 					return tempArray;
@@ -116,11 +110,18 @@ const Profile = (props) => {
 					// if they've got bio and website, add em in.
 					data.bio && setBio(data.bio);
 					data.website && setWebsite(data.website);
-					console.log(data.joinDate)
 					data.joinDate && setJoinDate(new Date(data.joinDate.seconds * 1000));
+					if (!userProfile) {
+						setFollowers(data.followers);
+						setFollows(data.follows);
+						setAt(data.at);
+						setName(data.name);
+					}
 				});
+
+			!userProfile && setFollowed(userFollows.includes(profileID));
 		}
-	}, [profileID, userImage, userProfile]);
+	}, [profileID, userImage, userProfile, userFollows]);
 
 	const toggleEditor = () => {
 		setEditor(!editor);
@@ -136,28 +137,35 @@ const Profile = (props) => {
 				>
 					<SideArrow />
 					<div className="profile-home-link-text">
-						<h3 className="no-dec">{userName}</h3>
+						<h3 className="no-dec">{name}</h3>
 						<p className="grey">{tweetDatas.length} tweets</p>
 					</div>
 				</Link>
 				<img className="profile-header-image" src={header} alt="header" />
 				<div className="profile-card">
 					<img className="main-image" src={propic} alt="profile" />
-					<div style={{ height: "3rem" }}>
-						<button
-							className="btn profile-edit-button"
-							style={{ width: "8rem" }}
-							onClick={toggleEditor}
-						>
-							Edit profile
-						</button>
-					</div>
+					{userProfile ? (
+						<div style={{ height: "3rem" }}>
+							<button
+								className="btn profile-edit-button"
+								style={{ width: "8rem" }}
+								onClick={toggleEditor}
+							>
+								Edit profile
+							</button>
+						</div>
+					) : (
+						<FollowButton tweeterID={profileID} followed={followed} />
+					)}
 					<h3>{name}</h3>
 					<p className="grey">{at}</p>
 					<p className="bio">{bio}</p>
 					<p className="grey">
 						<span>{website}</span>
-						<span> Joined {String(joinDate).slice(4, 8) + String(joinDate).slice(11, 16) }</span>
+						<span>
+							{" "}
+							Joined {String(joinDate).slice(4, 8) + String(joinDate).slice(11, 16)}
+						</span>
 					</p>
 					<p>
 						<span style={{ marginRight: "1rem" }}>
@@ -168,8 +176,42 @@ const Profile = (props) => {
 						</span>
 					</p>
 				</div>
+				<div className="profile-feed-selector-container">
+					<NavLink to={`${url}`} className="profile-feed-selector">
+						Tweets
+					</NavLink>
+					<NavLink to={`${url}/with_replies`} className="profile-feed-selector">
+						Tweets & replies
+					</NavLink>
+					<NavLink to={`${url}/media`} className="profile-feed-selector">
+						Media
+					</NavLink>
+					<NavLink to={`${url}/likes`} className="profile-feed-selector">
+						Likes
+					</NavLink>
+				</div>
 			</div>
-			<Feed tweetDatas={tweetDatas} />
+			{/* <Feed tweetDatas={tweetDatas} /> */}
+			<Switch>
+				<Route exact path={`${path}/:example`}>
+					<Feed tweetDatas={tweetDatas} />
+				</Route>
+				<Route exact path={`${path}/nope`}>
+					<p>nope</p>
+				</Route>
+				{/* <Route path={`${path}/with_replies`}>
+					<Feed tweetDatas={tweetDatas} />
+				</Route>
+				<Route path={`${path}/media`}>
+					<Feed tweetDatas={tweetDatas} />
+				</Route>
+				<Route path={`${path}/likes`}>
+					<Feed tweetDatas={tweetDatas} />
+				</Route> */}
+				<Route path={path}>
+					<Feed tweetDatas={tweetDatas} />
+				</Route>
+			</Switch>
 			{editor ? (
 				<Cover toggle={toggleEditor}>
 					<Editor header={header} bio={bio} website={website} />
