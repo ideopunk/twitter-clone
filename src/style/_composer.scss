@@ -63,23 +63,25 @@
 }
 
 .composer-circle-container {
-	width: 1.5rem;
-	height: 1.5rem;
+	width: 2rem;
+	height: 2rem;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	position: relative;
+	transition: $lighttransition;
 }
 
 .composer-circle-container > svg {
-	width: inherit;
-	height: inherit;
-
+	// width: inherit;
+	// height: inherit;
+	transition: $lighttransition;
 }
 
 circle {
 	fill: none;
 	stroke-width: 2;
+	transition: $lighttransition;
 }
 
 .grey-circle {
