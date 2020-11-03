@@ -177,41 +177,83 @@ const Profile = () => {
 					</p>
 				</div>
 				<div className="profile-feed-selector-container">
-					<NavLink to={`${url}`} className="profile-feed-selector">
+					<NavLink
+						to={`${url}`}
+						className="profile-feed-selector"
+						activeClassName="p-f-s-active"
+					>
 						Tweets
 					</NavLink>
-					<NavLink to={`${url}/with_replies`} className="profile-feed-selector">
+					<NavLink
+						to={`${url}/with_replies`}
+						className="profile-feed-selector"
+						activeClassName="p-f-s-active"
+					>
 						Tweets & replies
 					</NavLink>
-					<NavLink to={`${url}/media`} className="profile-feed-selector">
+					<NavLink
+						to={`${url}/media`}
+						className="profile-feed-selector"
+						activeClassName="p-f-s-active"
+					>
 						Media
 					</NavLink>
-					<NavLink to={`${url}/likes`} className="profile-feed-selector">
+					<NavLink
+						to={`${url}/likes`}
+						className="profile-feed-selector"
+						activeClassName="p-f-s-active"
+					>
 						Likes
 					</NavLink>
 				</div>
 			</div>
 			{/* <Feed tweetDatas={tweetDatas} /> */}
+
 			<Switch>
-				<Route exact path={`${path}/:example`}>
+				{/* <Route exact path={`${path}/:example`}>
 					<Feed tweetDatas={tweetDatas} />
-				</Route>
-				<Route exact path={`${path}/nope`}>
+				</Route> */}
+
+				<Route path={`${path}/a`}>
 					<p>nope</p>
 				</Route>
-				{/* <Route path={`${path}/with_replies`}>
+				<Route path={path + `/a`}>
+					<p>nope</p>
+				</Route>
+
+				<Route path={`${path}/with_replies`}>
 					<Feed tweetDatas={tweetDatas} />
 				</Route>
 				<Route path={`${path}/media`}>
 					<Feed tweetDatas={tweetDatas} />
 				</Route>
+
+				<Route exact path={path}>
+					<Feed tweetDatas={tweetDatas} />
+				</Route>
+
+				<Route path={`${path}/:christ`}>
+					<Feed tweetDatas={tweetDatas} />
+				</Route>
 				<Route path={`${path}/likes`}>
 					<Feed tweetDatas={tweetDatas} />
-				</Route> */}
-				<Route path={path}>
+				</Route>
+				<Route exact path={`${path}/likes`}>
+					<Feed tweetDatas={tweetDatas} />
+				</Route>
+				<Route path={path + `/likes`}>
+					<Feed tweetDatas={tweetDatas} />
+				</Route>
+
+				<Route exact path={path + `/likes`}>
+					<Feed tweetDatas={tweetDatas} />
+				</Route>
+
+				<Route path={`${path}/l`}>
 					<Feed tweetDatas={tweetDatas} />
 				</Route>
 			</Switch>
+
 			{editor ? (
 				<Cover toggle={toggleEditor}>
 					<Editor header={header} bio={bio} website={website} />

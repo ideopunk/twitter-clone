@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { db, auth } from "../config/fbConfig";
-import LoginPrompt from "./LoginPrompt";
+import { auth } from "../config/fbConfig";
 import Composer from "./reusables/Composer";
 import Cover from "./reusables/Cover";
 import UserContext from "./context/context.js";

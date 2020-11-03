@@ -132,7 +132,7 @@ const Editor = (props) => {
 			<div style={{ position: "relative" }}>
 				<img src={newHeader} className="profile-header-image" alt="header" />
 				<div className="header-icons">
-					<label for="header-input">
+					<label htmlFor="header-input">
 						<CameraIcon />
 					</label>
 					<input id="header-input" type="file" onChange={handleHeaderPicChange} />
@@ -143,7 +143,7 @@ const Editor = (props) => {
 			<div className="edit-form-text">
 				<div>
 					<img src={newProPic} className="main-image" alt="profile" />
-					<label for="profile-pic-input">
+					<label htmlFor="profile-pic-input">
 						<CameraIcon className="main-image main-image-camera" />
 					</label>
 					<input id="profile-pic-input" type="file" onChange={handleProfilePicChange} />
