@@ -15,9 +15,7 @@
 	margin-right: 0.5rem;
 }
 
-.active-retweet svg {
-	fill: blue;
-}
+
 
 .tweet-main {
 	width: 100%;
@@ -66,7 +64,35 @@
 	justify-content: space-between;
 }
 
+// svg styling
+
+.tweet-svg-div svg {
+	border-radius: 50%;
+	transition: $lighttransition;
+}
+
+.reply-div svg:hover {
+	fill: $sitecolor;
+	background-color: lighten($sitecolor, 35%);
+}
+.retweet-div svg:hover {
+	fill: blue;
+	background-color: lighten(blue, 40%);
+}
+
+.like-div svg:hover {
+	fill: red;
+	background-color: lighten(red, 40%);
+}
+
+// "active" responses
+
 .liked {
 	color: red;
 	fill: red;
+}
+
+.active-retweet svg {
+	color: blue;
+	fill: blue;
 }

@@ -23,7 +23,6 @@ const Tweet = (props) => {
 	const liked = likes && likes.includes(userID); // has the user liked this tweet?
 	const followed = userFollows.includes(tweeterID); // does the user follow this tweet?
 	const isRetweet = userRetweets.includes(tweetID);
-	console.log(`tweetID: ${tweetID}, userRetweets: ${userRetweets}, isRetweet: ${isRetweet}`)
 	const likeAmount = likes ? likes.length : "";
 	const retweetsAmount = retweets ? retweets.length : "";
 
@@ -116,22 +115,22 @@ const Tweet = (props) => {
 						) : (
 							""
 						)}
-						<Dots className="little-arrow" onClick={toggleDropdown} />
+						<Dots className="dots" onClick={toggleDropdown} />
 					</div>
 				</div>
 				{replying ? <p className="tweet-reply">Replying to {replying}</p> : ""}
 				<p className="tweet-text">{text}</p>
 				<div className="tweet-responses">
-					<div className="tweet-svg-div grey">
+					<div className="tweet-svg-div grey reply-div">
 						<Quote />
 					</div>
-					<div className={`tweet-svg-div grey ${isRetweet ? "active-retweet" : ""}`} onClick={retweet}>
+					<div className={`tweet-svg-div grey retweet-div ${isRetweet ? "active-retweet" : ""}`} onClick={retweet}>
 						<Retweet />
 						{retweetsAmount}
 					</div>
 					<div
 						value={tweetID}
-						className={`tweet-svg-div grey ${liked && "liked"}`}
+						className={`tweet-svg-div grey like-div ${liked && "liked"}`}
 						onClick={liked ? unlike : like}
 					>
 						{liked ? <LikeFilled value={tweetID} /> : <Like value={tweetID} />}

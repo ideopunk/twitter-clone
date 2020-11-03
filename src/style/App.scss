@@ -56,9 +56,15 @@ h3 {
 	background-color: darken($sitecolor, 10%);
 }
 
-.little-arrow {
+.dots {
 	width: 1.25rem;
 	margin-left: auto;
+	border-radius: 50%;
+}
+
+.dots:hover {
+	fill: $sitecolor;
+	background-color: lighten($sitecolor, 35%);
 }
 
 .cover {
