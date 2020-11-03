@@ -41,11 +41,13 @@ const ProfileMain = (props) => {
 
 	// set user data
 	useEffect(() => {
+		console.log("set user data");
+
 		const itsCurrent = () => {
-			setAt(userAt);
-			setName(userName);
-			setFollows(userFollows);
-			setFollowers(userFollowers);
+			// setAt(userAt);
+			// setName(userName);
+			// setFollows(userFollows);
+			// setFollowers(userFollowers);
 
 			setProfileData({
 				at: userAt,
@@ -74,26 +76,30 @@ const ProfileMain = (props) => {
 
 	// set header
 	useEffect(() => {
+		console.log("set header");
+
 		!profileData.header &&
 			storage
 				.ref("header_pictures/" + profileID + ".png")
 				.getDownloadURL()
 				.then((url) => {
-					setHeader(url);
-					setProfileData(prevData => ({ ...prevData, header: url }));
+					// setHeader(url);
+					setProfileData((prevData) => ({ ...prevData, header: url }));
 				})
 				.catch((e) => {
 					console.log(e);
-					setHeader(EllipsisFilled);
+					// setHeader(EllipsisFilled);
 					setProfileData((prevData) => ({ ...prevData, header: EllipsisFilled }));
 				});
-	}, [profileID, profileData]);
+	}, [profileID, profileData.header]);
 
 	// set profile picture
 	useEffect(() => {
+		console.log("set pro pic");
+
 		userProfile
 			? //  setPropic(userImage)
-			  setProfileData(prevData => ({ ...prevData, image: userImage }))
+			  setProfileData((prevData) => ({ ...prevData, image: userImage }))
 			: storage
 					.ref("profile_pictures/" + profileID + ".png")
 					.getDownloadURL()
@@ -103,12 +109,13 @@ const ProfileMain = (props) => {
 					.catch((e) => {
 						console.log(e);
 						setPropic(Leaf);
-						setProfileData(prevData => ({ ...prevData, image: Leaf }));
+						setProfileData((prevData) => ({ ...prevData, image: Leaf }));
 					});
-	}, [userProfile, profileData, userImage, profileID]);
+	}, [userProfile, userImage, profileID]);
 
 	// set tweetdata
 	useEffect(() => {
+		console.log("set tweetdata");
 		db.collection("tweets")
 			.where("userID", "==", profileID)
 			.orderBy("timeStamp", "desc")
@@ -128,6 +135,8 @@ const ProfileMain = (props) => {
 
 	// set data if not own profile....
 	useEffect(() => {
+		console.log("set data if not own profile");
+
 		!userProfile &&
 			db
 				.collection("users")
@@ -145,7 +154,7 @@ const ProfileMain = (props) => {
 						setFollows(data.follows);
 						setAt(data.at);
 						setName(data.name);
-						setProfileData(prevData => ({
+						setProfileData((prevData) => ({
 							...prevData,
 							at: data.at,
 							name: data.name,
@@ -157,10 +166,12 @@ const ProfileMain = (props) => {
 						}));
 					}
 				});
-    }, [profileID, userImage, userProfile, userFollows]);
+	}, [profileID, userImage, userProfile, userFollows]);
 
 	// if this isn't our own profile, are we following this user?
 	useEffect(() => {
+		console.log("set following");
+
 		!userProfile && setFollowed(userFollows.includes(profileID));
 	}, [userProfile, userFollows, profileID]);
 
