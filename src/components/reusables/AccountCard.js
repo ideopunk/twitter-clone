@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { storage } from "../../config/fbConfig";
 import Leaf from "../../assets/leaf-outline.svg";
 
-import AccountList from "./AccountList";
 import FollowButton from "./FollowButton";
 import UserContext from "../context/context.js";
 
@@ -23,8 +22,8 @@ const AccountCard = (props) => {
 				console.log(err);
 				setImage(Leaf);
 			});
-    }, [id]);
-    
+	}, [id]);
+
 	return (
 		<div className="account-card">
 			<Link to={`/${at}`}>
@@ -34,14 +33,20 @@ const AccountCard = (props) => {
 					<div className="profile-image" />
 				)}
 			</Link>
-            <div>
-                <div>
-                    <p className="tweeter-name">{name}</p>
-                    <p className="tweeter-at">{at}</p>
-                </div>
-                <FollowButton tweeterID={id} followed={true}/>
-            </div>
-            <p>{bio}</p>
+			<div style={{width: "100%"}}>
+				<div className="account-top">
+					<div>
+						<p className="tweeter-name">{name}</p>
+						<p className="tweeter-at">{at}</p>
+					</div>
+					<FollowButton
+						tweeterID={id}
+						account={true}
+						followed={userFollows.includes(id)}
+					/>
+				</div>
+				<p>{bio}</p>
+			</div>
 		</div>
 	);
 };

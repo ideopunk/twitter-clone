@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AccountCard from "./AccountCard";
 import { useRouteMatch } from "react-router-dom";
 import { db } from "../../config/fbConfig";
+import LoaderContainer from "./LoaderContainer";
 
 const AccountList = ({ profileID }) => {
 	const { url } = useRouteMatch();
@@ -32,7 +33,7 @@ const AccountList = ({ profileID }) => {
 			});
 	});
 
-	return <div className="feed">{accounts}</div>;
+	return <div className="feed">{accounts.length ? accounts : <LoaderContainer />}</div>;
 };
 
 export default AccountList;

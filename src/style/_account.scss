@@ -1,0 +1,22 @@
+.account-card {
+    width: 100%;
+    display: flex;  
+    position: relative;
+    padding: 0.75rem;
+    box-sizing: border-box;
+    border-bottom: $siteborder;
+}
+
+.account-card * {
+}
+
+.account-top {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.account-top > * > * {
+    margin-bottom: 0.25rem;
+}

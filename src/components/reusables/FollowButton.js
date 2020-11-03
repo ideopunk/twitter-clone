@@ -19,8 +19,8 @@ const FollowButton = (props) => {
 	return (
 		<button
 			onClick={followed ? unfollow : follow}
-            className={`btn profile-edit-button ${followed ? "following-btn" : "follow-btn"}`}
-            style={{width: "8rem"}}
+            className={`btn ${!props.account && "profile-edit-button"} ${followed ? "following-btn" : "follow-btn"}`}
+            style={{width: "6rem", height: "2rem"}}
 		>
 			{followed ? "Following" : "Follow"}
 		</button>
