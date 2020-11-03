@@ -18,8 +18,9 @@ const App = () => {
 	const [userFollowers, setUserFollowers] = useState([]);
 	const [userTweets, setUserTweets] = useState([]);
 	const [userLikes, setUserLikes] = useState([]);
+	const [userRetweets, setUserRetweets] = useState([]);
 	const [checked, setChecked] = useState(false);
-	const [allAts, setAllAts] = useState([])
+	const [allAts, setAllAts] = useState([]);
 
 	// listen for auth status changes
 	useEffect(() => {
@@ -37,11 +38,12 @@ const App = () => {
 						setUserAt(data.at);
 						setUserName(data.name);
 
-						// set follows/ers if we have any.
+						// set optional data if we have it.
 						data.follows && setUserFollows(data.follows);
 						data.followers && setUserFollowers(data.followers);
 						data.tweets && setUserTweets(data.tweets);
 						data.likes && setUserLikes(data.likes);
+						data.retweets && setUserRetweets(data.retweets);
 						setChecked(true);
 					});
 
@@ -74,6 +76,7 @@ const App = () => {
 						userFollowers: userFollowers,
 						userTweets: userTweets,
 						userLikes: userLikes,
+						userRetweets: userRetweets,
 					}}
 				>
 					<Switch>

@@ -18,10 +18,12 @@ const Tweet = (props) => {
 	const [dropdown, setDropdown] = useState(false);
 
 	const { name, at, time, text, retweets, likes, replying, tweetID, tweeterID } = props;
-	const { userID, userLikes, userFollows, userTweets } = useContext(UserContext);
+	const { userID, userLikes, userFollows, userTweets, userRetweets } = useContext(UserContext);
 
 	const liked = likes && likes.includes(userID); // has the user liked this tweet?
 	const followed = userFollows.includes(tweeterID); // does the user follow this tweet?
+	const isRetweet = userRetweets.includes(tweetID);
+	console.log(`tweetID: ${tweetID}, userRetweets: ${userRetweets}, isRetweet: ${isRetweet}`)
 	const likeAmount = likes ? likes.length : "";
 	const retweetsAmount = retweets ? retweets.length : "";
 
@@ -79,6 +81,13 @@ const Tweet = (props) => {
 		);
 	};
 
+	const retweet = () => {
+		!userRetweets.includes(tweetID) &&
+			import("../functions/retweet.js").then((retweet) =>
+				retweet.default(tweetID, userID, userRetweets)
+			);
+	};
+
 	return (
 		<div className="tweet">
 			<Link to={`/${at}`}>
@@ -116,7 +125,7 @@ const Tweet = (props) => {
 					<div className="tweet-svg-div grey">
 						<Quote />
 					</div>
-					<div className="tweet-svg-div grey">
+					<div className={`tweet-svg-div grey ${isRetweet ? "active-retweet" : ""}`} onClick={retweet}>
 						<Retweet />
 						{retweetsAmount}
 					</div>
