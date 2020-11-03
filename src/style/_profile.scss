@@ -26,7 +26,8 @@
 
 .profile-header-image {
 	width: 100%;
-	max-height: 200px;
+	height: 200px;
+	object-fit: fill;
 	background-color: grey;
 }
 

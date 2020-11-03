@@ -9,6 +9,7 @@ import Editor from "./reusables/Editor";
 import FollowButton from "./reusables/FollowButton";
 import EllipsisFilled from "../assets/ellipsis-horizontal.svg";
 import Leaf from "../assets/leaf-outline.svg";
+import LoaderContainer from "./reusables/LoaderContainer";
 
 const Profile = () => {
 	const { userImage, userName, userAt, userID, userFollows, userFollowers } = useContext(
@@ -129,7 +130,7 @@ const Profile = () => {
 
 	return (
 		<div className="profile center-feed">
-			<div className="profile-header">
+			{profileID ? <div className="profile-header">
 				<Link
 					to="/"
 					className="profile-home-link"
@@ -206,50 +207,30 @@ const Profile = () => {
 						Likes
 					</NavLink>
 				</div>
-			</div>
+			</div> : <LoaderContainer />}
 			{/* <Feed tweetDatas={tweetDatas} /> */}
 
 			<Switch>
-				{/* <Route exact path={`${path}/:example`}>
-					<Feed tweetDatas={tweetDatas} />
-				</Route> */}
-
-				<Route path={`${path}/a`}>
-					<p>nope</p>
-				</Route>
-				<Route path={path + `/a`}>
-					<p>nope</p>
-				</Route>
-
-				<Route path={`${path}/with_replies`}>
-					<Feed tweetDatas={tweetDatas} />
-				</Route>
-				<Route path={`${path}/media`}>
-					<Feed tweetDatas={tweetDatas} />
-				</Route>
-
 				<Route exact path={path}>
 					<Feed tweetDatas={tweetDatas} />
 				</Route>
-
-				<Route path={`${path}/:christ`}>
-					<Feed tweetDatas={tweetDatas} />
+				<Route path={`${path}/:anythingmygod`}>
+					<p>yo</p>
 				</Route>
+
+				<Route path={`${path}/with_replies`}>
+					<p>yo</p>
+				</Route>
+
+				<Route path={`${path}/media`}>
+					<p>yo</p>
+				</Route>
+
 				<Route path={`${path}/likes`}>
-					<Feed tweetDatas={tweetDatas} />
-				</Route>
-				<Route exact path={`${path}/likes`}>
-					<Feed tweetDatas={tweetDatas} />
-				</Route>
-				<Route path={path + `/likes`}>
-					<Feed tweetDatas={tweetDatas} />
+					<p>yo</p>
 				</Route>
 
-				<Route exact path={path + `/likes`}>
-					<Feed tweetDatas={tweetDatas} />
-				</Route>
-
-				<Route path={`${path}/l`}>
+				<Route path={path}>
 					<Feed tweetDatas={tweetDatas} />
 				</Route>
 			</Switch>

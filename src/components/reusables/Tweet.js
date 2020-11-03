@@ -82,7 +82,11 @@ const Tweet = (props) => {
 	return (
 		<div className="tweet">
 			<Link to={`/${at}`}>
-				<img className="profile-image" alt="user-profile" src={image} />
+				{image ? (
+					<img className="profile-image" alt="user-profile" src={image} />
+				) : (
+					<div className="profile-image" />
+				)}
 			</Link>
 			<div className="tweet-main">
 				<div className="tweet-top-data">

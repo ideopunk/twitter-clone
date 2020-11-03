@@ -8,7 +8,7 @@ const Feed = (props) => {
 	const { tweetDatas } = props;
 	const { userID, userTweets, userFollows, userLikes } = useContext(UserContext);
 
-	
+
 
 	const tweets = tweetDatas.map((tweet) => {
 		console.log(tweet);

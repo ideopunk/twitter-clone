@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { auth, db, storage } from "../config/fbConfig";
 import UserContext from "./context/context.js";
+import LoaderContainer from "./reusables/LoaderContainer";
 
 import Composer from "./reusables/Composer";
 import FollowSuggests from "./reusables/FollowSuggests";
@@ -54,7 +55,7 @@ const Home = (props) => {
 		<div className="home center-feed">
 			<h3 className="home-title">Home</h3>
 			<Composer />
-			<Feed tweetDatas={tweetDatas} />
+			{tweetDatas.length ? <Feed tweetDatas={tweetDatas} /> : <LoaderContainer />}
 		</div>
 	);
 };

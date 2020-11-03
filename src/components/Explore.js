@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../config/fbConfig";
 import Feed from "./reusables/Feed";
+import LoaderContainer from "./reusables/LoaderContainer";
 
 const Explore = () => {
 	const [tweetDatas, setTweetDatas] = useState([]);
@@ -23,7 +24,7 @@ const Explore = () => {
 
 	return (
 		<div className="explore center-feed">
-			<Feed tweetDatas={tweetDatas} />
+			{tweetDatas.length ? <Feed tweetDatas={tweetDatas} /> : <LoaderContainer />}
 		</div>
 	);
 };
