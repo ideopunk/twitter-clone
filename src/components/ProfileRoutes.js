@@ -6,6 +6,7 @@ import { db } from "../config/fbConfig";
 import UserContext from "./context/context.js";
 import LoaderContainer from "./reusables/LoaderContainer";
 import ProfileMain from "./ProfileMain";
+import ProfileFollows from "./ProfileFollows";
 
 const ProfileRoutes = () => {
 	const { userAt, userID } = useContext(UserContext);
@@ -36,13 +37,14 @@ const ProfileRoutes = () => {
 	console.log(path, url, params);
 	return (
 		<div className="profile center-feed">
+			
 			{profileID ? (
 				<Switch>
 					<Route path={`${path}/following`}>
-						<ProfileMain profileID={profileID} userProfile={userProfile} />
+						<ProfileFollows profileID={profileID} userProfile={userProfile} />
 					</Route>
 					<Route path={`${path}/followers`}>
-						<ProfileMain profileID={profileID} userProfile={userProfile} />
+						<ProfileFollows profileID={profileID} userProfile={userProfile} />
 					</Route>
 					<Route path={path}>
 						<ProfileMain profileID={profileID} userProfile={userProfile} />

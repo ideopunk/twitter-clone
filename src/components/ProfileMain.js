@@ -22,7 +22,7 @@ const ProfileMain = (props) => {
 
 	const { userProfile, profileID } = props;
 	console.log(userProfile, profileID);
-	const [profileData, setProfileData] = useState({follows: [], followers: []});
+	const [profileData, setProfileData] = useState({ follows: [], followers: [] });
 
 	const [tweetDatas, setTweetDatas] = useState([]);
 
@@ -150,96 +150,91 @@ const ProfileMain = (props) => {
 
 	return (
 		<>
-			{profileID ? (
-				<div className="profile-header">
-					<Link
-						to="/"
-						className="profile-home-link"
-						style={{ textDecoration: "none", color: "black" }}
-					>
-						<SideArrow />
-						<div className="profile-home-link-text">
-							<h3 className="no-dec">{profileData.name}</h3>
-							<p className="grey">{tweetDatas.length} tweets</p>
+			<div className="profile-header">
+				<Link
+					to="/"
+					className="profile-home-link"
+					style={{ textDecoration: "none", color: "black" }}
+				>
+					<SideArrow />
+					<div className="profile-home-link-text">
+						<h3 className="no-dec">{profileData.name}</h3>
+						<p className="grey">{tweetDatas.length} tweets</p>
+					</div>
+				</Link>
+				<img className="profile-header-image" src={profileData.header} alt="header" />
+				<div className="profile-card">
+					<img className="main-image" src={profileData.image} alt="profile" />
+					{userProfile ? (
+						<div style={{ height: "3rem" }}>
+							<button
+								className="btn profile-edit-button"
+								style={{ width: "8rem" }}
+								onClick={toggleEditor}
+							>
+								Edit profile
+							</button>
 						</div>
-					</Link>
-					<img className="profile-header-image" src={profileData.header} alt="header" />
-					<div className="profile-card">
-						<img className="main-image" src={profileData.image} alt="profile" />
-						{userProfile ? (
-							<div style={{ height: "3rem" }}>
-								<button
-									className="btn profile-edit-button"
-									style={{ width: "8rem" }}
-									onClick={toggleEditor}
-								>
-									Edit profile
-								</button>
-							</div>
-						) : (
-							<FollowButton tweeterID={profileID} followed={followed} />
-						)}
-						<h3>{profileData.name}</h3>
-						<p className="grey">{profileData.at}</p>
-						<p className="bio">{profileData.bio}</p>
-						<p className="grey">
-							<span>{profileData.website}</span>
-							<span>
-								{" "}
-								Joined{" "}
-								{String(profileData.joinDate).slice(4, 8) +
-									String(profileData.joinDate).slice(11, 16)}
+					) : (
+						<FollowButton tweeterID={profileID} followed={followed} />
+					)}
+					<h3>{profileData.name}</h3>
+					<p className="grey">{profileData.at}</p>
+					<p className="bio">{profileData.bio}</p>
+					<p className="grey">
+						<span>{profileData.website}</span>
+						<span>
+							{" "}
+							Joined{" "}
+							{String(profileData.joinDate).slice(4, 8) +
+								String(profileData.joinDate).slice(11, 16)}
+						</span>
+					</p>
+					<p>
+						<Link to={`${url}/following`}>
+							<span style={{ marginRight: "1rem" }}>
+								{profileData.follows.length} <span className="grey">Following</span>
 							</span>
-						</p>
-						<p>
-							<Link to={`${url}/following`}>
-								<span style={{ marginRight: "1rem" }}>
-									{profileData.follows.length}{" "}
-									<span className="grey">Following</span>
-								</span>
-							</Link>
-							<Link to={`${url}/followers`}>
-								<span>
-									{profileData.followers.length}{" "}
-									<span className="grey">Followers</span>
-								</span>
-							</Link>
-						</p>
-					</div>
-					<div className="profile-feed-selector-container">
-						<NavLink
-							to={`${url}`}
-							className="profile-feed-selector"
-							activeClassName="p-f-s-active"
-						>
-							Tweets
-						</NavLink>
-						<NavLink
-							to={`${url}/with_replies`}
-							className="profile-feed-selector"
-							activeClassName="p-f-s-active"
-						>
-							Tweets & replies
-						</NavLink>
-						<NavLink
-							to={`${url}/media`}
-							className="profile-feed-selector"
-							activeClassName="p-f-s-active"
-						>
-							Media
-						</NavLink>
-						<NavLink
-							to={`${url}/likes`}
-							className="profile-feed-selector"
-							activeClassName="p-f-s-active"
-						>
-							Likes
-						</NavLink>
-					</div>
+						</Link>
+						<Link to={`${url}/followers`}>
+							<span>
+								{profileData.followers.length}{" "}
+								<span className="grey">Followers</span>
+							</span>
+						</Link>
+					</p>
 				</div>
-			) : (
-				<LoaderContainer />
-			)}
+				<div className="profile-feed-selector-container">
+					<NavLink
+						to={`${url}`}
+						className="profile-feed-selector"
+						activeClassName="p-f-s-active"
+					>
+						Tweets
+					</NavLink>
+					<NavLink
+						to={`${url}/with_replies`}
+						className="profile-feed-selector"
+						activeClassName="p-f-s-active"
+					>
+						Tweets & replies
+					</NavLink>
+					<NavLink
+						to={`${url}/media`}
+						className="profile-feed-selector"
+						activeClassName="p-f-s-active"
+					>
+						Media
+					</NavLink>
+					<NavLink
+						to={`${url}/likes`}
+						className="profile-feed-selector"
+						activeClassName="p-f-s-active"
+					>
+						Likes
+					</NavLink>
+				</div>
+			</div>
 
 			<Switch>
 				<Route path={`${path}/with_replies`}>
@@ -258,7 +253,6 @@ const ProfileMain = (props) => {
 					<Feed tweetDatas={tweetDatas} />
 				</Route>
 			</Switch>
-
 			{editor ? (
 				<Cover toggle={toggleEditor}>
 					<Editor
