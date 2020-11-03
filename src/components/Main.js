@@ -11,7 +11,7 @@ import TOS from "./reusables/TOS";
 import UserContext from "./context/context.js";
 import NotFound from "./NotFound";
 const Home = lazy(() => import("./Home"));
-const Profile = lazy(() => import("./Profile"));
+const ProfileRoutes = lazy(() => import("./ProfileRoutes"));
 const Explore = lazy(() => import("./Explore"));
 const Notifications = lazy(() => import("./Notifications"));
 
@@ -36,7 +36,7 @@ const Main = (props) => {
 							<Messages />
 						</Route>
 						<Route path="/:profile">
-							<Profile />
+							<ProfileRoutes />
 						</Route>
 						<Route exact path="/">
 							<Home />

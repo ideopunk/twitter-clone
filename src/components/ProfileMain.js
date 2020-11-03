@@ -1,11 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-	Link,
-	Switch,
-	Route,
-	useRouteMatch,
-	NavLink,
-} from "react-router-dom";
+import { Link, Switch, Route, useRouteMatch, NavLink } from "react-router-dom";
 import Feed from "./reusables/Feed";
 import LikeFeed from "./reusables/LikeFeed";
 import { db, storage } from "../config/fbConfig";
@@ -18,45 +12,22 @@ import EllipsisFilled from "../assets/ellipsis-horizontal.svg";
 import Leaf from "../assets/leaf-outline.svg";
 import LoaderContainer from "./reusables/LoaderContainer";
 
-const Profile = () => {
+const ProfileMain = (props) => {
 	const { userImage, userName, userAt, userID, userFollows, userFollowers } = useContext(
 		UserContext
 	);
 
 	const { path, url, params } = useRouteMatch();
-
 	const urlAt = params.profile;
 
-	const [userProfile, setUserProfile] = useState(false);
-	const [profileID, setProfileID] = useState("");
-	const [followed, setFollowed] = useState("");
-
-	useEffect(() => {
-		const itsCurrent = () => {
-			setUserProfile(true);
-			setProfileID(userID);
-			setAt(userAt);
-			setName(userName);
-			setFollows(userFollows);
-			setFollowers(userFollowers);
-		};
-
-		urlAt === userAt
-			? itsCurrent()
-			: db
-					.collection("users")
-					.where("at", "==", urlAt)
-					.get()
-					.then((snapshot) => {
-						snapshot.forEach((doc) => {
-							console.log(doc);
-							setProfileID(doc.id);
-						});
-					});
-	}, [userAt, userID, userName, userFollowers, userFollows, urlAt]);
+	const { userProfile, profileID } = props;
+	console.log(userProfile, profileID);
+	const [profileData, setProfileData] = useState({});
 
 	const [tweetDatas, setTweetDatas] = useState([]);
+
 	const [editor, setEditor] = useState(false);
+
 	const [header, setHeader] = useState(null);
 	const [propic, setPropic] = useState(null);
 	const [bio, setBio] = useState("");
@@ -66,50 +37,100 @@ const Profile = () => {
 	const [name, setName] = useState("");
 	const [follows, setFollows] = useState("");
 	const [followers, setFollowers] = useState("");
+	const [followed, setFollowed] = useState("");
 
+	// set user data
 	useEffect(() => {
-		if (profileID) {
+		const itsCurrent = () => {
+			setAt(userAt);
+			setName(userName);
+			setFollows(userFollows);
+			setFollowers(userFollowers);
+
+			setProfileData({
+				at: userAt,
+				name: userName,
+				follows: userFollows,
+				followers: userFollowers,
+				id: userID,
+				image: userImage,
+			});
+		};
+
+		userProfile
+			? itsCurrent()
+			: db
+					.collection("users")
+					.where("at", "==", urlAt)
+					.get()
+					.then((snapshot) => {
+						snapshot.forEach((doc) => {
+							console.log(doc);
+
+							setProfileData({ id: doc.id, ...doc.data() });
+						});
+					});
+	}, [userProfile, userImage, userAt, userID, userName, userFollowers, userFollows, urlAt]);
+
+	// set header
+	useEffect(() => {
+		!profileData.header &&
 			storage
 				.ref("header_pictures/" + profileID + ".png")
 				.getDownloadURL()
 				.then((url) => {
 					setHeader(url);
+					setProfileData(prevData => ({ ...prevData, header: url }));
 				})
 				.catch((e) => {
 					console.log(e);
 					setHeader(EllipsisFilled);
+					setProfileData((prevData) => ({ ...prevData, header: EllipsisFilled }));
 				});
+	}, [profileID, profileData]);
 
-			userProfile
-				? setPropic(userImage)
-				: storage
-						.ref("profile_pictures/" + profileID + ".png")
-						.getDownloadURL()
-						.then((url) => {
-							setPropic(url);
-						})
-						.catch((e) => {
-							console.log(e);
-							setPropic(Leaf);
-						});
-
-			db.collection("tweets")
-				.where("userID", "==", profileID)
-				.orderBy("timeStamp", "desc")
-				.limit(50)
-				.get()
-				.then((snapshot) => {
-					let tempArray = [];
-					snapshot.forEach((doc) => {
-						tempArray.push({ ...doc.data(), id: doc.id });
+	// set profile picture
+	useEffect(() => {
+		userProfile
+			? //  setPropic(userImage)
+			  setProfileData(prevData => ({ ...prevData, image: userImage }))
+			: storage
+					.ref("profile_pictures/" + profileID + ".png")
+					.getDownloadURL()
+					.then((url) => {
+						setPropic(url);
+					})
+					.catch((e) => {
+						console.log(e);
+						setPropic(Leaf);
+						setProfileData(prevData => ({ ...prevData, image: Leaf }));
 					});
-					return tempArray;
-				})
-				.then((tempArray) => {
-					setTweetDatas(tempArray);
-				});
+	}, [userProfile, profileData, userImage, profileID]);
 
-			db.collection("users")
+	// set tweetdata
+	useEffect(() => {
+		db.collection("tweets")
+			.where("userID", "==", profileID)
+			.orderBy("timeStamp", "desc")
+			.limit(50)
+			.get()
+			.then((snapshot) => {
+				let tempArray = [];
+				snapshot.forEach((doc) => {
+					tempArray.push({ ...doc.data(), id: doc.id });
+				});
+				return tempArray;
+			})
+			.then((tempArray) => {
+				setTweetDatas(tempArray);
+			});
+	}, [profileID]);
+
+	// set data if not own profile....
+	useEffect(() => {
+		!userProfile &&
+			db
+				.collection("users")
 				.doc(profileID)
 				.get()
 				.then((doc) => {
@@ -124,19 +145,31 @@ const Profile = () => {
 						setFollows(data.follows);
 						setAt(data.at);
 						setName(data.name);
+						setProfileData(prevData => ({
+							...prevData,
+							at: data.at,
+							name: data.name,
+							follows: data.follows,
+							followers: data.followers,
+							bio: data.bio,
+							website: data.website,
+							joinDate: new Date(data.joinDate.seconds * 1000),
+						}));
 					}
 				});
+    }, [profileID, userImage, userProfile, userFollows]);
 
-			!userProfile && setFollowed(userFollows.includes(profileID));
-		}
-	}, [profileID, userImage, userProfile, userFollows]);
+	// if this isn't our own profile, are we following this user?
+	useEffect(() => {
+		!userProfile && setFollowed(userFollows.includes(profileID));
+	}, [userProfile, userFollows, profileID]);
 
 	const toggleEditor = () => {
 		setEditor(!editor);
 	};
 
 	return (
-		<div className="profile center-feed">
+		<>
 			{profileID ? (
 				<div className="profile-header">
 					<Link
@@ -178,12 +211,16 @@ const Profile = () => {
 							</span>
 						</p>
 						<p>
-							<span style={{ marginRight: "1rem" }}>
-								{follows.length} <span className="grey">Following</span>
-							</span>
-							<span>
-								{followers.length} <span className="grey">Followers</span>
-							</span>
+							<Link to={`${url}/following`}>
+								<span style={{ marginRight: "1rem" }}>
+									{follows.length} <span className="grey">Following</span>
+								</span>
+							</Link>
+							<Link to={`${url}/followers`}>
+								<span>
+									{followers.length} <span className="grey">Followers</span>
+								</span>
+							</Link>
 						</p>
 					</div>
 					<div className="profile-feed-selector-container">
@@ -222,7 +259,6 @@ const Profile = () => {
 			)}
 
 			<Switch>
-
 				<Route path={`${path}/with_replies`}>
 					<Feed tweetDatas={tweetDatas} />
 				</Route>
@@ -247,8 +283,8 @@ const Profile = () => {
 			) : (
 				""
 			)}
-		</div>
+		</>
 	);
 };
 
-export default Profile;
+export default ProfileMain;
