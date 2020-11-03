@@ -1,10 +1,7 @@
 import { db } from "../../config/fbConfig";
 
 
-const likeDB = (e, userID, userLikes) => {
-    const tweet = e.target.getAttribute("value") || e.target.parentNode.getAttribute("value");
-    console.log(e.target);
-    console.log(e.target.parentNode);
+const likeDB = (tweet, userID, userLikes) => {
     db.collection("tweets")
         .doc(tweet)
         .get()

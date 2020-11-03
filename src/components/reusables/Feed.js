@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import Tweet from "./Tweet";
 
@@ -14,7 +14,6 @@ const Feed = (props) => {
 				key={tweet.id}
 				tweetID={tweet.id}
 				tweeterID={tweet.userID}
-				image={tweet.pic}
 				name={tweet.name}
 				at={tweet.at}
 				time={tweet.timeStamp}

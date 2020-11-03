@@ -38,7 +38,7 @@ const FollowSuggest = () => {
 								.then((url) => {
 									setArray((a) => [
 										...a,
-										<div className="tweet">
+										<div className="tweet" key={user.id}>
 											<img
 												src={url}
 												alt="suggest"
@@ -57,7 +57,7 @@ const FollowSuggest = () => {
 									setArray((a) => [
 										...a,
 
-										<div className="tweet">
+										<div className="tweet" key={user.id}>
 											<img
 												src={Leaf}
 												alt="suggest"

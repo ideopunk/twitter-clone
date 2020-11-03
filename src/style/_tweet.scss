@@ -4,6 +4,11 @@
 	border-bottom: $siteborder;
 	box-sizing: border-box;
 	padding: 0.75rem;
+	transition: $lighttransition;
+}
+
+.tweet:hover {
+	background-color: lighten($sitegrey, 45%);
 }
 
 .profile-image {

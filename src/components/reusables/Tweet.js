@@ -44,6 +44,7 @@ const Tweet = (props) => {
 				setImage(Leaf);
 			});
 
+		//set how long ago the tweet was
 		import("../functions/elapser.js").then((elapser) => setTimeSince(elapser.default(time)));
 	}, [tweeterID, time]);
 
@@ -51,32 +52,33 @@ const Tweet = (props) => {
 		setDropdown(!dropdown);
 	};
 
-	const deleteTweet = (e) => {
-		e.persist();
+	const deleteTweet = () => {
 		import("../functions/deleteTweet.js").then((deleteTweet) =>
-			deleteTweet.default(e, userTweets, userID)
+			deleteTweet.default(tweetID, userTweets, userID)
 		);
 	};
 
-	const like = (e) => {
-		e.persist();
-		import("../functions/likeDB.js").then((likeDB) => likeDB.default(e, userID, userLikes));
+	const like = () => {
+		import("../functions/likeDB.js").then((likeDB) =>
+			likeDB.default(tweetID, userID, userLikes)
+		);
 	};
 
-	const unlike = (e) => {
-		e.persist();
-		import("../functions/unlike.js").then((unlike) => unlike.default(e, userID, userLikes));
+	const unlike = () => {
+		import("../functions/unlike.js").then((unlike) =>
+			unlike.default(tweetID, userID, userLikes)
+		);
 	};
 
-	const follow = (e) => {
-		e.persist();
-		import("../functions/follow.js").then((follow) => follow.default(e, userID, userFollows));
+	const follow = () => {
+		import("../functions/follow.js").then((follow) =>
+			follow.default(tweeterID, userID, userFollows)
+		);
 	};
 
-	const unfollow = (e) => {
-		e.persist();
+	const unfollow = () => {
 		import("../functions/unfollow.js").then((unfollow) =>
-			unfollow.default(e, userID, userFollows)
+			unfollow.default(tweeterID, userID, userFollows)
 		);
 	};
 
@@ -124,7 +126,12 @@ const Tweet = (props) => {
 					<div className="tweet-svg-div grey reply-div">
 						<Quote />
 					</div>
-					<div className={`tweet-svg-div grey retweet-div ${isRetweet ? "active-retweet" : ""}`} onClick={retweet}>
+					<div
+						className={`tweet-svg-div grey retweet-div ${
+							isRetweet ? "active-retweet" : ""
+						}`}
+						onClick={retweet}
+					>
 						<Retweet />
 						{retweetsAmount}
 					</div>
