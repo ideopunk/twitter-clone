@@ -11,7 +11,7 @@ import Feed from "./reusables/Feed";
 import LoginCard from "./reusables/LoginCard";
 
 const Home = (props) => {
-	const { userImage, userName, userAt, userID, userFollows, userFollowers } = useContext(
+	const { userID } = useContext(
 		UserContext
 	);
 

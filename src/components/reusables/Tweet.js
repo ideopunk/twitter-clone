@@ -17,8 +17,8 @@ const Tweet = (props) => {
 	const [timeSince, setTimeSince] = useState(null);
 	const [dropdown, setDropdown] = useState(false);
 
-	const { name, at, time, text, retweets, likes, replying, tweetID, tweeterID, userID } = props;
-	const { userLikes, userFollows, userTweets } = useContext(UserContext);
+	const { name, at, time, text, retweets, likes, replying, tweetID, tweeterID } = props;
+	const { userID, userLikes, userFollows, userTweets } = useContext(UserContext);
 
 	const liked = likes && likes.includes(userID); // has the user liked this tweet?
 	const followed = userFollows.includes(tweeterID); // does the user follow this tweet?

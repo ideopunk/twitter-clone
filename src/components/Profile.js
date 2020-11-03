@@ -4,11 +4,10 @@ import {
 	Switch,
 	Route,
 	useRouteMatch,
-	useHistory,
 	NavLink,
-	useLocation,
 } from "react-router-dom";
 import Feed from "./reusables/Feed";
+import LikeFeed from "./reusables/LikeFeed";
 import { db, storage } from "../config/fbConfig";
 import UserContext from "./context/context.js";
 import { ReactComponent as SideArrow } from "../assets/side-arrow-icon.svg";
@@ -25,14 +24,7 @@ const Profile = () => {
 	);
 
 	const { path, url, params } = useRouteMatch();
-	const temp = useRouteMatch();
-	const { pathname } = useLocation();
-	let history = useHistory();
-	console.log(path, url, params);
 
-	console.log(`use location`);
-	console.log(useLocation());
-	console.log(`pathname: ${pathname}`);
 	const urlAt = params.profile;
 
 	const [userProfile, setUserProfile] = useState(false);
@@ -230,23 +222,20 @@ const Profile = () => {
 			)}
 
 			<Switch>
-				<Route path={`${url}/:anythingmygod`}>
+
+				<Route path={`${path}/with_replies`}>
 					<Feed tweetDatas={tweetDatas} />
 				</Route>
 
-				<Route path={`${url}/with_replies`}>
+				<Route path={`${path}/media`}>
 					<Feed tweetDatas={tweetDatas} />
 				</Route>
 
-				<Route path={`${url}/media`}>
-					<Feed tweetDatas={tweetDatas} />
+				<Route path={`${path}/likes`}>
+					<LikeFeed profileID={profileID} />
 				</Route>
 
-				<Route path={`${url}/likes`}>
-					<Feed tweetDatas={tweetDatas} />
-				</Route>
-
-				<Route exact path={url}>
+				<Route exact path={path}>
 					<Feed tweetDatas={tweetDatas} />
 				</Route>
 			</Switch>
