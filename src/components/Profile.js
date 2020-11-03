@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, Switch, Route, useRouteMatch, NavLink } from "react-router-dom";
+import {
+	Link,
+	Switch,
+	Route,
+	useRouteMatch,
+	useHistory,
+	NavLink,
+	useLocation,
+} from "react-router-dom";
 import Feed from "./reusables/Feed";
 import { db, storage } from "../config/fbConfig";
 import UserContext from "./context/context.js";
@@ -17,7 +25,14 @@ const Profile = () => {
 	);
 
 	const { path, url, params } = useRouteMatch();
+	const temp = useRouteMatch();
+	const { pathname } = useLocation();
+	let history = useHistory();
 	console.log(path, url, params);
+
+	console.log(`use location`);
+	console.log(useLocation());
+	console.log(`pathname: ${pathname}`);
 	const urlAt = params.profile;
 
 	const [userProfile, setUserProfile] = useState(false);
@@ -130,107 +145,108 @@ const Profile = () => {
 
 	return (
 		<div className="profile center-feed">
-			{profileID ? <div className="profile-header">
-				<Link
-					to="/"
-					className="profile-home-link"
-					style={{ textDecoration: "none", color: "black" }}
-				>
-					<SideArrow />
-					<div className="profile-home-link-text">
-						<h3 className="no-dec">{name}</h3>
-						<p className="grey">{tweetDatas.length} tweets</p>
-					</div>
-				</Link>
-				<img className="profile-header-image" src={header} alt="header" />
-				<div className="profile-card">
-					<img className="main-image" src={propic} alt="profile" />
-					{userProfile ? (
-						<div style={{ height: "3rem" }}>
-							<button
-								className="btn profile-edit-button"
-								style={{ width: "8rem" }}
-								onClick={toggleEditor}
-							>
-								Edit profile
-							</button>
+			{profileID ? (
+				<div className="profile-header">
+					<Link
+						to="/"
+						className="profile-home-link"
+						style={{ textDecoration: "none", color: "black" }}
+					>
+						<SideArrow />
+						<div className="profile-home-link-text">
+							<h3 className="no-dec">{name}</h3>
+							<p className="grey">{tweetDatas.length} tweets</p>
 						</div>
-					) : (
-						<FollowButton tweeterID={profileID} followed={followed} />
-					)}
-					<h3>{name}</h3>
-					<p className="grey">{at}</p>
-					<p className="bio">{bio}</p>
-					<p className="grey">
-						<span>{website}</span>
-						<span>
-							{" "}
-							Joined {String(joinDate).slice(4, 8) + String(joinDate).slice(11, 16)}
-						</span>
-					</p>
-					<p>
-						<span style={{ marginRight: "1rem" }}>
-							{follows.length} <span className="grey">Following</span>
-						</span>
-						<span>
-							{followers.length} <span className="grey">Followers</span>
-						</span>
-					</p>
+					</Link>
+					<img className="profile-header-image" src={header} alt="header" />
+					<div className="profile-card">
+						<img className="main-image" src={propic} alt="profile" />
+						{userProfile ? (
+							<div style={{ height: "3rem" }}>
+								<button
+									className="btn profile-edit-button"
+									style={{ width: "8rem" }}
+									onClick={toggleEditor}
+								>
+									Edit profile
+								</button>
+							</div>
+						) : (
+							<FollowButton tweeterID={profileID} followed={followed} />
+						)}
+						<h3>{name}</h3>
+						<p className="grey">{at}</p>
+						<p className="bio">{bio}</p>
+						<p className="grey">
+							<span>{website}</span>
+							<span>
+								{" "}
+								Joined{" "}
+								{String(joinDate).slice(4, 8) + String(joinDate).slice(11, 16)}
+							</span>
+						</p>
+						<p>
+							<span style={{ marginRight: "1rem" }}>
+								{follows.length} <span className="grey">Following</span>
+							</span>
+							<span>
+								{followers.length} <span className="grey">Followers</span>
+							</span>
+						</p>
+					</div>
+					<div className="profile-feed-selector-container">
+						<NavLink
+							to={`${url}`}
+							className="profile-feed-selector"
+							activeClassName="p-f-s-active"
+						>
+							Tweets
+						</NavLink>
+						<NavLink
+							to={`${url}/with_replies`}
+							className="profile-feed-selector"
+							activeClassName="p-f-s-active"
+						>
+							Tweets & replies
+						</NavLink>
+						<NavLink
+							to={`${url}/media`}
+							className="profile-feed-selector"
+							activeClassName="p-f-s-active"
+						>
+							Media
+						</NavLink>
+						<NavLink
+							to={`${url}/likes`}
+							className="profile-feed-selector"
+							activeClassName="p-f-s-active"
+						>
+							Likes
+						</NavLink>
+					</div>
 				</div>
-				<div className="profile-feed-selector-container">
-					<NavLink
-						to={`${url}`}
-						className="profile-feed-selector"
-						activeClassName="p-f-s-active"
-					>
-						Tweets
-					</NavLink>
-					<NavLink
-						to={`${url}/with_replies`}
-						className="profile-feed-selector"
-						activeClassName="p-f-s-active"
-					>
-						Tweets & replies
-					</NavLink>
-					<NavLink
-						to={`${url}/media`}
-						className="profile-feed-selector"
-						activeClassName="p-f-s-active"
-					>
-						Media
-					</NavLink>
-					<NavLink
-						to={`${url}/likes`}
-						className="profile-feed-selector"
-						activeClassName="p-f-s-active"
-					>
-						Likes
-					</NavLink>
-				</div>
-			</div> : <LoaderContainer />}
-			{/* <Feed tweetDatas={tweetDatas} /> */}
+			) : (
+				<LoaderContainer />
+			)}
 
 			<Switch>
-				<Route exact path={path}>
+				<Route path={`${url}/:anythingmygod`}>
 					<Feed tweetDatas={tweetDatas} />
 				</Route>
-				<Route path={`${path}/:anythingmygod`}>
-					<p>yo</p>
+
+				<Route path={`${url}/with_replies`}>
+					<Feed tweetDatas={tweetDatas} />
 				</Route>
 
-				<Route path={`${path}/with_replies`}>
-					<p>yo</p>
+				<Route path={`${url}/media`}>
+					<Feed tweetDatas={tweetDatas} />
 				</Route>
 
-				<Route path={`${path}/media`}>
-					<p>yo</p>
+				<Route path={`${url}/likes`}>
+					<Feed tweetDatas={tweetDatas} />
 				</Route>
 
-				<Route path={`${path}/likes`}>
-					<p>yo</p>
-				</Route>
-
-				<Route path={path}>
+				<Route exact path={url}>
 					<Feed tweetDatas={tweetDatas} />
 				</Route>
 			</Switch>

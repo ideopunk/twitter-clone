@@ -19,6 +19,7 @@ const App = () => {
 	const [userTweets, setUserTweets] = useState([]);
 	const [userLikes, setUserLikes] = useState([]);
 	const [checked, setChecked] = useState(false);
+	const [allAts, setAllAts] = useState([])
 
 	// listen for auth status changes
 	useEffect(() => {

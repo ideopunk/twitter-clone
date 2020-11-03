@@ -9,6 +9,7 @@ import LoginCard from "./reusables/LoginCard";
 import FollowSuggests from "./reusables/FollowSuggests";
 import TOS from "./reusables/TOS";
 import UserContext from "./context/context.js";
+import NotFound from "./NotFound";
 const Home = lazy(() => import("./Home"));
 const Profile = lazy(() => import("./Profile"));
 const Explore = lazy(() => import("./Explore"));
@@ -34,10 +35,10 @@ const Main = (props) => {
 						<Route exact path="/messages">
 							<Messages />
 						</Route>
-						<Route exact path="/:profile">
+						<Route path="/:profile">
 							<Profile />
 						</Route>
-						<Route path="/">
+						<Route exact path="/">
 							<Home />
 						</Route>
 					</Switch>
