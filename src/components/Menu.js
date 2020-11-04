@@ -138,21 +138,17 @@ const Menu = (props) => {
 };
 
 const Dropdown = () => {
-
 	const { userID } = useContext(UserContext);
-	
-	
 
-	const deleteAccount= (userID) => {
-		import("./functions/deleteAccount.js").then((deleteTweet) =>
-			deleteTweet.default(userID)
-		);
+	const deleteAccount = (userID) => {
+		import("./functions/deleteAccount.js").then((deleteTweet) => deleteTweet.default(userID));
 	};
 
 	return (
 		<form className="modal">
-			Would you like to delete your account and all of your tweets? Replies to your tweets will not be deleted.
-			<input type="submit" onClick={deleteAccount}/>
+			Would you like to delete your account and all of your tweets? Replies to your tweets
+			will not be deleted.
+			<input type="submit" onClick={() => deleteAccount(userID)} />
 		</form>
 	);
 };

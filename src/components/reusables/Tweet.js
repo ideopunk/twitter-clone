@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 
 import { storage } from "../../config/fbConfig";
 import UserContext from "../context/context.js";
 import Leaf from "../../assets/leaf-outline.svg";
+import LoaderContainer from "./LoaderContainer";
 
 import { ReactComponent as Quote } from "../../assets/quote-outline.svg";
 import { ReactComponent as Retweet } from "../../assets/retweet-icon.svg";
@@ -11,13 +12,27 @@ import { ReactComponent as Like } from "../../assets/like-icon.svg";
 import { ReactComponent as LikeFilled } from "../../assets/like-icon-filled.svg";
 import { ReactComponent as Copy } from "../../assets/copy-icon.svg";
 import { ReactComponent as Dots } from "../../assets/dots.svg";
+const Cover = lazy(() => import("./Cover"));
+const Composer = lazy(() => import("./Composer"));
 
 const Tweet = (props) => {
 	const [image, setImage] = useState("");
 	const [timeSince, setTimeSince] = useState(null);
 	const [dropdown, setDropdown] = useState(false);
-
-	const { name, at, time, text, retweets, likes, replying, tweetID, tweeterID } = props;
+	const [reply, setReply] = useState(false);
+	const {
+		name,
+		at,
+		time,
+		text,
+		retweets,
+		likes,
+		replyAt,
+		replyTo,
+		replies,
+		tweetID,
+		tweeterID,
+	} = props;
 	const { userID, userLikes, userFollows, userTweets, userRetweets } = useContext(UserContext);
 
 	const liked = likes && likes.includes(userID); // has the user liked this tweet?
@@ -25,6 +40,7 @@ const Tweet = (props) => {
 	const isRetweet = userRetweets.includes(tweetID);
 	const likeAmount = likes ? likes.length : "";
 	const retweetsAmount = retweets ? retweets.length : "";
+	const repliesAmount = replies ? replies.length : "";
 
 	// tweet rendered
 	useEffect(() => {
@@ -50,6 +66,10 @@ const Tweet = (props) => {
 
 	const toggleDropdown = () => {
 		setDropdown(!dropdown);
+	};
+
+	const toggleReply = () => {
+		setReply(!reply);
 	};
 
 	const deleteTweet = () => {
@@ -120,11 +140,12 @@ const Tweet = (props) => {
 						<Dots className="dots" onClick={toggleDropdown} />
 					</div>
 				</div>
-				{replying ? <p className="tweet-reply">Replying to {replying}</p> : ""}
+				{replyAt ? <p className="tweet-reply">Replying to {replyAt}</p> : ""}
 				<p className="tweet-text">{text}</p>
 				<div className="tweet-responses">
-					<div className="tweet-svg-div grey reply-div">
+					<div className="tweet-svg-div grey reply-div" onClick={toggleReply}>
 						<Quote />
+						{repliesAmount}
 					</div>
 					<div
 						className={`tweet-svg-div grey retweet-div ${
@@ -148,6 +169,13 @@ const Tweet = (props) => {
 					</div>
 				</div>
 			</div>
+			{reply && (
+				<Suspense fallback={<LoaderContainer />}>
+					<Cover toggle={toggleReply}>
+						<Composer modal={true} replyData={props} />
+					</Cover>
+				</Suspense>
+			)}
 		</div>
 	);
 };

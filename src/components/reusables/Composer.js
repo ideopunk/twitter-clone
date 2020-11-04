@@ -8,10 +8,11 @@ import { ReactComponent as Emoji } from "../../assets/emoji-icon.svg";
 import { ReactComponent as Schedule } from "../../assets/schedule-icon.svg";
 import { db } from "../../config/fbConfig";
 import UserContext from "../context/context.js";
-import ComposerCircle from './ComposerCircle';
+import ComposerCircle from "./ComposerCircle";
 
 const Composer = (props) => {
-	const { modal } = props;
+	const { modal, replyData } = props;
+
 	const { userName, userAt, userID, userImage, userTweets } = useContext(UserContext);
 
 	const [text, setText] = useState("");
@@ -19,20 +20,29 @@ const Composer = (props) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		console.log("hand sub");
-		db.collection("tweets")
-			.add({
-				name: userName,
-				text: text,
-				at: userAt,
-				userID: userID,
-				timeStamp: new Date(),
-			})
-			.then((newTweet) => {
-				console.log(newTweet);
-				db.collection("users")
-					.doc(userID)
-					.update({ tweets: [...userTweets, newTweet.id] });
-			});
+		if (replyData) {
+			const {tweetID} = replyData
+			db.collection("tweets")
+				.add({
+					name: userName,
+					text: text,
+					at: userAt,
+					userID: userID,
+					timeStamp: new Date(),
+					replyTo: replyData.tweetID,
+					replyAt: replyData.at
+				})
+				.then((newTweet) => {
+					console.log(newTweet);
+					db.collection("users")
+						.doc(userID)
+						.update({ tweets: [...userTweets, newTweet.id] });
+				});
+		} else {
+			import("../functions/simpleTweet.js").then((simpleTweet) =>
+				simpleTweet.default(userName, text, userAt, userID, userTweets)
+			);
+		}
 	};
 
 	const handleChange = (e) => {
@@ -70,7 +80,7 @@ const Composer = (props) => {
 						<Schedule />
 					</div>
 					<div className="composer-circle-container">
-						{text && <ComposerCircle length={text.length}/>}
+						{text && <ComposerCircle length={text.length} />}
 					</div>
 					<input
 						className={`btn tweet-btn ${text ? `active-button` : ""}`}
