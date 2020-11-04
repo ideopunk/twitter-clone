@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { auth } from "../config/fbConfig";
+import { db, auth } from "../config/fbConfig";
 import Composer from "./reusables/Composer";
 import Cover from "./reusables/Cover";
 import UserContext from "./context/context.js";
@@ -18,6 +18,7 @@ const Menu = (props) => {
 	const { userName, userAt, userID, userImage } = useContext(UserContext);
 
 	const [composer, setComposer] = useState(false);
+	const [dropdown, setDropdown] = useState(false);
 
 	const signOut = () => {
 		auth.signOut().then(() => {
@@ -26,9 +27,14 @@ const Menu = (props) => {
 	};
 
 	const toggleComposer = () => {
+		setDropdown(false);
 		setComposer(!composer);
 	};
 
+	const toggleDropdown = () => {
+		setComposer(false);
+		setDropdown(!dropdown);
+	};
 	return (
 		<>
 			<ul className="menu">
@@ -92,12 +98,12 @@ const Menu = (props) => {
 						<span className="menu-item-text">Profile</span>
 					</NavLink>
 				</li>
-				
+
 				<li>
-					<NavLink activeClassName="menu-item-active" to="/more" className="menu-item">
+					<div className="menu-item" onClick={toggleDropdown}>
 						<MoreIcon />
 						<span className="menu-item-text">More</span>
-					</NavLink>
+					</div>
 				</li>
 				<li>
 					<button className="btn" onClick={toggleComposer}>
@@ -117,14 +123,37 @@ const Menu = (props) => {
 					</li>
 				)}
 			</ul>
-			{composer ? (
+			{composer && (
 				<Cover toggle={toggleComposer}>
 					<Composer modal={true} />
 				</Cover>
-			) : (
-				""
+			)}
+			{dropdown && (
+				<Cover toggle={toggleDropdown}>
+					<Dropdown />
+				</Cover>
 			)}
 		</>
+	);
+};
+
+const Dropdown = () => {
+
+	const { userID } = useContext(UserContext);
+	
+	
+
+	const deleteAccount= (userID) => {
+		import("./functions/deleteAccount.js").then((deleteTweet) =>
+			deleteTweet.default(userID)
+		);
+	};
+
+	return (
+		<form className="modal">
+			Would you like to delete your account and all of your tweets? Replies to your tweets will not be deleted.
+			<input type="submit" onClick={deleteAccount}/>
+		</form>
 	);
 };
 

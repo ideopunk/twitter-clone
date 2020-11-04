@@ -21,8 +21,6 @@ const App = () => {
 	const [userRetweets, setUserRetweets] = useState([]);
 	const [userBio, setUserBio] = useState("");
 	const [userJoinDate, setUserJoinDate] = useState({});
-	const [checked, setChecked] = useState(false);
-	const [allAts, setAllAts] = useState([]);
 
 	// listen for auth status changes
 	useEffect(() => {
@@ -49,7 +47,6 @@ const App = () => {
 						data.retweets && setUserRetweets(data.retweets);
 						data.bio && setUserBio(data.bio);
 						setUserJoinDate(data.joinDate);
-						setChecked(true);
 					});
 
 				// set user image and header,
@@ -60,9 +57,7 @@ const App = () => {
 					.catch(() => {
 						setUserImage(Leaf);
 					});
-			} else {
-				setChecked(true);
-			}
+			} 
 		});
 	}, []);
 

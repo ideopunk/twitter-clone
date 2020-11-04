@@ -1,7 +1,6 @@
 import { db } from "../../config/fbConfig";
 
-const unfollow = (e, userID, userFollows) => {
-	const doomedAccount = e.target.getAttribute("value");
+const unfollow = (doomedAccount, userID, userFollows) => {
 
 	db.collection("users")
 		.doc(doomedAccount)

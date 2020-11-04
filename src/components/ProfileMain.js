@@ -54,14 +54,7 @@ const ProfileMain = (props) => {
 					.then((doc) => {
 						const data = doc.data();
 
-						// if they've got bio and website, add em in.
-						// data.bio && setBio(data.bio);
-						// data.website && setWebsite(data.website);
-						// data.joinDate && setJoinDate(new Date(data.joinDate.seconds * 1000));
-						// setFollowers(data.followers);
-						// setFollows(data.follows);
-						// setAt(data.at);
-						// setName(data.name);
+
 						setProfileData((prevData) => ({
 							...prevData,
 							at: data.at,

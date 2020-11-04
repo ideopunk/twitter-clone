@@ -1,7 +1,6 @@
 import { db } from "../../config/fbConfig";
 
-const deleteTweet = (e, userTweets, userID) => {
-    const doomedTweet = e.target.getAttribute("value");
+const deleteTweet = (doomedTweet, userTweets, userID) => {
     const newList = userTweets.filter((tweet) => tweet !== doomedTweet);
     db.collection("users")
         .doc(userID)
