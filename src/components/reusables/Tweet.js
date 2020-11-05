@@ -172,7 +172,7 @@ const Tweet = (props) => {
 			{reply && (
 				<Suspense fallback={<LoaderContainer />}>
 					<Cover toggle={toggleReply}>
-						<Composer modal={true} replyData={props} />
+						<Composer modal={true} replyData={props} replyImage={image} replyTimeSince={timeSince}/>
 					</Cover>
 				</Suspense>
 			)}

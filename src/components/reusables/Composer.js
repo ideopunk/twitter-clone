@@ -11,7 +11,7 @@ import UserContext from "../context/context.js";
 import ComposerCircle from "./ComposerCircle";
 
 const Composer = (props) => {
-	const { modal, replyData } = props;
+	const { modal, replyData, replyImage } = props;
 
 	const { userName, userAt, userID, userImage, userTweets } = useContext(UserContext);
 
@@ -21,7 +21,7 @@ const Composer = (props) => {
 		e.preventDefault();
 		console.log("hand sub");
 		if (replyData) {
-			const {tweetID} = replyData
+			const { tweetID } = replyData;
 			db.collection("tweets")
 				.add({
 					name: userName,
@@ -30,7 +30,7 @@ const Composer = (props) => {
 					userID: userID,
 					timeStamp: new Date(),
 					replyTo: replyData.tweetID,
-					replyAt: replyData.at
+					replyAt: replyData.at,
 				})
 				.then((newTweet) => {
 					console.log(newTweet);
@@ -52,6 +52,20 @@ const Composer = (props) => {
 
 	return (
 		<form className={`${modal && `modal`} composer`}>
+			{replyData && (
+				<>
+					<img src={replyImage} alt="user-profile" className="profile-image" />
+					<div className="tweet-main">
+						<div className="tweet-top-data">
+							<span className="tweeter-name">{replyData.name}</span>
+							<span className="tweeter-at">{replyData.at}</span>
+							<span className="tweet-time grey">{replyData.timeSince}</span>
+						</div>
+						<p className="tweet-text">{text}</p>
+					</div>
+				</>
+			)}
+
 			<Link to={`/${userAt}`}>
 				<img src={userImage} alt="user-profile" className="profile-image" />
 			</Link>
