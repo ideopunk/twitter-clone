@@ -1,7 +1,7 @@
 import React from "react";
 import { ReactComponent as SideArrow } from "../assets/side-arrow-icon.svg";
 
-import { Link, useRouteMatch, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const NotFound = (props) => {
 	const { at } = props;

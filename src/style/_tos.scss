@@ -1,6 +1,18 @@
 .TOS-link {
+    margin-top: 1rem;
     color: grey;
     text-decoration: none;
     margin-right: 0.5rem;
     line-height: 1.4;
+}
+
+.TOS-link * {
+    text-decoration: none;
+    color: $sitecolor;
+    font-weight: bold;
+    transition: $lighttransition;
+}
+
+.TOS-link *:hover {
+    color: black;
 }
