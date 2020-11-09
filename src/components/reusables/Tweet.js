@@ -20,6 +20,8 @@ const Tweet = (props) => {
 	const [timeSince, setTimeSince] = useState(null);
 	const [dropdown, setDropdown] = useState(false);
 	const [reply, setReply] = useState(false);
+	const [imageLoaded, setImageLoaded] = useState(false);
+
 	const {
 		name,
 		at,
@@ -109,11 +111,20 @@ const Tweet = (props) => {
 			);
 	};
 
+	const imageLoad = () => {
+		setImageLoaded(true);
+	};
+
 	return (
-		<div className="tweet">
+		<div className={`tweet ${!imageLoaded && "hide"}`}>
 			<Link to={`/${at}`}>
 				{image ? (
-					<img className="profile-image" alt="user-profile" src={image} />
+					<img
+						className="profile-image"
+						alt="user-profile"
+						src={image}
+						onLoad={imageLoad}
+					/>
 				) : (
 					<div className="profile-image" />
 				)}
@@ -172,7 +183,12 @@ const Tweet = (props) => {
 			{reply && (
 				<Suspense fallback={<LoaderContainer />}>
 					<Cover toggle={toggleReply}>
-						<Composer modal={true} replyData={props} replyImage={image} replyTimeSince={timeSince}/>
+						<Composer
+							modal={true}
+							replyData={props}
+							replyImage={image}
+							replyTimeSince={timeSince}
+						/>
 					</Cover>
 				</Suspense>
 			)}

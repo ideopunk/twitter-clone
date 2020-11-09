@@ -51,9 +51,9 @@ const Composer = (props) => {
 	};
 
 	return (
-		<form className={`${modal && `modal`} composer`}>
+		<form className={`${modal && `modal`} ${!replyData && "composer"}`}>
 			{replyData && (
-				<>
+				<div className="composer" style={{ border: "0" }}>
 					<img src={replyImage} alt="user-profile" className="profile-image" />
 					<div className="tweet-main">
 						<div className="tweet-top-data">
@@ -61,48 +61,52 @@ const Composer = (props) => {
 							<span className="tweeter-at">{replyData.at}</span>
 							<span className="tweet-time grey">{replyData.timeSince}</span>
 						</div>
-						<p className="tweet-text">{text}</p>
+						<p className="tweet-text">{replyData.text}</p>
+						<p>
+							Replying to <Link to={`/${replyData.at}`}>{replyData.at}</Link>
+						</p>
 					</div>
-				</>
+				</div>
 			)}
-
-			<Link to={`/${userAt}`}>
-				<img src={userImage} alt="user-profile" className="profile-image" />
-			</Link>
-			<div className="composer-right">
-				<input
-					maxLength={280}
-					required
-					className="composer-input"
-					placeholder="What's happening?"
-					onChange={handleChange}
-				/>
-				<div className="composer-options">
-					<div className="composer-icon-div">
-						<Picture />
-					</div>
-					<div className="composer-icon-div">
-						<Gif />
-					</div>
-					<div className="composer-icon-div">
-						<Poll />
-					</div>
-					<div className="composer-icon-div">
-						<Emoji />
-					</div>
-					<div className="composer-icon-div">
-						<Schedule />
-					</div>
-					<div className="composer-circle-container">
-						{text && <ComposerCircle length={text.length} />}
-					</div>
+			<div className={replyData && "composer"}>
+				<Link to={`/${userAt}`}>
+					<img src={userImage} alt="user-profile" className="profile-image" />
+				</Link>
+				<div className="composer-right">
 					<input
-						className={`btn tweet-btn ${text ? `active-button` : ""}`}
-						style={{ width: "100px", marginLeft: "auto" }}
-						type="submit"
-						onClick={handleSubmit}
-						value="Tweet"
+						maxLength={280}
+						required
+						className="composer-input"
+						placeholder={replyData ? "Tweet your reply" : "What's happening?"}
+						onChange={handleChange}
 					/>
+					<div className="composer-options">
+						<div className="composer-icon-div">
+							<Picture />
+						</div>
+						<div className="composer-icon-div">
+							<Gif />
+						</div>
+						<div className="composer-icon-div">
+							<Poll />
+						</div>
+						<div className="composer-icon-div">
+							<Emoji />
+						</div>
+						<div className="composer-icon-div">
+							<Schedule />
+						</div>
+						<div className="composer-circle-container">
+							{text && <ComposerCircle length={text.length} />}
+						</div>
+						<input
+							className={`btn tweet-btn ${text ? `active-button` : ""}`}
+							style={{ width: "100px", marginLeft: "auto" }}
+							type="submit"
+							onClick={handleSubmit}
+							value={replyData ? "Reply" : "Tweet"}
+						/>
+					</div>
 				</div>
 			</div>
 		</form>

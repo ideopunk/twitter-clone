@@ -13,9 +13,16 @@ import Leaf from "../assets/leaf-outline.svg";
 import LoaderContainer from "./reusables/LoaderContainer";
 
 const ProfileMain = (props) => {
-	const { userImage, userName, userAt, userID, userFollows, userFollowers, userBio, userJoinDate } = useContext(
-		UserContext
-	);
+	const {
+		userImage,
+		userName,
+		userAt,
+		userID,
+		userFollows,
+		userFollowers,
+		userBio,
+		userJoinDate,
+	} = useContext(UserContext);
 
 	const { path, url } = useRouteMatch();
 
@@ -25,6 +32,8 @@ const ProfileMain = (props) => {
 	const [tweetDatas, setTweetDatas] = useState([]);
 	const [editor, setEditor] = useState(false);
 	const [followed, setFollowed] = useState("");
+	const [imageLoaded, setImageLoaded] = useState(false);
+
 
 	// consoling
 	useEffect(() => {
@@ -35,7 +44,7 @@ const ProfileMain = (props) => {
 	// set user data
 	useEffect(() => {
 		console.log("set user data");
-		console.log(userJoinDate)
+		console.log(userJoinDate);
 		userProfile
 			? setProfileData({
 					at: userAt,
@@ -45,7 +54,7 @@ const ProfileMain = (props) => {
 					id: userID,
 					image: userImage,
 					bio: userBio,
-					joinDate: new Date(userJoinDate.seconds * 1000)
+					joinDate: new Date(userJoinDate.seconds * 1000),
 			  })
 			: db
 					.collection("users")
@@ -53,7 +62,6 @@ const ProfileMain = (props) => {
 					.get()
 					.then((doc) => {
 						const data = doc.data();
-
 
 						setProfileData((prevData) => ({
 							...prevData,
@@ -67,7 +75,18 @@ const ProfileMain = (props) => {
 							joinDate: new Date(data.joinDate.seconds * 1000),
 						}));
 					});
-	}, [userProfile, profileID, userImage, userAt, userID, userName, userBio, userJoinDate, userFollowers, userFollows]);
+	}, [
+		userProfile,
+		profileID,
+		userImage,
+		userAt,
+		userID,
+		userName,
+		userBio,
+		userJoinDate,
+		userFollowers,
+		userFollows,
+	]);
 
 	// set header
 	useEffect(() => {
@@ -139,9 +158,14 @@ const ProfileMain = (props) => {
 		setEditor(!editor);
 	};
 
+	const imageLoad = () => {
+		console.log("image load")
+		setImageLoaded(true)
+	}
+
 	return (
 		<>
-			<div className="profile-header">
+			<div className={`profile-header ${!imageLoaded && "hide"}`}>
 				<Link
 					to="/"
 					className="profile-home-link"
@@ -153,7 +177,7 @@ const ProfileMain = (props) => {
 						<p className="grey">{tweetDatas.length} tweets</p>
 					</div>
 				</Link>
-				<img className="profile-header-image" src={profileData.header} alt="header" />
+				<img className="profile-header-image" src={profileData.header} onLoad={imageLoad} alt="header" />
 				<div className="profile-card">
 					<img className="main-image" src={profileData.image} alt="profile" />
 					{userProfile ? (
@@ -167,7 +191,11 @@ const ProfileMain = (props) => {
 							</button>
 						</div>
 					) : (
-						<FollowButton tweeterID={profileID} followed={followed} />
+						<FollowButton
+							tweeterID={profileID}
+							followed={followed}
+							style={{ height: "3rem" }}
+						/>
 					)}
 					<h3>{profileData.name}</h3>
 					<p className="grey">{profileData.at}</p>
