@@ -10,6 +10,7 @@ const simpleTweet = (props) => {
 			at: userAt,
 			userID: userID,
 			timeStamp: new Date(),
+			retweets: [],
 		})
 		.then((newTweet) => {
 			console.log(newTweet);
