@@ -3,7 +3,9 @@ import { ReactComponent as SideArrow } from "../assets/side-arrow-icon.svg";
 
 import { Link, useRouteMatch, useLocation } from "react-router-dom";
 
-const NotFound = () => {
+const NotFound = (props) => {
+	const { at } = props;
+
 	console.log(useLocation());
 	return (
 		<div className="profile center-feed">
@@ -19,13 +21,15 @@ const NotFound = () => {
 					</div>
 				</Link>
 				<div className="profile-header-image" />
-				<div className="profile-card">
-					<h3>Filler</h3>
+				<div className="profile-card" style={{paddingTop: "5rem"}}>
+					<div className="fake-image"/>
+
+					<h3>{at}</h3>
 				</div>
 			</div>
-			<div className="feed">
-				<h3>This account doesn't exist lol</h3>
-                <p>Try searching for another.</p>
+			<div className="center" style={{ flexDirection: "column", paddingTop: "3rem" }}>
+				<h3 style={{ marginBottom: "1rem" }}>This account doesn't exist lol</h3>
+				<p>Try searching for another.</p>
 			</div>
 		</div>
 	);

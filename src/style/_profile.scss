@@ -29,7 +29,7 @@
 	min-height: 200px;
 	height: 200px;
 	object-fit: fill;
-	background-color: grey;
+	background-color: rgb(204, 214, 221);
 }
 
 .profile-card {
@@ -59,6 +59,19 @@
 	position: absolute;
 	top: -3rem;
 	left: 1rem;
+}
+
+.fake-image {
+	object-fit: contain;
+	width: 7rem;
+	height: 7rem;
+	border-radius: 50%;
+	border: 3px solid white;
+	background: lighten($sitegrey, 45%);
+	box-sizing: border-box;
+	position: absolute;
+	top: -3rem;
+	left: 1rem;	
 }
 
 .main-image-camera {
