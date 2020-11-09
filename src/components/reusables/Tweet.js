@@ -35,7 +35,9 @@ const Tweet = (props) => {
 		tweetID,
 		tweeterID,
 	} = props;
-	const { userID, userLikes, userFollows, userTweets, userRetweets } = useContext(UserContext);
+	const { userID, userAt, userLikes, userFollows, userTweets, userRetweets } = useContext(
+		UserContext
+	);
 
 	const liked = likes && likes.includes(userID); // has the user liked this tweet?
 	const followed = userFollows.includes(tweeterID); // does the user follow this tweet?
@@ -47,7 +49,7 @@ const Tweet = (props) => {
 
 	useEffect(() => {
 		if (retweets.includes(userID)) {
-			setRetweetedBy(at);
+			setRetweetedBy(userAt);
 		} else if (retweets.length > 0) {
 			db.collection("users")
 				.doc(retweets[retweets.length - 1])
@@ -133,7 +135,9 @@ const Tweet = (props) => {
 
 	return (
 		<div className={`tweet ${!imageLoaded && "hide"}`}>
-			{retweetedBy && <p className="retweeted-by">Retweeted by {retweetedBy}</p>}
+			<Link to={`/${retweetedBy}`}>
+				{retweetedBy && <p className="retweeted-by">Retweeted by {retweetedBy}</p>}
+			</Link>
 			<div className="tweet-inside">
 				<Link to={`/${at}`}>
 					{image ? (
