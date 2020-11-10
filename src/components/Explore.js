@@ -13,7 +13,11 @@ const Explore = () => {
 			.then((snapshot) => {
 				let tempArray = [];
 				snapshot.forEach((doc) => {
-					tempArray.push({ ...doc.data(), id: doc.id });
+
+					// don't include replies
+					if (!doc.data().replyTo) {
+						tempArray.push({ ...doc.data(), id: doc.id });
+					}
 				});
 				return tempArray;
 			})

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { ReactComponent as Picture } from "../../assets/picture-icon.svg";
@@ -22,22 +22,9 @@ const Composer = (props) => {
 		console.log("hand sub");
 		if (replyData) {
 			const { tweetID } = replyData;
-			db.collection("tweets")
-				.add({
-					name: userName,
-					text: text,
-					at: userAt,
-					userID: userID,
-					timeStamp: new Date(),
-					replyTo: replyData.tweetID,
-					replyAt: replyData.at,
-				})
-				.then((newTweet) => {
-					console.log(newTweet);
-					db.collection("users")
-						.doc(userID)
-						.update({ tweets: [...userTweets, newTweet.id] });
-				});
+			import("../functions/reply.js").then((reply) =>
+				reply.default({ tweetID, userName, userID, userAt, userTweets, text })
+			);
 		} else {
 			import("../functions/simpleTweet.js").then((simpleTweet) =>
 				simpleTweet.default(userName, text, userAt, userID, userTweets)
@@ -45,13 +32,17 @@ const Composer = (props) => {
 		}
 	};
 
+	useEffect(() => {
+		console.log(replyData);
+	}, [replyData]);
+
 	const handleChange = (e) => {
 		console.log(e.target.value);
 		setText(e.target.value);
 	};
 
 	return (
-		<form className={`${modal && `modal`} ${!replyData && "composer"}`}>
+		<form className={`${modal ? `modal` : ""} ${replyData ? "" : "composer"}`}>
 			{replyData && (
 				<div className="composer" style={{ border: "0" }}>
 					<img src={replyImage} alt="user-profile" className="profile-image" />
@@ -68,7 +59,7 @@ const Composer = (props) => {
 					</div>
 				</div>
 			)}
-			<div className={replyData && "composer"}>
+			<div className={replyData ? "composer" : "flex"}>
 				<Link to={`/${userAt}`}>
 					<img src={userImage} alt="user-profile" className="profile-image" />
 				</Link>

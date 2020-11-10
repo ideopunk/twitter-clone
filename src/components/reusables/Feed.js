@@ -21,6 +21,7 @@ const Feed = (props) => {
 				replyTo={tweet.replyTo}
 				likes={tweet.likes}
 				getReplies={getReplies}
+				replies={tweet.replies}
 			/>
 		);
 	});

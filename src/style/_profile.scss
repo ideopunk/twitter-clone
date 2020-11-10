@@ -1,9 +1,15 @@
 .profile-header {
 	border-bottom: $siteborder;
+	width: 100%;
 }
 
 .profile-home-link {
 	display: flex;
+	position: fixed;
+	z-index: 1;
+	background-color: white;
+	box-sizing: border-box;
+	width: 600px;
 }
 
 .side-arrow {

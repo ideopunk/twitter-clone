@@ -11,9 +11,7 @@ import Feed from "./reusables/Feed";
 import LoginCard from "./reusables/LoginCard";
 
 const Home = (props) => {
-	const { userID } = useContext(
-		UserContext
-	);
+	const { userID } = useContext(UserContext);
 
 	const [tweetDatas, setTweetDatas] = useState([]);
 
@@ -42,8 +40,9 @@ const Home = (props) => {
 						console.log(tempArray);
 						let finalArray = [];
 						snapshot.forEach((doc) => {
-							tempArray.includes(doc.id) &&
+							if (tempArray.includes(doc.id) && !doc.data().replyTo) {
 								finalArray.push({ ...doc.data(), id: doc.id });
+							}
 						});
 						console.log(finalArray);
 						setTweetDatas(finalArray);

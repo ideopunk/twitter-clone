@@ -64,8 +64,7 @@ const Tweet = (props) => {
 	// tweet rendered
 	useEffect(() => {
 		console.log("rendered");
-		console.log("replyto: " + replyTo);
-	}, [replyTo]);
+	}, []);
 
 	// get picture for tweet, set to Leaf if no picture found.
 	useEffect(() => {

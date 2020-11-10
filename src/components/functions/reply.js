@@ -1,8 +1,8 @@
 import { db } from "../../config/fbConfig";
 
 const reply = (props) => {
-	const { userName, text, userAt, userID, userTweets, tweetID } = props;
-
+	console.log(props);
+	const { tweetID, userName, text, userAt, userID, userTweets } = props;
 	db.collection("tweets")
 		//create the new tweet
 		.add({
@@ -19,7 +19,7 @@ const reply = (props) => {
 			console.log(newTweet);
 			db.collection("users")
 				.doc(userID)
-				.update({ tweets: [...userTweets, newTweet.id] });
+				.update({ tweets: [...userTweets || [], newTweet.id] });
 			return newTweet;
 
 			// add it to list of replied-to-tweet's replies. you know??
@@ -30,7 +30,9 @@ const reply = (props) => {
 				.get()
 				.then((originalTweet) => {
 					const originalReplies = originalTweet.replies;
-					const newReplies = [...originalReplies, newTweet.id]; // it's okay if there are duplicates, people can reply to a tweet multiple times.
+					console.log(originalReplies);
+					const newReplies = [...originalReplies || [], newTweet.id]; // it's okay if there are duplicates, people can reply to a tweet multiple times.
+					console.log(newReplies);
 					db.collection("tweets").doc(tweetID).update({ replies: newReplies });
 				});
 		});
