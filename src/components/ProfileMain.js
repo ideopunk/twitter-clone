@@ -34,17 +34,18 @@ const ProfileMain = (props) => {
 	const [followed, setFollowed] = useState("");
 	const [imageLoaded, setImageLoaded] = useState(false);
 
-
 	// consoling
 	useEffect(() => {
 		console.log("profiledata");
 		console.log(profileData);
 	}, [profileData]);
 
-	// set user data
+	// set profile data
 	useEffect(() => {
 		console.log("set user data");
 		console.log(userJoinDate);
+
+		// if it's the current user's profile...
 		userProfile
 			? setProfileData({
 					at: userAt,
@@ -56,7 +57,8 @@ const ProfileMain = (props) => {
 					bio: userBio,
 					joinDate: new Date(userJoinDate.seconds * 1000),
 			  })
-			: db
+			: // if it's somebody else...
+			  db
 					.collection("users")
 					.doc(profileID)
 					.get()
@@ -97,32 +99,28 @@ const ProfileMain = (props) => {
 				.ref("header_pictures/" + profileID + ".png")
 				.getDownloadURL()
 				.then((url) => {
-					// setHeader(url);
 					setProfileData((prevData) => ({ ...prevData, header: url }));
 				})
 				.catch((e) => {
 					console.log(e);
-					// setHeader(EllipsisFilled);
 					setProfileData((prevData) => ({ ...prevData, header: EllipsisFilled }));
 				});
 	}, [profileID, profileData.header]);
 
 	// set profile picture
 	useEffect(() => {
-		console.log("set pro pic");
-
 		userProfile
-			? setProfileData((prevData) => ({ ...prevData, image: userImage }))
-			: storage
+			? // if it's the user's profile...
+			  setProfileData((prevData) => ({ ...prevData, image: userImage }))
+			: // if it's not...
+			  storage
 					.ref("profile_pictures/" + profileID + ".png")
 					.getDownloadURL()
 					.then((url) => {
-						// setPropic(url);
 						setProfileData((prevData) => ({ ...prevData, image: url }));
 					})
 					.catch((e) => {
 						console.log(e);
-						// setPropic(Leaf);
 						setProfileData((prevData) => ({ ...prevData, image: Leaf }));
 					});
 	}, [userProfile, userImage, profileID]);
@@ -143,7 +141,24 @@ const ProfileMain = (props) => {
 				return tempArray;
 			})
 			.then((tempArray) => {
-				setTweetDatas(tempArray);
+				setTweetDatas((t) => [...t, ...tempArray]);
+			});
+
+		// add retweets
+		db.collection("tweets")
+			.where("retweets", "array-contains", profileID)
+			.orderBy("timeStamp", "desc")
+			.limit(50)
+			.get()
+			.then((snapshot) => {
+				let tempArray = [];
+				snapshot.forEach((doc) => {
+					tempArray.push({ ...doc.data(), id: doc.id });
+				});
+				return tempArray;
+			})
+			.then((tempArray) => {
+				setTweetDatas((t) => [...t, ...tempArray]);
 			});
 	}, [profileID]);
 
@@ -159,9 +174,9 @@ const ProfileMain = (props) => {
 	};
 
 	const imageLoad = () => {
-		console.log("image load")
-		setImageLoaded(true)
-	}
+		console.log("image load");
+		setImageLoaded(true);
+	};
 
 	return (
 		<>
@@ -177,7 +192,12 @@ const ProfileMain = (props) => {
 						<p className="grey">{tweetDatas.length} tweets</p>
 					</div>
 				</Link>
-				<img className="profile-header-image" src={profileData.header} onLoad={imageLoad} alt="header" />
+				<img
+					className="profile-header-image"
+					src={profileData.header}
+					onLoad={imageLoad}
+					alt="header"
+				/>
 				<div className="profile-card">
 					<img className="main-image" src={profileData.image} alt="profile" />
 					{userProfile ? (

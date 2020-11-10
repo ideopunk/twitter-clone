@@ -17,6 +17,7 @@ const ProfileRoutes = () => {
 	const [profileID, setProfileID] = useState(null);
 
 	useEffect(() => {
+		console.log("userAt: " + userAt + ", urlAt: " + urlAt);
 		if (userAt === urlAt) {
 			setProfileID(userID);
 			setUserProfile(true);
@@ -25,21 +26,26 @@ const ProfileRoutes = () => {
 				.where("at", "==", urlAt)
 				.get()
 				.then((snapshot) => {
-					console.log(snapshot.data());
-					snapshot.forEach((doc) => {
-						console.log(doc);
-						setProfileID(doc.id);
-					});
-				})
-				.catch(() => setProfileID(404));
+					if (snapshot.size > 0) {
+						snapshot.forEach((doc) => {
+							console.log(doc);
+							setProfileID(doc.id);
+						});
+					} else {
+						setProfileID(404);
+					}
+				});
 		}
 	}, [urlAt, userID, userAt]);
 
-	// console.log(path, url, params);
+	useEffect(() => {
+		console.log(profileID);
+	}, [profileID]);
+
 	return (
 		<div className="profile center-feed">
 			{profileID ? (
-				!profileID === 404 ? (
+				profileID !== 404 ? (
 					<Switch>
 						<Route path={`${path}/following`}>
 							<ProfileFollows profileID={profileID} userProfile={userProfile} />
