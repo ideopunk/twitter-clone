@@ -34,12 +34,11 @@ const App = () => {
 					.get()
 					.then((snapshot) => {
 						const data = snapshot.data();
-						console.log(data);
+						console.log("app data");
 						setUserAt(data.at);
 						setUserName(data.name);
 
 						// set optional data if we have it.
-						console.log(data.joinDate)
 						data.follows && setUserFollows(data.follows);
 						data.followers && setUserFollowers(data.followers);
 						data.tweets && setUserTweets(data.tweets);

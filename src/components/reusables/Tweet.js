@@ -34,6 +34,7 @@ const Tweet = (props) => {
 		replies,
 		tweetID,
 		tweeterID,
+		big,
 	} = props;
 	const { userID, userAt, userLikes, userFollows, userTweets, userRetweets } = useContext(
 		UserContext
@@ -47,6 +48,9 @@ const Tweet = (props) => {
 	const repliesAmount = replies ? replies.length : "";
 	const [retweetedBy, setRetweetedBy] = useState("");
 
+	useEffect(() => {
+		console.log(time);
+	}, [time]);
 	// is this a retweet?
 	useEffect(() => {
 		if (retweets) {
@@ -80,7 +84,11 @@ const Tweet = (props) => {
 			});
 
 		//set how long ago the tweet was
-		import("../functions/elapser.js").then((elapser) => setTimeSince(elapser.default(time)));
+		if (time) {
+			import("../functions/elapser.js").then((elapser) =>
+				setTimeSince(elapser.default(time))
+			);
+		}
 	}, [tweeterID, time]);
 
 	const toggleDropdown = () => {
@@ -137,30 +145,66 @@ const Tweet = (props) => {
 	};
 
 	return (
-		<>
-			<div className={`tweet ${imageLoaded ? "" : "hide"} ${replyTo ? "reply-tweet" : ""}`}>
+		<div
+			className={`tweet ${imageLoaded ? "" : "hide"} ${big ? "" : "pad"} ${
+				replyTo ? "reply-tweet" : ""
+			}`}
+		>
+			{retweetedBy && (
 				<Link to={`/${retweetedBy}`}>
-					{retweetedBy && (
-						<div className="retweeted-by">
-							<Retweet />
-							<p>Retweeted by {retweetedBy}</p>
+					<div className="retweeted-by">
+						<Retweet />
+						<p>Retweeted by {retweetedBy}</p>
+					</div>
+				</Link>
+			)}
+			<div className={`tweet-inside ${big ? "big-tweet-inside" : ""}`}>
+				<Link to={`/${at}`}>
+					{big ? (
+						<div className="tweet-top-data">
+							{image ? (
+								<img
+									className={`profile-image`}
+									alt="user-profile"
+									src={image}
+									onLoad={imageLoad}
+								/>
+							) : (
+								<div className="profile-image" />
+							)}
+
+							<span className="tweeter-name">{name}</span>
+							<span className="tweeter-at">{at}</span>
+							<span className="tweet-time grey">{timeSince}</span>
+							<div style={{ marginLeft: "auto" }}>
+								{dropdown && (
+									<Dropdown
+										deleteTweet={deleteTweet}
+										unfollow={unfollow}
+										follow={follow}
+										followed={followed}
+										tweetID={tweetID}
+										userID={userID}
+										tweeterID={tweeterID}
+									/>
+								)}
+								<Dots className="dots" onClick={toggleDropdown} />
+							</div>
 						</div>
+					) : image ? (
+						<img
+							className={`profile-image`}
+							alt="user-profile"
+							src={image}
+							onLoad={imageLoad}
+						/>
+					) : (
+						<div className="profile-image" />
 					)}
 				</Link>
-				<div className="tweet-inside">
-					<Link to={`/${at}`}>
-						{image ? (
-							<img
-								className={`profile-image`}
-								alt="user-profile"
-								src={image}
-								onLoad={imageLoad}
-							/>
-						) : (
-							<div className="profile-image" />
-						)}
-					</Link>
-					<div className="tweet-main">
+
+				<Link to={`/tweet/${tweetID}`} className="tweet-main">
+					{!big && (
 						<div className="tweet-top-data">
 							<span className="tweeter-name">{name}</span>
 							<span className="tweeter-at">{at}</span>
@@ -182,50 +226,51 @@ const Tweet = (props) => {
 								<Dots className="dots" onClick={toggleDropdown} />
 							</div>
 						</div>
-						{replyAt ? <p className="tweet-reply">Replying to {replyAt}</p> : ""}
-						<p className="tweet-text">{text}</p>
-						<div className="tweet-responses">
-							<div className="tweet-svg-div grey reply-div" onClick={toggleReply}>
-								<Quote />
-								{repliesAmount}
-							</div>
-							<div
-								className={`tweet-svg-div grey retweet-div ${
-									isRetweet ? "active-retweet" : ""
-								}`}
-								onClick={isRetweet ? unRetweet : retweet}
-							>
-								<Retweet />
-								{retweetsAmount}
-							</div>
-							<div
-								value={tweetID}
-								className={`tweet-svg-div grey like-div ${liked && "liked"}`}
-								onClick={liked ? unlike : like}
-							>
-								{liked ? <LikeFilled value={tweetID} /> : <Like value={tweetID} />}
-								{likeAmount}
-							</div>
-							<div className="tweet-svg-div grey">
-								<Copy />
-							</div>
+					)}
+					{replyAt ? <p className="tweet-reply">Replying to {replyAt}</p> : ""}
+					<p className="tweet-text">{text}</p>
+
+					<div className={`tweet-responses ${big ? "big-tweet-responses" : ""}`}>
+						<div className="tweet-svg-div grey reply-div" onClick={toggleReply}>
+							<Quote />
+							{repliesAmount}
+						</div>
+						<div
+							className={`tweet-svg-div grey retweet-div ${
+								isRetweet ? "active-retweet" : ""
+							}`}
+							onClick={isRetweet ? unRetweet : retweet}
+						>
+							<Retweet />
+							{retweetsAmount}
+						</div>
+						<div
+							value={tweetID}
+							className={`tweet-svg-div grey like-div ${liked && "liked"}`}
+							onClick={liked ? unlike : like}
+						>
+							{liked ? <LikeFilled value={tweetID} /> : <Like value={tweetID} />}
+							{likeAmount}
+						</div>
+						<div className="tweet-svg-div grey">
+							<Copy />
 						</div>
 					</div>
-					{reply && (
-						<Suspense fallback={<LoaderContainer />}>
-							<Cover toggle={toggleReply}>
-								<Composer
-									modal={true}
-									replyData={props}
-									replyImage={image}
-									replyTimeSince={timeSince}
-								/>
-							</Cover>
-						</Suspense>
-					)}
-				</div>
+				</Link>
+				{reply && (
+					<Suspense fallback={<LoaderContainer />}>
+						<Cover toggle={toggleReply}>
+							<Composer
+								modal={true}
+								replyData={props}
+								replyImage={image}
+								replyTimeSince={timeSince}
+							/>
+						</Cover>
+					</Suspense>
+				)}
 			</div>
-		</>
+		</div>
 	);
 };
 

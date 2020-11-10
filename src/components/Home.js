@@ -4,7 +4,6 @@ import UserContext from "./context/context.js";
 import LoaderContainer from "./reusables/LoaderContainer";
 
 import Composer from "./reusables/Composer";
-import FollowSuggests from "./reusables/FollowSuggests";
 import Search from "./reusables/Search";
 import TOS from "./reusables/TOS";
 import Feed from "./reusables/Feed";

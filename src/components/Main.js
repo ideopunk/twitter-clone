@@ -14,6 +14,7 @@ const Home = lazy(() => import("./Home"));
 const ProfileRoutes = lazy(() => import("./ProfileRoutes"));
 const Explore = lazy(() => import("./Explore"));
 const Notifications = lazy(() => import("./Notifications"));
+const TweetAndReplies = lazy(() => import("./TweetAndReplies"));
 
 const Main = (props) => {
 	const { userID } = useContext(UserContext);
@@ -34,6 +35,9 @@ const Main = (props) => {
 						</Route>
 						<Route exact path="/messages">
 							<Messages />
+						</Route>
+						<Route path="/tweet/:tweetID">
+							<TweetAndReplies />
 						</Route>
 						<Route path="/:profile">
 							<ProfileRoutes />
