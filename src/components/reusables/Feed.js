@@ -3,8 +3,7 @@ import React from "react";
 import Tweet from "./Tweet";
 
 const Feed = (props) => {
-	const { tweetDatas } = props;
-
+	const { tweetDatas, getReplies } = props;
 
 
 	const tweets = tweetDatas.map((tweet) => {
@@ -19,7 +18,9 @@ const Feed = (props) => {
 				time={tweet.timeStamp}
 				text={tweet.text}
 				retweets={tweet.retweets}
+				replyTo={tweet.replyTo}
 				likes={tweet.likes}
+				getReplies={getReplies}
 			/>
 		);
 	});

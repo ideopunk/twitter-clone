@@ -47,21 +47,25 @@ const Tweet = (props) => {
 	const repliesAmount = replies ? replies.length : "";
 	const [retweetedBy, setRetweetedBy] = useState("");
 
+	// is this a retweet?
 	useEffect(() => {
-		if (retweets.includes(userID)) {
-			setRetweetedBy(userAt);
-		} else if (retweets.length > 0) {
-			db.collection("users")
-				.doc(retweets[retweets.length - 1])
-				.get()
-				.then((doc) => setRetweetedBy(doc.at));
+		if (retweets) {
+			if (retweets.includes(userID)) {
+				setRetweetedBy(userAt);
+			} else if (retweets.length > 0) {
+				db.collection("users")
+					.doc(retweets[retweets.length - 1])
+					.get()
+					.then((doc) => setRetweetedBy(doc.at));
+			}
 		}
-	}, [at, retweets, userID]);
+	}, [retweets, userID, userAt]);
 
 	// tweet rendered
 	useEffect(() => {
 		console.log("rendered");
-	}, []);
+		console.log("replyto: " + replyTo);
+	}, [replyTo]);
 
 	// get picture for tweet, set to Leaf if no picture found.
 	useEffect(() => {
@@ -134,88 +138,95 @@ const Tweet = (props) => {
 	};
 
 	return (
-		<div className={`tweet ${!imageLoaded && "hide"}`}>
-			<Link to={`/${retweetedBy}`}>
-				{retweetedBy && <p className="retweeted-by">Retweeted by {retweetedBy}</p>}
-			</Link>
-			<div className="tweet-inside">
-				<Link to={`/${at}`}>
-					{image ? (
-						<img
-							className="profile-image"
-							alt="user-profile"
-							src={image}
-							onLoad={imageLoad}
-						/>
-					) : (
-						<div className="profile-image" />
+		<>
+			<div className={`tweet ${imageLoaded ? "" : "hide"} ${replyTo ? "reply-tweet" : ""}`}>
+				<Link to={`/${retweetedBy}`}>
+					{retweetedBy && (
+						<div className="retweeted-by">
+							<Retweet />
+							<p>Retweeted by {retweetedBy}</p>
+						</div>
 					)}
 				</Link>
-				<div className="tweet-main">
-					<div className="tweet-top-data">
-						<span className="tweeter-name">{name}</span>
-						<span className="tweeter-at">{at}</span>
-						<span className="tweet-time grey">{timeSince}</span>
-						<div style={{ marginLeft: "auto" }}>
-							{dropdown ? (
-								<Dropdown
-									deleteTweet={deleteTweet}
-									unfollow={unfollow}
-									follow={follow}
-									followed={followed}
-									tweetID={tweetID}
-									userID={userID}
-									tweeterID={tweeterID}
-								/>
-							) : (
-								""
-							)}
-							<Dots className="dots" onClick={toggleDropdown} />
-						</div>
-					</div>
-					{replyAt ? <p className="tweet-reply">Replying to {replyAt}</p> : ""}
-					<p className="tweet-text">{text}</p>
-					<div className="tweet-responses">
-						<div className="tweet-svg-div grey reply-div" onClick={toggleReply}>
-							<Quote />
-							{repliesAmount}
-						</div>
-						<div
-							className={`tweet-svg-div grey retweet-div ${
-								isRetweet ? "active-retweet" : ""
-							}`}
-							onClick={isRetweet ? unRetweet : retweet}
-						>
-							<Retweet />
-							{retweetsAmount}
-						</div>
-						<div
-							value={tweetID}
-							className={`tweet-svg-div grey like-div ${liked && "liked"}`}
-							onClick={liked ? unlike : like}
-						>
-							{liked ? <LikeFilled value={tweetID} /> : <Like value={tweetID} />}
-							{likeAmount}
-						</div>
-						<div className="tweet-svg-div grey">
-							<Copy />
-						</div>
-					</div>
-				</div>
-				{reply && (
-					<Suspense fallback={<LoaderContainer />}>
-						<Cover toggle={toggleReply}>
-							<Composer
-								modal={true}
-								replyData={props}
-								replyImage={image}
-								replyTimeSince={timeSince}
+				<div className="tweet-inside">
+					<Link to={`/${at}`}>
+						{image ? (
+							<img
+								className={`profile-image`}
+								alt="user-profile"
+								src={image}
+								onLoad={imageLoad}
 							/>
-						</Cover>
-					</Suspense>
-				)}
+						) : (
+							<div className="profile-image" />
+						)}
+					</Link>
+					<div className="tweet-main">
+						<div className="tweet-top-data">
+							<span className="tweeter-name">{name}</span>
+							<span className="tweeter-at">{at}</span>
+							<span className="tweet-time grey">{timeSince}</span>
+							<div style={{ marginLeft: "auto" }}>
+								{dropdown ? (
+									<Dropdown
+										deleteTweet={deleteTweet}
+										unfollow={unfollow}
+										follow={follow}
+										followed={followed}
+										tweetID={tweetID}
+										userID={userID}
+										tweeterID={tweeterID}
+									/>
+								) : (
+									""
+								)}
+								<Dots className="dots" onClick={toggleDropdown} />
+							</div>
+						</div>
+						{replyAt ? <p className="tweet-reply">Replying to {replyAt}</p> : ""}
+						<p className="tweet-text">{text}</p>
+						<div className="tweet-responses">
+							<div className="tweet-svg-div grey reply-div" onClick={toggleReply}>
+								<Quote />
+								{repliesAmount}
+							</div>
+							<div
+								className={`tweet-svg-div grey retweet-div ${
+									isRetweet ? "active-retweet" : ""
+								}`}
+								onClick={isRetweet ? unRetweet : retweet}
+							>
+								<Retweet />
+								{retweetsAmount}
+							</div>
+							<div
+								value={tweetID}
+								className={`tweet-svg-div grey like-div ${liked && "liked"}`}
+								onClick={liked ? unlike : like}
+							>
+								{liked ? <LikeFilled value={tweetID} /> : <Like value={tweetID} />}
+								{likeAmount}
+							</div>
+							<div className="tweet-svg-div grey">
+								<Copy />
+							</div>
+						</div>
+					</div>
+					{reply && (
+						<Suspense fallback={<LoaderContainer />}>
+							<Cover toggle={toggleReply}>
+								<Composer
+									modal={true}
+									replyData={props}
+									replyImage={image}
+									replyTimeSince={timeSince}
+								/>
+							</Cover>
+						</Suspense>
+					)}
+				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 
