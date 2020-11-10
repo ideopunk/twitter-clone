@@ -16,6 +16,7 @@ const ProfileRoutes = () => {
 	const [userProfile, setUserProfile] = useState(null);
 	const [profileID, setProfileID] = useState(null);
 
+	// figure out if this is a real user. If not, 404 them. 
 	useEffect(() => {
 		console.log("userAt: " + userAt + ", urlAt: " + urlAt);
 		if (userAt === urlAt) {

@@ -23,9 +23,7 @@ const ProfileMain = (props) => {
 		userBio,
 		userJoinDate,
 	} = useContext(UserContext);
-
 	const { path, url } = useRouteMatch();
-
 	const { userProfile, profileID } = props;
 
 	const [profileData, setProfileData] = useState({ follows: [], followers: [] });
@@ -33,12 +31,6 @@ const ProfileMain = (props) => {
 	const [editor, setEditor] = useState(false);
 	const [followed, setFollowed] = useState("");
 	const [imageLoaded, setImageLoaded] = useState(false);
-
-	// consoling
-	useEffect(() => {
-		console.log("profiledata");
-		console.log(profileData);
-	}, [profileData]);
 
 	// set profile data
 	useEffect(() => {
@@ -153,12 +145,17 @@ const ProfileMain = (props) => {
 			.then((snapshot) => {
 				let tempArray = [];
 				snapshot.forEach((doc) => {
+					console.log(doc.data().timeStamp);
 					tempArray.push({ ...doc.data(), id: doc.id });
 				});
 				return tempArray;
 			})
 			.then((tempArray) => {
-				setTweetDatas((t) => [...t, ...tempArray]);
+				setTweetDatas((t) =>
+
+					// sort function ensures they're still in the right order when retweets are added
+					[...t, ...tempArray].sort((a, b) => b.timeStamp.seconds - a.timeStamp.seconds)
+				);
 			});
 	}, [profileID]);
 
