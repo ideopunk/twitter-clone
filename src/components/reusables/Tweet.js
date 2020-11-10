@@ -151,7 +151,7 @@ const Tweet = (props) => {
 			}`}
 		>
 			{retweetedBy && (
-				<Link to={`/${retweetedBy}`}>
+				<Link to={`/${retweetedBy}`} style={{ textDecoration: "none" }}>
 					<div className="retweeted-by">
 						<Retweet />
 						<p>Retweeted by {retweetedBy}</p>
@@ -159,9 +159,9 @@ const Tweet = (props) => {
 				</Link>
 			)}
 			<div className={`tweet-inside ${big ? "big-tweet-inside" : ""}`}>
-				<Link to={`/${at}`}>
+				<Link to={`/${at}`} style={{ textDecoration: "none" }}>
 					{big ? (
-						<div className="tweet-top-data">
+						<div className="tweet-top-data pad">
 							{image ? (
 								<img
 									className={`profile-image`}
@@ -203,7 +203,11 @@ const Tweet = (props) => {
 					)}
 				</Link>
 
-				<Link to={`/tweet/${tweetID}`} className="tweet-main">
+				<Link
+					to={`/tweet/${tweetID}`}
+					className="tweet-main"
+					style={{ textDecoration: "none", color: "black" }}
+				>
 					{!big && (
 						<div className="tweet-top-data">
 							<span className="tweeter-name">{name}</span>
@@ -228,12 +232,30 @@ const Tweet = (props) => {
 						</div>
 					)}
 					{replyAt ? <p className="tweet-reply">Replying to {replyAt}</p> : ""}
-					<p className="tweet-text">{text}</p>
+					<p className={`tweet-text ${big ? "big-tweet-text" : ""}`}>{text}</p>
 
+					{big && <p className="pad grey">{timeSince}</p>}
+
+					{big && (
+						<div className={`big-tweet-data`}>
+							{retweetsAmount > 0 && (
+								<p>
+									<span className="bold">{retweetsAmount}</span>{" "}
+									<span>retweet{retweetsAmount > 1 && "s"}</span>
+								</p>
+							)}
+							{likeAmount > 0 && (
+								<p>
+									<span className="bold">{likeAmount}</span>{" "}
+									<span>like{likeAmount > 1 && "s"}</span>
+								</p>
+							)}
+						</div>
+					)}
 					<div className={`tweet-responses ${big ? "big-tweet-responses" : ""}`}>
 						<div className="tweet-svg-div grey reply-div" onClick={toggleReply}>
 							<Quote />
-							{repliesAmount}
+							{!big && repliesAmount}
 						</div>
 						<div
 							className={`tweet-svg-div grey retweet-div ${
@@ -242,7 +264,7 @@ const Tweet = (props) => {
 							onClick={isRetweet ? unRetweet : retweet}
 						>
 							<Retweet />
-							{retweetsAmount}
+							{!big && retweetsAmount}
 						</div>
 						<div
 							value={tweetID}
@@ -250,7 +272,7 @@ const Tweet = (props) => {
 							onClick={liked ? unlike : like}
 						>
 							{liked ? <LikeFilled value={tweetID} /> : <Like value={tweetID} />}
-							{likeAmount}
+							{!big && likeAmount}
 						</div>
 						<div className="tweet-svg-div grey">
 							<Copy />

@@ -7,7 +7,8 @@
 }
 
 .pad {
-	padding: 0.76rem;
+	padding: 0.75rem;
+	box-sizing: border-box;
 }
 
 // .tweet * {
@@ -60,6 +61,7 @@
 }
 
 .tweet-text {
+	color: black;
 	margin-bottom: 1rem;
 	padding-right: 1rem;
 	box-sizing: border-box;
@@ -154,4 +156,18 @@
 
 .big-tweet-inside {
 	flex-direction: column;
+}
+
+.big-tweet-text {
+	font-size: $bigfont;
+	padding-left: 0.75rem;
+}
+
+.big-tweet-data {
+	display: flex;
+	align-items: center;
+	padding-left: 1rem;
+	column-gap: 1.5rem;
+	border-top: $siteborder;
+	height: 3.5rem;
 }
