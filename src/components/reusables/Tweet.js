@@ -91,7 +91,8 @@ const Tweet = (props) => {
 		}
 	}, [tweeterID, time]);
 
-	const toggleDropdown = () => {
+	const toggleDropdown = (e) => {
+		e.stopPropagation();
 		setDropdown(!dropdown);
 	};
 
@@ -146,9 +147,8 @@ const Tweet = (props) => {
 
 	return (
 		<div
-			className={`tweet ${imageLoaded ? "" : "hide"} ${big ? "" : "pad"} ${
-				replyTo ? "reply-tweet" : ""
-			}`}
+			// className={`tweet ${imageLoaded ? "" : "hide"} ${big ? "" : "pad"} ${replyTo ? "reply-tweet" : ""}`}
+			className={`tweet ${imageLoaded ? "" : "hide"} ${big ? "" : "pad"} `}
 		>
 			{retweetedBy && (
 				<Link to={`/${retweetedBy}`} style={{ textDecoration: "none" }}>
@@ -188,7 +188,7 @@ const Tweet = (props) => {
 										tweeterID={tweeterID}
 									/>
 								)}
-								<Dots className="dots" onClick={toggleDropdown} />
+								<Dots className="dots" onClick={(e) => toggleDropdown(e)} />
 							</div>
 						</div>
 					) : image ? (

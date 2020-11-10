@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { lazy, Suspense, useState, useEffect } from "react";
 import Tweet from "./reusables/Tweet";
-import { Link, Switch, Route, useRouteMatch, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ReactComponent as SideArrow } from "../assets/side-arrow-icon.svg";
 
 import { db } from "../config/fbConfig";
 import LoaderContainer from "./reusables/LoaderContainer";
-import Feed from "./reusables/Feed";
+const Feed = lazy(() => import("./reusables/Feed"));
 
 const TweetAndReplies = () => {
 	const { tweetID } = useParams();
@@ -53,7 +53,7 @@ const TweetAndReplies = () => {
 					<h3 className="no-dec">Tweet</h3>
 				</div>
 			</Link>
-            <div style={{height: "3.5rem"}}></div>
+			<div style={{ height: "3.5rem" }}></div>
 			<Tweet
 				key={mainTweet.id}
 				tweetID={mainTweet.id}
@@ -66,10 +66,14 @@ const TweetAndReplies = () => {
 				replyTo={mainTweet.replyTo}
 				likes={mainTweet.likes}
 				getReplies={false}
-                replies={mainTweet.replies}
-                big={true}
+				replies={mainTweet.replies}
+				big={true}
 			/>
-			{tweetDatas.length ? <Feed tweetDatas={tweetDatas} /> : <LoaderContainer />}
+			{mainTweet.replies && (
+				<Suspense fallback={<LoaderContainer />}>
+					<Feed tweetDatas={tweetDatas} />
+				</Suspense>
+			)}
 		</div>
 	);
 };

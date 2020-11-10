@@ -11,20 +11,11 @@ const Editor = (props) => {
 	const [name, setName] = useState(userName);
 	const [newBio, setNewBio] = useState(bio);
 	const [newWebsite, setNewWebsite] = useState(website);
-
 	const [newProPic, setNewProPic] = useState(userImage);
 	const [newHeader, setNewHeader] = useState(header);
 
 	const [picChanged, setPicChanged] = useState(false);
 	const [headerChanged, setHeaderChanged] = useState(false);
-
-	// useEffect(() => {
-	// 	setName(userName);
-	// 	setNewBio(bio);
-	// 	setNewWebsite(website);
-	// 	setNewProPic(userImage);
-	// 	setNewHeader(header);
-	// }, [userName, bio, website]);
 
 	useEffect(() => {
 		console.log(name);
@@ -37,7 +28,12 @@ const Editor = (props) => {
 		console.log(newHeader, newProPic);
 		db.collection("users")
 			.doc(userID)
-			.update({ name: name, bio: newBio, website: newWebsite })
+			.update({ name: name || "", bio: newBio || "", website: newWebsite || "" })
+			.then(() =>
+				import("../functions/updateName.js").then((updateName) =>
+					updateName.default(userID, name)
+				)
+			)
 			.then(() => {
 				if (picChanged) {
 					const profileRef = storage.ref("profile_pictures/" + userID + ".png");
@@ -87,6 +83,7 @@ const Editor = (props) => {
 	};
 
 	const handleNameChange = (e) => {
+		console.log("setname");
 		setName(e.target.value);
 	};
 

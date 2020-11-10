@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import UserContext from "../context/context.js";
-import FollowButton from "../reusables/FollowButton"
+import FollowButton from "../reusables/FollowButton";
 import { db, storage } from "../../config/fbConfig";
 import Leaf from "../../assets/leaf-outline.svg";
+import { Link, useRouteMatch, useLocation } from "react-router-dom";
 
 const FollowSuggest = () => {
 	const { userID, userFollows } = useContext(UserContext);
-
 	const [array, setArray] = useState([]);
 
 	// const follow = (e) => {
@@ -22,7 +22,7 @@ const FollowSuggest = () => {
 			);
 		};
 
-		// only do this once userFollows is filled, or else the check won't work later in this. 
+		// only do this once userFollows is filled, or else the check won't work later in this.
 		userFollows.length &&
 			db
 				.collection("users")
@@ -48,8 +48,7 @@ const FollowSuggest = () => {
 												<p className="tweeter-name">{data.name}</p>
 												<p className="tweeter-at">{data.at}</p>
 											</div>
-											<FollowButton tweeterID={user.id} followed={false}/>
-											
+											<FollowButton tweeterID={user.id} followed={false} />
 										</div>,
 									]);
 								})
@@ -83,6 +82,7 @@ const FollowSuggest = () => {
 	}, [userFollows, userID]);
 
 	return (
+		
 		<div className="follow-suggest side-box">
 			<h3 className="side-box-title">Who to follow</h3>
 			{array}

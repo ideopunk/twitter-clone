@@ -32,6 +32,19 @@ const SignupPage = () => {
 	const handleUserAtChange = (e) => {
 		console.log(e.target.value);
 		allAts.includes(`@${e.target.value}`) ? setLegitAt(false) : setLegitAt(true);
+		switch(`@${e.target.value}`) {
+			case "@profile": 
+			case "@notifications":
+			case "@explore":
+			case "@home":
+			case "@messages":
+			case "@menu":
+			case "@tweet":
+				setLegitAt(false)
+				break
+			default:
+				console.log("all good")
+		}
 		setUserAt(e.target.value);
 	};
 

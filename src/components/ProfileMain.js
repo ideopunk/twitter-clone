@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, Switch, Route, useRouteMatch, NavLink } from "react-router-dom";
-import Feed from "./reusables/Feed";
+import ProfileFeed from "./reusables/ProfileFeed";
 import LikeFeed from "./reusables/LikeFeed";
 import { db, storage } from "../config/fbConfig";
 import UserContext from "./context/context.js";
@@ -22,12 +22,12 @@ const ProfileMain = (props) => {
 		userFollowers,
 		userBio,
 		userJoinDate,
+		userTweets,
 	} = useContext(UserContext);
 	const { path, url } = useRouteMatch();
 	const { userProfile, profileID } = props;
 
 	const [profileData, setProfileData] = useState({ follows: [], followers: [] });
-	const [tweetDatas, setTweetDatas] = useState([]);
 	const [editor, setEditor] = useState(false);
 	const [followed, setFollowed] = useState("");
 	const [imageLoaded, setImageLoaded] = useState(false);
@@ -47,6 +47,8 @@ const ProfileMain = (props) => {
 					id: userID,
 					image: userImage,
 					bio: userBio,
+					tweetAmount: userTweets.length,
+
 					joinDate: new Date(userJoinDate.seconds * 1000),
 			  })
 			: // if it's somebody else...
@@ -66,6 +68,7 @@ const ProfileMain = (props) => {
 							bio: data.bio,
 							id: doc.id,
 							website: data.website,
+							tweetAmount: data.tweets.length,
 							joinDate: new Date(data.joinDate.seconds * 1000),
 						}));
 					});
@@ -80,6 +83,7 @@ const ProfileMain = (props) => {
 		userJoinDate,
 		userFollowers,
 		userFollows,
+		userTweets,
 	]);
 
 	// set header
@@ -117,52 +121,9 @@ const ProfileMain = (props) => {
 					});
 	}, [userProfile, userImage, profileID]);
 
-	// set tweetdata
-	useEffect(() => {
-		console.log("set tweetdata");
-		db.collection("tweets")
-			.where("userID", "==", profileID)
-			.orderBy("timeStamp", "desc")
-			.limit(50)
-			.get()
-			.then((snapshot) => {
-				let tempArray = [];
-				snapshot.forEach((doc) => {
-					tempArray.push({ ...doc.data(), id: doc.id });
-				});
-				return tempArray;
-			})
-			.then((tempArray) => {
-				setTweetDatas((t) => [...t, ...tempArray]);
-			});
-
-		// add retweets
-		db.collection("tweets")
-			.where("retweets", "array-contains", profileID)
-			.orderBy("timeStamp", "desc")
-			.limit(50)
-			.get()
-			.then((snapshot) => {
-				let tempArray = [];
-				snapshot.forEach((doc) => {
-					console.log(doc.data().timeStamp);
-					tempArray.push({ ...doc.data(), id: doc.id });
-				});
-				return tempArray;
-			})
-			.then((tempArray) => {
-				setTweetDatas((t) =>
-
-					// sort function ensures they're still in the right order when retweets are added
-					[...t, ...tempArray].sort((a, b) => b.timeStamp.seconds - a.timeStamp.seconds)
-				);
-			});
-	}, [profileID]);
-
 	// if this isn't our own profile, are we following this user?
 	useEffect(() => {
 		console.log("set following");
-
 		!userProfile && setFollowed(userFollows.includes(profileID));
 	}, [userProfile, userFollows, profileID]);
 
@@ -186,7 +147,7 @@ const ProfileMain = (props) => {
 					<SideArrow />
 					<div className="profile-home-link-text">
 						<h3 className="no-dec">{profileData.name}</h3>
-						<p className="grey">{tweetDatas.length} tweets</p>
+						<p className="grey">{profileData.tweetAmount} tweets</p>
 					</div>
 				</Link>
 				<img
@@ -274,11 +235,11 @@ const ProfileMain = (props) => {
 
 			<Switch>
 				<Route path={`${path}/with_replies`}>
-					<Feed tweetDatas={tweetDatas} />
+					<ProfileFeed profileID={profileID} repliesIncluded={true} />
 				</Route>
 
 				<Route path={`${path}/media`}>
-					<Feed tweetDatas={tweetDatas} />
+					<ProfileFeed profileID={profileID} repliesIncluded={false} />
 				</Route>
 
 				<Route path={`${path}/likes`}>
@@ -286,7 +247,7 @@ const ProfileMain = (props) => {
 				</Route>
 
 				<Route exact path={path}>
-					<Feed tweetDatas={tweetDatas} />
+					<ProfileFeed profileID={profileID} />
 				</Route>
 			</Switch>
 			{editor ? (

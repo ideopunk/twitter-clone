@@ -42,6 +42,10 @@ h3 {
 	transition: $lighttransition;
 }
 
+.btn:hover {
+	background-color: darken($sitecolor, 10%);
+}
+
 .tweet-button {
 	width: 100%;
 	background-color: $sitecolor;
