@@ -15,6 +15,7 @@ const ProfileRoutes = lazy(() => import("./ProfileRoutes"));
 const Explore = lazy(() => import("./Explore"));
 const Notifications = lazy(() => import("./Notifications"));
 const TweetAndReplies = lazy(() => import("./TweetAndReplies"));
+const Hashtag = lazy(() => import("./Hashtag"));
 
 const Main = (props) => {
 	const { userID } = useContext(UserContext);
@@ -30,11 +31,15 @@ const Main = (props) => {
 						<Route exact path="/explore">
 							<Explore />
 						</Route>
+
 						<Route exact path="/notifications">
 							<Notifications />
 						</Route>
 						<Route exact path="/messages">
 							<Messages />
+						</Route>
+						<Route path="/hashtag/:tag">
+							<Hashtag />
 						</Route>
 						<Route path="/tweet/:tweetID">
 							<TweetAndReplies />
@@ -49,7 +54,11 @@ const Main = (props) => {
 				</Suspense>
 			) : (
 				<Suspense fallback={<LoaderContainer />}>
-					<Explore />
+					<Switch>
+						<Route exact path="/">
+							<Explore />
+						</Route>
+					</Switch>
 				</Suspense>
 			)}
 

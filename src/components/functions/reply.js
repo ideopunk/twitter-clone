@@ -3,6 +3,13 @@ import { db } from "../../config/fbConfig";
 const reply = (props) => {
 	console.log(props);
 	const { tweetID, userName, text, userAt, userID, userTweets } = props;
+
+	const hashRE = /#\w+/;
+	const hashFound = text.match(hashRE);
+
+	const palRE = /@\w+/;
+	const palFound = text.match(palRE);
+
 	db.collection("tweets")
 		//create the new tweet
 		.add({
@@ -10,6 +17,8 @@ const reply = (props) => {
 			text: text,
 			at: userAt,
 			userID: userID,
+			hashtags: hashFound,
+			userTags: palFound,
 			timeStamp: new Date(),
 			replyTo: tweetID,
 		})
