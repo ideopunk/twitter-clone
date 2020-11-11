@@ -203,6 +203,7 @@ const ProfileMain = (props) => {
 				</div>
 				<div className="profile-feed-selector-container">
 					<NavLink
+						exact
 						to={`${url}`}
 						className="profile-feed-selector"
 						activeClassName="p-f-s-active"
@@ -234,15 +235,15 @@ const ProfileMain = (props) => {
 			</div>
 
 			<Switch>
-				<Route path={`${path}/with_replies`}>
+				<Route exact path={`${path}/with_replies`}>
 					<ProfileFeed profileID={profileID} repliesIncluded={true} />
 				</Route>
 
-				<Route path={`${path}/media`}>
+				<Route exact path={`${path}/media`}>
 					<ProfileFeed profileID={profileID} repliesIncluded={false} />
 				</Route>
 
-				<Route path={`${path}/likes`}>
+				<Route exact path={`${path}/likes`}>
 					<LikeFeed profileID={profileID} />
 				</Route>
 

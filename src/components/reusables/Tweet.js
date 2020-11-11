@@ -287,7 +287,9 @@ const Tweet = (props) => {
 					)}
 					<div className={`tweet-responses ${big ? "big-tweet-responses" : ""}`}>
 						<div className="tweet-svg-div grey reply-div" onClick={toggleReply}>
-							<Quote />
+							<div className="tweet-svg-holder">
+								<Quote />
+							</div>
 							{!big && repliesAmount}
 						</div>
 						<div
@@ -296,7 +298,9 @@ const Tweet = (props) => {
 							}`}
 							onClick={isRetweet ? unRetweet : retweet}
 						>
-							<Retweet />
+							<div className="tweet-svg-holder">
+								<Retweet />
+							</div>
 							{!big && (retweetsAmount || "")}
 						</div>
 						<div
@@ -304,12 +308,16 @@ const Tweet = (props) => {
 							className={`tweet-svg-div grey like-div ${liked && "liked"}`}
 							onClick={liked ? unlike : like}
 						>
-							{liked ? <LikeFilled value={tweetID} /> : <Like value={tweetID} />}
+							<div className="tweet-svg-holder">
+								{liked ? <LikeFilled value={tweetID} /> : <Like value={tweetID} />}
+							</div>
 							{!big && likeAmount}
 						</div>
 						<div className="tweet-svg-div grey copy-div">
 							<CopyToClipboard text={`/tweet/${tweetID}`}>
-								<Copy />
+								<div className="tweet-svg-holder">
+									<Copy />
+								</div>
 							</CopyToClipboard>
 						</div>
 					</div>

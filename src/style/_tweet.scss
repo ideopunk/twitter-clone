@@ -51,6 +51,32 @@
 	align-items: center;
 }
 
+.tweet-svg-holder {
+	width: 1.75rem;
+	height: 1.75rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	transition: $lighttransition;
+}
+
+.reply-div > .tweet-svg-holder:hover {
+	background-color: lighten($sitecolor, 35%);
+}
+
+.retweet-div > .tweet-svg-holder:hover {
+	background-color: lighten(blue, 40%);
+}
+
+.like-div > .tweet-svg-holder:hover {
+	background-color: lighten(red, 40%);
+}
+
+.copy-div > .tweet-svg-holder:hover {
+	background-color: (lighten($sitecolor, 35%));
+}
+
 .tweet-icon {
 	width: 1.25rem;
 	fill: grey;
@@ -83,34 +109,29 @@
 .tweet-svg-div {
 	display: flex;
 	align-items: center;
-	width: 2rem;
+	width: 2.5rem;
 	justify-content: space-between;
 }
 
 // svg styling
 
 .tweet-svg-div svg {
-	border-radius: 50%;
 	transition: $lighttransition;
 }
 
 .reply-div svg:hover {
 	fill: $sitecolor;
-	background-color: lighten($sitecolor, 35%);
 }
 .retweet-div svg:hover {
 	fill: blue;
-	background-color: lighten(blue, 40%);
 }
 
 .like-div svg:hover {
 	fill: red;
-	background-color: lighten(red, 40%);
 }
 
 .copy-div svg:hover {
 	fill: $sitecolor;
-	background-color: (lighten($sitecolor, 35%));
 }
 
 

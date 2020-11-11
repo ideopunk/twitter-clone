@@ -9,6 +9,7 @@ const ProfileFeed = (props) => {
 
 	// set tweetdata
 	useEffect(() => {
+		setTweetDatas("")
 		console.log("set tweetdata");
 		db.collection("tweets")
 			.where("userID", "==", profileID)
