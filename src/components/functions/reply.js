@@ -1,4 +1,6 @@
 import { db } from "../../config/fbConfig";
+import notify from "./notify"
+
 
 const reply = (props) => {
 	console.log(props);
@@ -23,17 +25,15 @@ const reply = (props) => {
 			replyTo: tweetID,
 		})
 
-		// add it to the user's tweets
 		.then((newTweet) => {
+			// add it to the user's tweets
+
 			console.log(newTweet);
 			db.collection("users")
 				.doc(userID)
 				.update({ tweets: [...userTweets || [], newTweet.id] });
-			return newTweet;
 
 			// add it to list of replied-to-tweet's replies. you know??
-		})
-		.then((newTweet) => {
 			db.collection("tweets")
 				.doc(tweetID)
 				.get()
@@ -44,6 +44,9 @@ const reply = (props) => {
 					console.log(newReplies);
 					db.collection("tweets").doc(tweetID).update({ replies: newReplies });
 				});
+
+			// notify
+			notify("reply", userID, "", tweetID)
 		});
 };
 

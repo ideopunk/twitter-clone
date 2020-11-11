@@ -29,6 +29,7 @@ const App = () => {
 			console.log(user);
 			if (user) {
 				setUserID(user.uid);
+				console.log(user.uid)
 				db.collection("users")
 					.doc(user.uid)
 					.get()

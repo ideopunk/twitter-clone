@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { db, auth } from "../config/fbConfig";
 import Composer from "./reusables/Composer";
@@ -16,9 +16,28 @@ import { ReactComponent as PowerIcon } from "../assets/power-outline.svg";
 
 const Menu = (props) => {
 	const { userName, userAt, userID, userImage } = useContext(UserContext);
+	console.log(userID);
+	const [unseenNotes, setUnseenNotes] = useState(0);
 
 	const [composer, setComposer] = useState(false);
 	const [dropdown, setDropdown] = useState(false);
+
+	useEffect(() => {
+		if (userID) {
+			db.collection("users")
+				.doc(userID)
+				.get()
+				.then((doc) => {
+					const data = doc.data();
+					console.log(data);
+					if (data.notifications) {
+						setUnseenNotes(
+							data.notifications.filter((notification) => !notification.seen).length
+						);
+					}
+				});
+		}
+	}, [userID]);
 
 	const signOut = () => {
 		auth.signOut().then(() => {
@@ -72,8 +91,10 @@ const Menu = (props) => {
 						activeClassName="menu-item-active"
 						to="/notifications"
 						className="menu-item"
+						style={{ position: "relative" }}
 					>
 						<NotificationsIcon />
+						{unseenNotes ? <div className="pseudo">{unseenNotes}</div> : ""}
 						<span className="menu-item-text">Notifications</span>
 					</NavLink>
 				</li>

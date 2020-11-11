@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, lazy, Suspense } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { db, storage } from "../../config/fbConfig";
 import UserContext from "../context/context.js";
@@ -15,6 +15,8 @@ import { ReactComponent as Copy } from "../../assets/copy-icon.svg";
 import { ReactComponent as Dots } from "../../assets/dots.svg";
 const Cover = lazy(() => import("./Cover"));
 const Composer = lazy(() => import("./Composer"));
+const UsersList = lazy(() => import("./UsersList"));
+
 const reactStringReplace = require("react-string-replace");
 
 const Tweet = (props) => {
@@ -23,6 +25,8 @@ const Tweet = (props) => {
 	const [dropdown, setDropdown] = useState(false);
 	const [reply, setReply] = useState(false);
 	const [imageLoaded, setImageLoaded] = useState(false);
+	const [modal, setModal] = useState("");
+
 	const {
 		name,
 		at,
@@ -272,19 +276,20 @@ const Tweet = (props) => {
 					{big && (
 						<div className={`big-tweet-data`}>
 							{retweetsAmount > 0 && (
-								<p>
+								<p onClick={() => setModal("retweets")} className="hover-under">
 									<span className="bold">{retweetsAmount}</span>{" "}
 									<span>retweet{retweetsAmount > 1 && "s"}</span>
 								</p>
 							)}
 							{likeAmount > 0 && (
-								<p>
+								<p onClick={() => setModal("likes")} className="hover-under">
 									<span className="bold">{likeAmount}</span>{" "}
 									<span>like{likeAmount > 1 && "s"}</span>
 								</p>
 							)}
 						</div>
 					)}
+
 					<div className={`tweet-responses ${big ? "big-tweet-responses" : ""}`}>
 						<div className="tweet-svg-div grey reply-div" onClick={toggleReply}>
 							<div className="tweet-svg-holder">
@@ -335,6 +340,15 @@ const Tweet = (props) => {
 					</Suspense>
 				)}
 			</div>
+			{modal ? (
+				<Suspense fallback={<LoaderContainer />}>
+				<Cover toggle={() => setModal("")}>
+
+					<UsersList type={modal} tweetID={tweetID} /> </Cover>
+				</Suspense>
+			) : (
+				""
+			)}
 		</div>
 	);
 };

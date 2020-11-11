@@ -9,7 +9,6 @@ import LoginCard from "./reusables/LoginCard";
 import FollowSuggests from "./reusables/FollowSuggests";
 import TOS from "./reusables/TOS";
 import UserContext from "./context/context.js";
-import NotFound from "./NotFound";
 const Home = lazy(() => import("./Home"));
 const ProfileRoutes = lazy(() => import("./ProfileRoutes"));
 const Explore = lazy(() => import("./Explore"));
@@ -19,6 +18,7 @@ const Hashtag = lazy(() => import("./Hashtag"));
 
 const Main = (props) => {
 	const { userID } = useContext(UserContext);
+	console.log(userID)
 	return (
 		<div className="main">
 			<Menu />

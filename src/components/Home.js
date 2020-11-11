@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
-import { auth, db, storage } from "../config/fbConfig";
+import {  db } from "../config/fbConfig";
 import UserContext from "./context/context.js";
 import LoaderContainer from "./reusables/LoaderContainer";
 
 import Composer from "./reusables/Composer";
-import Search from "./reusables/Search";
-import TOS from "./reusables/TOS";
 import Feed from "./reusables/Feed";
-import LoginCard from "./reusables/LoginCard";
 
 const Home = (props) => {
 	const { userID } = useContext(UserContext);

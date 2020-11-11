@@ -12,6 +12,9 @@ const TweetAndReplies = () => {
 	const [mainTweet, setMainTweet] = useState({});
 	const [tweetDatas, setTweetDatas] = useState([]);
 
+	const [retweetModal, setRetweetModal] = useState(false);
+	const [likeModal, setLikeModal] = useState(false);
+
 	// get the tweet
 	useEffect(() => {
 		db.collection("tweets")

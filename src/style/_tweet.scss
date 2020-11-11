@@ -3,8 +3,13 @@
 	border-bottom: $siteborder;
 	box-sizing: border-box;
 	position: relative;
+
 	// overflow: hidden;
 }
+
+// .tweet * {
+// 	border: $testborder;
+// }
 
 .tweet-link {
 	position: absolute;
@@ -17,9 +22,7 @@
 	box-sizing: border-box;
 }
 
-// .tweet * {
-// 	border: $testborder;
-// }
+
 
 .tweet-inside {
 	display: flex;
@@ -98,6 +101,7 @@
 	margin-bottom: 1rem;
 	padding-right: 1rem;
 	box-sizing: border-box;
+	overflow-wrap: break-word;
 }
 
 .tweet-responses {
