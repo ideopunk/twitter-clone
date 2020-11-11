@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AccountCard from "./AccountCard";
 import { db } from "../../config/fbConfig";
 import LoaderContainer from "./LoaderContainer";
+import { ReactComponent as CloseIcon } from "../../assets/close.svg";
 
 const UsersList = ({ tweetID, type }) => {
 	const [accounts, setAccounts] = useState([]);
@@ -29,7 +30,19 @@ const UsersList = ({ tweetID, type }) => {
 			});
 	}, [tweetID, type]);
 
-	return <div className="modal">{accounts.length ? accounts : <LoaderContainer />}</div>;
+	return (
+		<div className="modal">
+			<div
+				className="modal-header"
+			>
+				<CloseIcon />
+				<h3>
+					{type === "retweets" ? "Retweeted by" : "Liked by"}
+				</h3>
+			</div>
+			{accounts.length ? accounts : <LoaderContainer />}
+		</div>
+	);
 };
 
 export default UsersList;
