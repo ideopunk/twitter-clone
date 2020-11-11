@@ -5,6 +5,7 @@ import Tweet from "./reusables/Tweet";
 import { Link, useParams } from "react-router-dom";
 import { ReactComponent as SideArrow } from "../assets/side-arrow-icon.svg";
 import Search from "./reusables/Search";
+import LoaderContainer from "./reusables/LoaderContainer";
 const Feed = lazy(() => import("./reusables/Feed"));
 
 const Hashtag = () => {
@@ -41,7 +42,7 @@ const Hashtag = () => {
 				</div>
 			</div>
 			<div style={{ height: "3.5rem" }}></div>
-			<Feed tweetDatas={tweetDatas} />
+			{tweetDatas.length ? <Feed tweetDatas={tweetDatas} /> : <LoaderContainer />}
 		</div>
 	);
 };

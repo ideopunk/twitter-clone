@@ -6,7 +6,6 @@ import { ReactComponent as Gif } from "../../assets/gif-icon.svg";
 import { ReactComponent as Poll } from "../../assets/poll-icon.svg";
 import { ReactComponent as Emoji } from "../../assets/emoji-icon.svg";
 import { ReactComponent as Schedule } from "../../assets/schedule-icon.svg";
-import { db } from "../../config/fbConfig";
 import UserContext from "../context/context.js";
 import ComposerCircle from "./ComposerCircle";
 
@@ -37,7 +36,7 @@ const Composer = (props) => {
 	}, [replyData]);
 
 	const handleChange = (e) => {
-		console.log(e.target.value);
+		let tempText = e.target.value;
 		setText(e.target.value);
 	};
 

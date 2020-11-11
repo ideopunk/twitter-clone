@@ -14,6 +14,7 @@ import { ReactComponent as Copy } from "../../assets/copy-icon.svg";
 import { ReactComponent as Dots } from "../../assets/dots.svg";
 const Cover = lazy(() => import("./Cover"));
 const Composer = lazy(() => import("./Composer"));
+const reactStringReplace = require("react-string-replace");
 
 const Tweet = (props) => {
 	const [image, setImage] = useState("");
@@ -48,9 +49,15 @@ const Tweet = (props) => {
 	const repliesAmount = replies ? replies.length : "";
 	const [retweetedBy, setRetweetedBy] = useState("");
 
+	// linkify tags
+	// const linkedText = <span>{text.replace(/#\w+/, <a href="#">$&</a>)}</span>
+	const linkedText = <span>{text}</span>;
+	console.log(linkedText);
+
 	useEffect(() => {
 		console.log(time);
 	}, [time]);
+
 	// is this a retweet?
 	useEffect(() => {
 		if (retweets) {
@@ -84,12 +91,14 @@ const Tweet = (props) => {
 			});
 
 		//set how long ago the tweet was
-		if (time) {
+		if (time && !big) {
 			import("../functions/elapser.js").then((elapser) =>
 				setTimeSince(elapser.default(time))
 			);
+		} else if (time && big) {
+			setTimeSince(new Date(time.seconds * 1000).toDateString())
 		}
-	}, [tweeterID, time]);
+	}, [tweeterID, time, big]);
 
 	const toggleDropdown = (e) => {
 		e.stopPropagation();
@@ -159,9 +168,9 @@ const Tweet = (props) => {
 				</Link>
 			)}
 			<div className={`tweet-inside ${big ? "big-tweet-inside" : ""}`}>
-				<Link to={`/${at}`} style={{ textDecoration: "none" }}>
-					{big ? (
-						<div className="tweet-top-data pad">
+				{big ? (
+					<div className="tweet-top-data pad">
+						<Link to={`/${at}`} style={{ textDecoration: "none" }}>
 							{image ? (
 								<img
 									className={`profile-image`}
@@ -172,47 +181,49 @@ const Tweet = (props) => {
 							) : (
 								<div className="profile-image" />
 							)}
+						</Link>
+						<Link to={`/${at}`} style={{ textDecoration: "none" }}>
+							<p className="tweeter-name">{name}</p>
+							<p className="tweeter-at">{at}</p>
+						</Link>
 
-							<span className="tweeter-name">{name}</span>
-							<span className="tweeter-at">{at}</span>
-							<span className="tweet-time grey">{timeSince}</span>
-							<div style={{ marginLeft: "auto" }}>
-								{dropdown && (
-									<Dropdown
-										deleteTweet={deleteTweet}
-										unfollow={unfollow}
-										follow={follow}
-										followed={followed}
-										tweetID={tweetID}
-										userID={userID}
-										tweeterID={tweeterID}
-									/>
-								)}
-								<Dots className="dots" onClick={(e) => toggleDropdown(e)} />
-							</div>
+						<div style={{ marginLeft: "auto" }}>
+							{dropdown && (
+								<Dropdown
+									deleteTweet={deleteTweet}
+									unfollow={unfollow}
+									follow={follow}
+									followed={followed}
+									tweetID={tweetID}
+									userID={userID}
+									tweeterID={tweeterID}
+								/>
+							)}
+							<Dots className="dots" onClick={(e) => toggleDropdown(e)} />
 						</div>
-					) : image ? (
-						<img
-							className={`profile-image`}
-							alt="user-profile"
-							src={image}
-							onLoad={imageLoad}
-						/>
-					) : (
-						<div className="profile-image" />
-					)}
-				</Link>
+					</div>
+				) : image ? (
+					<img
+						className={`profile-image`}
+						alt="user-profile"
+						src={image}
+						onLoad={imageLoad}
+					/>
+				) : (
+					<div className="profile-image" />
+				)}
 
-				<Link
-					to={`/tweet/${tweetID}`}
-					className="tweet-main"
-					style={{ textDecoration: "none", color: "black" }}
-				>
+				<div className="tweet-main">
 					{!big && (
 						<div className="tweet-top-data">
 							<span className="tweeter-name">{name}</span>
 							<span className="tweeter-at">{at}</span>
-							<span className="tweet-time grey">{timeSince}</span>
+							<Link
+								to={`/tweet/${tweetID}`}
+								style={{ textDecoration: "none", color: "black" }}
+							>
+								<span className="tweet-time grey">{timeSince}</span>
+							</Link>
 							<div style={{ marginLeft: "auto" }}>
 								{dropdown ? (
 									<Dropdown
@@ -232,7 +243,18 @@ const Tweet = (props) => {
 						</div>
 					)}
 					{replyAt ? <p className="tweet-reply">Replying to {replyAt}</p> : ""}
-					<p className={`tweet-text ${big ? "big-tweet-text" : ""}`}>{text}</p>
+					<p className={`tweet-text ${big ? "big-tweet-text" : ""}`}>
+						{" "}
+						{reactStringReplace(text, /(#\w+)/g, (match, i) => (
+							<Link
+								to={`/hashtag/${match.slice(1)}`}
+								key={i}
+								style={{ color: "rgb(29, 242, 161)" }}
+							>
+								{match}
+							</Link>
+						))}
+					</p>
 
 					{big && <p className="pad grey">{timeSince}</p>}
 
@@ -278,7 +300,7 @@ const Tweet = (props) => {
 							<Copy />
 						</div>
 					</div>
-				</Link>
+				</div>
 				{reply && (
 					<Suspense fallback={<LoaderContainer />}>
 						<Cover toggle={toggleReply}>
