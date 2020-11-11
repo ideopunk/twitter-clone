@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 
-const Search = () => {
-	const [searchPhrase, setSearchPhrase] = useState("");
+const Search = (props) => {
+	const {defaultValue} = props
+	const [searchPhrase, setSearchPhrase] = useState(defaultValue ||"");
 
 	const handleChange = (e) => {
 		setSearchPhrase(e.target.value);
