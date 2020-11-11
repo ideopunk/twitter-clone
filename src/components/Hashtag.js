@@ -1,7 +1,6 @@
 import React, { lazy, Suspense, useState, useEffect } from "react";
 import { db } from "../config/fbConfig";
 
-import Tweet from "./reusables/Tweet";
 import { Link, useParams } from "react-router-dom";
 import { ReactComponent as SideArrow } from "../assets/side-arrow-icon.svg";
 import Search from "./reusables/Search";
@@ -42,7 +41,13 @@ const Hashtag = () => {
 				</div>
 			</div>
 			<div style={{ height: "3.5rem" }}></div>
-			{tweetDatas.length ? <Feed tweetDatas={tweetDatas} /> : <LoaderContainer />}
+			{tweetDatas.length ? (
+				<Suspense fallback={<LoaderContainer />}>
+					<Feed tweetDatas={tweetDatas} />
+				</Suspense>
+			) : (
+				<LoaderContainer />
+			)}
 		</div>
 	);
 };

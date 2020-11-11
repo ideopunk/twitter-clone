@@ -25,8 +25,9 @@ const Composer = (props) => {
 				reply.default({ tweetID, userName, userID, userAt, userTweets, text })
 			);
 		} else {
+			console.log(text)
 			import("../functions/simpleTweet.js").then((simpleTweet) =>
-				simpleTweet.default(userName, text, userAt, userID, userTweets)
+				simpleTweet.default({userName, text, userAt, userID, userTweets})
 			);
 		}
 	};
@@ -36,7 +37,7 @@ const Composer = (props) => {
 	}, [replyData]);
 
 	const handleChange = (e) => {
-		let tempText = e.target.value;
+		console.log(e.target.value);
 		setText(e.target.value);
 	};
 

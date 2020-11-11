@@ -59,6 +59,7 @@
 .tweeter-name {
 	font-weight: bold;
 	margin-right: 0.25rem;
+	color: black;
 }
 
 .tweeter-at {
@@ -106,6 +107,12 @@
 	fill: red;
 	background-color: lighten(red, 40%);
 }
+
+.copy-div svg:hover {
+	fill: $sitecolor;
+	background-color: (lighten($sitecolor, 35%));
+}
+
 
 // "active" responses
 
@@ -176,4 +183,12 @@
 	column-gap: 1.5rem;
 	border-top: $siteborder;
 	height: 3.5rem;
+}
+
+.hover-under {
+	text-decoration: none;
+}
+
+.hover-under:hover {
+	text-decoration: underline;
 }

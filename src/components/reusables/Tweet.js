@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext, lazy, Suspense } from "react";
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 
 import { db, storage } from "../../config/fbConfig";
 import UserContext from "../context/context.js";
 import Leaf from "../../assets/leaf-outline.svg";
 import LoaderContainer from "./LoaderContainer";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import { ReactComponent as Quote } from "../../assets/quote-outline.svg";
 import { ReactComponent as Retweet } from "../../assets/retweet-icon.svg";
@@ -22,7 +23,6 @@ const Tweet = (props) => {
 	const [dropdown, setDropdown] = useState(false);
 	const [reply, setReply] = useState(false);
 	const [imageLoaded, setImageLoaded] = useState(false);
-
 	const {
 		name,
 		at,
@@ -49,10 +49,26 @@ const Tweet = (props) => {
 	const repliesAmount = replies ? replies.length : "";
 	const [retweetedBy, setRetweetedBy] = useState("");
 
-	// linkify tags
-	// const linkedText = <span>{text.replace(/#\w+/, <a href="#">$&</a>)}</span>
-	const linkedText = <span>{text}</span>;
-	console.log(linkedText);
+	const hashedText = reactStringReplace(text, /(#\w+)/g, (match, i) => (
+		<Link
+			to={`/hashtag/${match.slice(1)}`}
+			key={i + match}
+			className="hover-under"
+			style={{ color: "rgb(29, 242, 161)" }}
+		>
+			{match}
+		</Link>
+	));
+	const linkedText = reactStringReplace(hashedText, /(@\w+)/g, (match, i) => (
+		<Link
+			to={`/${match}`}
+			key={i + match}
+			className="hover-under"
+			style={{ color: "rgb(29, 242, 161)" }}
+		>
+			{match}
+		</Link>
+	));
 
 	useEffect(() => {
 		console.log(time);
@@ -96,7 +112,7 @@ const Tweet = (props) => {
 				setTimeSince(elapser.default(time))
 			);
 		} else if (time && big) {
-			setTimeSince(new Date(time.seconds * 1000).toDateString())
+			setTimeSince(new Date(time.seconds * 1000).toDateString());
 		}
 	}, [tweeterID, time, big]);
 
@@ -170,7 +186,7 @@ const Tweet = (props) => {
 			<div className={`tweet-inside ${big ? "big-tweet-inside" : ""}`}>
 				{big ? (
 					<div className="tweet-top-data pad">
-						<Link to={`/${at}`} style={{ textDecoration: "none" }}>
+						<Link to={`/${at}`}>
 							{image ? (
 								<img
 									className={`profile-image`}
@@ -203,26 +219,32 @@ const Tweet = (props) => {
 						</div>
 					</div>
 				) : image ? (
-					<img
-						className={`profile-image`}
-						alt="user-profile"
-						src={image}
-						onLoad={imageLoad}
-					/>
+					<Link to={`/${at}`}>
+						<img
+							className={`profile-image`}
+							alt="user-profile"
+							src={image}
+							onLoad={imageLoad}
+						/>
+					</Link>
 				) : (
-					<div className="profile-image" />
+					<Link to={`/${at}`}>
+						<div className="profile-image" />
+					</Link>
 				)}
 
 				<div className="tweet-main">
 					{!big && (
 						<div className="tweet-top-data">
-							<span className="tweeter-name">{name}</span>
-							<span className="tweeter-at">{at}</span>
+							<Link to={`/${at}`} style={{ textDecoration: "none" }}>
+								<span className="tweeter-name hover-under">{name}</span>
+								<span className="tweeter-at hover-under">{at}</span>
+							</Link>
 							<Link
 								to={`/tweet/${tweetID}`}
 								style={{ textDecoration: "none", color: "black" }}
 							>
-								<span className="tweet-time grey">{timeSince}</span>
+								<span className="tweet-time hover-under grey">{timeSince}</span>
 							</Link>
 							<div style={{ marginLeft: "auto" }}>
 								{dropdown ? (
@@ -243,18 +265,7 @@ const Tweet = (props) => {
 						</div>
 					)}
 					{replyAt ? <p className="tweet-reply">Replying to {replyAt}</p> : ""}
-					<p className={`tweet-text ${big ? "big-tweet-text" : ""}`}>
-						{" "}
-						{reactStringReplace(text, /(#\w+)/g, (match, i) => (
-							<Link
-								to={`/hashtag/${match.slice(1)}`}
-								key={i}
-								style={{ color: "rgb(29, 242, 161)" }}
-							>
-								{match}
-							</Link>
-						))}
-					</p>
+					<p className={`tweet-text ${big ? "big-tweet-text" : ""}`}> {linkedText}</p>
 
 					{big && <p className="pad grey">{timeSince}</p>}
 
@@ -286,7 +297,7 @@ const Tweet = (props) => {
 							onClick={isRetweet ? unRetweet : retweet}
 						>
 							<Retweet />
-							{!big && retweetsAmount}
+							{!big && (retweetsAmount || "")}
 						</div>
 						<div
 							value={tweetID}
@@ -296,8 +307,10 @@ const Tweet = (props) => {
 							{liked ? <LikeFilled value={tweetID} /> : <Like value={tweetID} />}
 							{!big && likeAmount}
 						</div>
-						<div className="tweet-svg-div grey">
-							<Copy />
+						<div className="tweet-svg-div grey copy-div">
+							<CopyToClipboard text={`/tweet/${tweetID}`}>
+								<Copy />
+							</CopyToClipboard>
 						</div>
 					</div>
 				</div>
