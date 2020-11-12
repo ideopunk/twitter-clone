@@ -46,8 +46,8 @@ const Tweet = (props) => {
 	);
 
 	const liked = likes && likes.includes(userID); // has the user liked this tweet?
-	const followed = userFollows.includes(tweeterID); // does the user follow this tweet?
-	const isRetweet = userRetweets.includes(tweetID);
+	const followed = userFollows && userFollows.includes(tweeterID); // does the user follow this tweet?
+	const isRetweet = userRetweets && userRetweets.includes(tweetID);
 	const likeAmount = likes ? likes.length : "";
 	const retweetsAmount = retweets ? retweets.length : "";
 	const repliesAmount = replies ? replies.length : "";

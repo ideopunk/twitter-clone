@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, Route, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const Search = (props) => {
 	const { defaultValue } = props;

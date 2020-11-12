@@ -1,5 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
 import { auth, db, storage } from "../../config/fbConfig";
+
+import Leaf from "../../assets/leaf-outline.svg";
+import { ReactComponent as LikeFilled } from "../../assets/like-icon-filled.svg";
+import { ReactComponent as ProfileFilled } from "../../assets/profile-filled.svg";
+
 import notify from "../functions/notify";
 import UserContext from "../context/context.js";
 import LoaderContainer from "../reusables/LoaderContainer";
@@ -9,42 +14,95 @@ const NotificationsFeed = ({ notifications }) => {
 	const [notificationsMapped, setNotificationsMapped] = useState([]);
 
 	useEffect(() => {
+		setNotificationsMapped([]);
 		notifications.forEach((notification) => {
 			let thingy;
 			const { type, subject, object } = notification;
 			console.log(notification);
 			switch (type) {
 				case "follow":
-					thingy = (
-						<div>
-							<h1>{notification}</h1>
-						</div>
-					);
-					setNotificationsMapped(<div className="account-card">{thingy}</div>);
+					db.collection("users")
+						.doc(subject)
+						.get()
+						.then((doc) => {
+							const data = doc.data();
+							storage
+								.ref("profile_pictures/" + doc.id + ".png")
+								.getDownloadURL()
+								.then((url) => {
+									setNotificationsMapped((n) => [
+										...n,
+										<div className="account-card" key={doc.id}>
+											<ProfileFilled />
+											<div>
+												<img
+													src={url}
+													alt="headshot"
+													className="profile-image"
+												/>
+												<p>
+													<span className="bold">{data.name}</span>{" "}
+													followed you
+												</p>
+											</div>
+										</div>,
+									]);
+								});
+						});
 
 					break;
 				case "retweet":
-					thingy = <div>retweet</div>;
 					setNotificationsMapped(<div className="account-card">{thingy}</div>);
 
 					break;
 				case "reply":
-					thingy = <div>reply</div>;
-					setNotificationsMapped(<div className="account-card">{thingy}</div>);
-
 					break;
+
 				case "like":
 					db.collection("tweets")
 						.doc(object)
 						.get()
 						.then((doc) => {
 							const data = doc.data();
-							setNotificationsMapped(
-								<div className="account-card">
-									<p>{data.at} liked your tweet</p>
-									<p className="grey">{data.text}</p>
-								</div>
-							);
+							db.collection("users")
+								.doc(subject)
+								.get()
+								.then((liker) => {
+									const likerData = liker.data()
+									storage
+										.ref("profile_pictures/" + subject + ".png")
+										.getDownloadURL()
+										.then((url) => {
+											throw url;
+										})
+
+										.catch((err) => {
+											let image;
+											if (err["code"]) {
+												image = Leaf;
+											} else {
+												image = err;
+											}
+											setNotificationsMapped((n) => [
+												...n,
+												<div className="account-card" key={doc.id}>
+													<LikeFilled />
+													<div>
+														<img
+															src={image}
+															alt="headshot"
+															className="profile-image"
+														/>
+														<p>
+															{likerData.at} liked your{" "}
+															{"replyTo" in data ? "reply" : "tweet"}{" "}
+														</p>
+														<p className="grey">{data.text}</p>
+													</div>
+												</div>,
+											]);
+										});
+								});
 						});
 
 					break;
@@ -54,7 +112,11 @@ const NotificationsFeed = ({ notifications }) => {
 		});
 	}, [notifications]);
 
-	return <div className="feed">{notificationsMapped}</div>;
+	return (
+		<div className="feed">
+			{notificationsMapped.length ? notificationsMapped : <LoaderContainer />}
+		</div>
+	);
 };
 
 export default NotificationsFeed;
