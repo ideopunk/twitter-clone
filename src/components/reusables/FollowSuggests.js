@@ -9,19 +9,7 @@ const FollowSuggest = () => {
 	const { userID, userFollows } = useContext(UserContext);
 	const [array, setArray] = useState([]);
 
-	// const follow = (e) => {
-	// 	e.persist();
-	// 	import("../functions/follow.js").then((follow) => follow.default(e, userID, userFollows));
-	// };
-
 	useEffect(() => {
-		const follow = (e) => {
-			e.persist();
-			import("../functions/follow.js").then((follow) =>
-				follow.default(e, userID, userFollows)
-			);
-		};
-
 		// only do this once userFollows is filled, or else the check won't work later in this.
 		userFollows &&
 			db
@@ -36,11 +24,22 @@ const FollowSuggest = () => {
 								.ref("profile_pictures/" + user.id + ".png")
 								.getDownloadURL()
 								.then((url) => {
+									throw url;
+								})
+								.catch((err) => {
+									let image;
+									if (err["code"]) {
+										image = Leaf;
+									} else {
+										image = err;
+									}
+
 									setArray((a) => [
 										...a,
+
 										<div className="tweet" key={user.id}>
 											<img
-												src={url}
+												src={image}
 												alt="suggest"
 												className="profile-image"
 											/>
@@ -51,30 +50,6 @@ const FollowSuggest = () => {
 											<FollowButton tweeterID={user.id} followed={false} />
 										</div>,
 									]);
-								})
-								.catch((err) => {
-									setArray((a) => [
-										...a,
-
-										<div className="tweet" key={user.id}>
-											<img
-												src={Leaf}
-												alt="suggest"
-												className="profile-image"
-											/>
-											<div className="tweet-main">
-												<p className="tweeter-name">{data.name}</p>
-												<p className="tweeter-at">{data.at}</p>
-											</div>
-											<button
-												value={user.id}
-												onClick={follow}
-												className="btn follow-btn"
-											>
-												Follow
-											</button>
-										</div>,
-									]);
 								});
 						}
 					});
@@ -82,7 +57,6 @@ const FollowSuggest = () => {
 	}, [userFollows, userID]);
 
 	return (
-		
 		<div className="follow-suggest side-box">
 			<h3 className="side-box-title">Who to follow</h3>
 			{array}

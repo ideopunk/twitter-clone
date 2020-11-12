@@ -16,7 +16,7 @@ const notify = (type, userID, personID, objectID) => {
 					{
 						type: type,
 						subject: userID,
-						object: objectID,
+						object: objectID || "",
 						timeStamp: new Date(),
 						seen: false,
 					},

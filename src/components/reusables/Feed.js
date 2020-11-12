@@ -7,7 +7,7 @@ const Feed = (props) => {
 
 
 	const tweets = tweetDatas.map((tweet) => {
-		console.log(tweet);
+		console.log("tweet");
 		return (
 			<Tweet
 				key={tweet.id}
