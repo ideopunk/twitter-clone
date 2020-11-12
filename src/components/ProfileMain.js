@@ -150,6 +150,8 @@ const ProfileMain = (props) => {
 						<p className="grey">{profileData.tweetAmount} tweets</p>
 					</div>
 				</Link>
+			<div style={{ height: "3.5rem" }}></div>
+
 				<img
 					className="profile-header-image"
 					src={profileData.header}
@@ -236,19 +238,19 @@ const ProfileMain = (props) => {
 
 			<Switch>
 				<Route exact path={`${path}/with_replies`}>
-					<ProfileFeed profileID={profileID} repliesIncluded={true} />
+					<ProfileFeed profileID={profileID} repliesIncluded={true} name={profileData.name}/>
 				</Route>
 
 				<Route exact path={`${path}/media`}>
-					<ProfileFeed profileID={profileID} repliesIncluded={false} />
+					<ProfileFeed profileID={profileID} repliesIncluded={false} name={profileData.name}/>
 				</Route>
 
 				<Route exact path={`${path}/likes`}>
-					<LikeFeed profileID={profileID} />
+					<LikeFeed profileID={profileID} name={profileData.name}/>
 				</Route>
 
 				<Route exact path={path}>
-					<ProfileFeed profileID={profileID} />
+					<ProfileFeed profileID={profileID} name={profileData.name}/>
 				</Route>
 			</Switch>
 			{editor ? (

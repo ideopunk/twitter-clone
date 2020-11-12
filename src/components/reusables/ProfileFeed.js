@@ -1,11 +1,26 @@
 import React, { useEffect, useState } from "react";
+import {  useRouteMatch, useParams } from "react-router-dom";
 import Feed from "./Feed";
 import LoaderContainer from "./LoaderContainer";
 import { db } from "../../config/fbConfig";
 
 const ProfileFeed = (props) => {
-	const { profileID, repliesIncluded } = props;
+	const { profileID, repliesIncluded, name } = props;
 	const [tweetDatas, setTweetDatas] = useState([]);
+
+	console.log(name)
+	const route = useRouteMatch()
+	console.log(useParams())
+	const params = useParams()
+	// set doc title 
+	useEffect(() => {
+		if (route.url.includes("with_replies")) {
+			document.title = `Tweets with replies by ${name}`
+		} else {
+			document.title = `${name} (${params.profile})`
+
+		}
+	}, [name, params.profile, route.url])
 
 	// set tweetdata
 	useEffect(() => {

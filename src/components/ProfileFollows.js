@@ -43,6 +43,8 @@ const ProfileFollows = (props) => {
 					<p className="grey">{stuff.at}</p>
 				</div>
 			</Link>
+			<div style={{ height: "3.5rem" }}></div>
+
 			<div className="profile-feed-selector-container">
 				<NavLink
 					to={`/${params.profile}/followers`}
@@ -60,7 +62,7 @@ const ProfileFollows = (props) => {
 				</NavLink>
 			</div>
 		</div>
-        <AccountList profileID={profileID} />
+        <AccountList profileID={profileID} name={stuff.name}/>
         </>
 	);
 };

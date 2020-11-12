@@ -4,8 +4,13 @@ import LoaderContainer from "./LoaderContainer";
 import { db } from "../../config/fbConfig";
 
 const LikeFeed = (props) => {
-	const { profileID } = props;
+	const { profileID, name } = props;
 	const [tweetDatas, setTweetDatas] = useState([]);
+
+	// set doc title
+	useEffect(() => {
+		document.title = `Tweets liked by ${name}`
+	}, []);
 
 	useEffect(() => {
 		db.collection("tweets")

@@ -8,6 +8,10 @@ const Notifications = () => {
 	const { userID } = useContext(UserContext);
 
 	const [notifications, setNotifications] = useState([]);
+	
+	useEffect(() => {
+		document.title = "Notifications / Fake Twitter"
+	}, [])
 
 	useEffect(() => {
 		const userRef = db.collection("users").doc(userID);

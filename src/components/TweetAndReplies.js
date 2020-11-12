@@ -12,8 +12,12 @@ const TweetAndReplies = () => {
 	const [mainTweet, setMainTweet] = useState({});
 	const [tweetDatas, setTweetDatas] = useState([]);
 
-	const [retweetModal, setRetweetModal] = useState(false);
-	const [likeModal, setLikeModal] = useState(false);
+	console.log("tweet and replies");
+	useEffect(() => {
+		if (Object.keys(mainTweet).length > 0) {
+			document.title = `${mainTweet.name} on Fake Twitter`;
+		}
+	}, [mainTweet]);
 
 	// get the tweet
 	useEffect(() => {

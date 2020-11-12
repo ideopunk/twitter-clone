@@ -1,5 +1,5 @@
-import React, { useContext, Suspense, lazy } from "react";
-import { Switch, Route } from "react-router-dom";
+import React, { useContext, Suspense, lazy, useEffect } from "react";
+import { Switch, Route, useHistory } from "react-router-dom";
 import LoginPrompt from "./LoginPrompt";
 import LoaderContainer from "./reusables/LoaderContainer";
 import Messages from "./Messages";
@@ -18,7 +18,9 @@ const Hashtag = lazy(() => import("./Hashtag"));
 
 const Main = (props) => {
 	const { userID } = useContext(UserContext);
-	console.log(userID)
+	console.log(userID);
+
+
 	return (
 		<div className="main">
 			<Menu />

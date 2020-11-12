@@ -12,6 +12,10 @@ const Home = (props) => {
 	const [tweetDatas, setTweetDatas] = useState([]);
 
 	useEffect(() => {
+		document.title = "Home / Fake Twitter"
+	}, [])
+
+	useEffect(() => {
 		db.collection("users")
 			.where("followers", "array-contains", userID)
 			.get()

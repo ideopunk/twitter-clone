@@ -4,11 +4,21 @@ import { useRouteMatch } from "react-router-dom";
 import { db } from "../../config/fbConfig";
 import LoaderContainer from "./LoaderContainer";
 
-const AccountList = ({ profileID }) => {
+const AccountList = ({ profileID, name }) => {
 	const { url } = useRouteMatch();
 	console.log(useRouteMatch());
 
 	const [accounts, setAccounts] = useState([]);
+
+	useEffect(() => {
+		if (url.includes("following")) {
+			document.title = `People following ${name}`
+		} else {
+			document.title = `People followed by ${name}`
+
+		}
+	}, [name, url])
+
 
 	useEffect(() => {
 		db.collection("users")

@@ -74,10 +74,6 @@ const Tweet = (props) => {
 		</Link>
 	));
 
-	useEffect(() => {
-		console.log(time);
-	}, [time]);
-
 	// is this a retweet?
 	useEffect(() => {
 		if (retweets) {
@@ -187,6 +183,7 @@ const Tweet = (props) => {
 					</div>
 				</Link>
 			)}
+			
 			<div className={`tweet-inside ${big ? "big-tweet-inside" : ""}`}>
 				{big ? (
 					<div className="tweet-top-data pad">

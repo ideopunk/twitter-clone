@@ -7,6 +7,10 @@ const Explore = () => {
 	const [tweetDatas, setTweetDatas] = useState([]);
 
 	useEffect(() => {
+		document.title = "Explore / Fake Twitter"
+	}, [])
+
+	useEffect(() => {
 		db.collection("tweets")
 			.orderBy("timeStamp", "desc")
 			.get()
