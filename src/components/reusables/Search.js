@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Route, useHistory } from "react-router-dom";
 
 const Search = (props) => {
@@ -19,6 +19,10 @@ const Search = (props) => {
 			history.push(`/search/${searchPhrase}`);
 		}
 	};
+
+	useEffect(() => {
+		setSearchPhrase(defaultValue)
+	}, [defaultValue])
 
 	return (
 		<form className="search-form" onSubmit={(e) => handleSubmit(e)}>

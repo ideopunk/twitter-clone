@@ -17,12 +17,9 @@ const SearchResults = () => {
 
 	// search!
 	useEffect(() => {
+		setTweetDatas([]);
 		db.collection("tweets")
-			.where(
-				searchTerm.includes("#") ? "hashtags" : "at",
-				searchTerm.includes("#") ? "array-contains" : "==",
-				searchTerm
-			)
+			.where("hashtags", "array-contains", searchTerm)
 			.get()
 			.then((snapshot) => {
 				let tempArray = [];
@@ -30,7 +27,19 @@ const SearchResults = () => {
 					// don't include replies
 					tempArray.push({ ...doc.data(), id: doc.id });
 				});
-				setTweetDatas(tempArray);
+				setTweetDatas((t) => [...t, ...tempArray]);
+			});
+
+		db.collection("tweets")
+			.where("at", "==", searchTerm)
+			.get()
+			.then((snapshot) => {
+				let tempArray = [];
+				snapshot.forEach((doc) => {
+					// don't include replies
+					tempArray.push({ ...doc.data(), id: doc.id });
+				});
+				setTweetDatas((t) => [...t, ...tempArray]);
 			});
 	}, [searchTerm]);
 
