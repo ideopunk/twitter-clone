@@ -23,7 +23,7 @@ const FollowSuggest = () => {
 		};
 
 		// only do this once userFollows is filled, or else the check won't work later in this.
-		userFollows.length &&
+		userFollows &&
 			db
 				.collection("users")
 				.get()

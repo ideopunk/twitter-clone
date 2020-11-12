@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {  db } from "../config/fbConfig";
+import { db } from "../config/fbConfig";
 import UserContext from "./context/context.js";
 import LoaderContainer from "./reusables/LoaderContainer";
 
@@ -12,8 +12,8 @@ const Home = (props) => {
 	const [tweetDatas, setTweetDatas] = useState([]);
 
 	useEffect(() => {
-		document.title = "Home / Fake Twitter"
-	}, [])
+		document.title = "Home / Fake Twitter";
+	}, []);
 
 	useEffect(() => {
 		db.collection("users")
@@ -29,9 +29,7 @@ const Home = (props) => {
 					console.log(doc.data().tweets);
 					doc.data().tweets && tempArray.push(...doc.data().tweets);
 				});
-				return tempArray;
-			})
-			.then((tempArray) => {
+
 				db.collection("tweets")
 					.orderBy("timeStamp", "desc")
 					.get()

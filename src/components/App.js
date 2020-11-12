@@ -11,16 +11,7 @@ const Main = lazy(() => import("./Main"));
 
 const App = () => {
 	const [userID, setUserID] = useState(null);
-	const [userImage, setUserImage] = useState(null);
-	const [userAt, setUserAt] = useState(null);
-	const [userName, setUserName] = useState(null);
-	const [userFollows, setUserFollows] = useState([]);
-	const [userFollowers, setUserFollowers] = useState([]);
-	const [userTweets, setUserTweets] = useState([]);
-	const [userLikes, setUserLikes] = useState([]);
-	const [userRetweets, setUserRetweets] = useState([]);
-	const [userBio, setUserBio] = useState("");
-	const [userJoinDate, setUserJoinDate] = useState({});
+	const [userData, setUserData] = useState({});
 
 	// listen for auth status changes
 	useEffect(() => {
@@ -29,37 +20,84 @@ const App = () => {
 			console.log(user);
 			if (user) {
 				setUserID(user.uid);
-				console.log(user.uid)
+				console.log(user.uid);
 				db.collection("users")
 					.doc(user.uid)
 					.get()
 					.then((snapshot) => {
 						const data = snapshot.data();
 						console.log("app data");
-						setUserAt(data.at);
-						setUserName(data.name);
 
 						// set optional data if we have it.
-						data.follows && setUserFollows(data.follows);
-						data.followers && setUserFollowers(data.followers);
-						data.tweets && setUserTweets(data.tweets);
-						data.likes && setUserLikes(data.likes);
-						data.retweets && setUserRetweets(data.retweets);
-						data.bio && setUserBio(data.bio);
-						setUserJoinDate(data.joinDate);
+						setUserData((u) => ({
+							...u,
+							joinDate: data.joinDate,
+							bio: data.bio || "",
+							retweets: data.retweets || [],
+							likes: data.likes || [],
+							tweets: data.tweets || [],
+							followers: data.followers || [],
+							follows: data.follows || [],
+							at: data.at,
+							name: data.name,
+						}));
 					});
 
 				// set user image and header,
 				storage
 					.ref("profile_pictures/" + user.uid + ".png")
 					.getDownloadURL()
-					.then((url) => setUserImage(url))
+					.then((url) => {
+						setUserData((u) => ({ ...u, image: url }));
+					})
 					.catch(() => {
-						setUserImage(Leaf);
+						setUserData((u) => ({ ...u, image: Leaf }));
 					});
-			} 
+			}
 		});
 	}, []);
+
+	// listen for auth status changes
+	// useEffect(() => {
+	// 	console.log("use effect");
+	// 	auth.onAuthStateChanged((user) => {
+	// 		console.log(user);
+	// 		if (user) {
+	// 			setUserID(user.uid);
+	// 			console.log(user.uid)
+	// 			db.collection("users")
+	// 				.doc(user.uid)
+	// 				.onSnapshot((snapshot) => {
+	// 					const data = snapshot.data();
+	// 					console.log("app data");
+	// 					setUserAt(data.at);
+	// 					setUserName(data.name);
+
+	// 					// set optional data if we have it.
+	// 					data.follows && setUserFollows(data.follows);
+	// 					data.followers && setUserFollowers(data.followers);
+	// 					data.tweets && setUserTweets(data.tweets);
+	// 					data.likes && setUserLikes(data.likes);
+	// 					data.retweets && setUserRetweets(data.retweets);
+	// 					data.bio && setUserBio(data.bio);
+	// 					setUserJoinDate(data.joinDate);
+	// 				});
+
+	// 			// set user image and header,
+	// 			storage
+	// 				.ref("profile_pictures/" + user.uid + ".png")
+	// 				.getDownloadURL()
+	// 				.then((url) => setUserImage(url))
+	// 				.catch(() => {
+	// 					setUserImage(Leaf);
+	// 				});
+	// 		}
+	// 	});
+	// }, []);
+
+	useEffect(() => {
+		console.log(userData)
+	}, [userData]);
 
 	return (
 		<BrowserRouter>
@@ -68,16 +106,16 @@ const App = () => {
 				<UserContext.Provider
 					value={{
 						userID: userID,
-						userImage: userImage,
-						userAt: userAt,
-						userName: userName,
-						userFollows: userFollows,
-						userFollowers: userFollowers,
-						userTweets: userTweets,
-						userLikes: userLikes,
-						userRetweets: userRetweets,
-						userBio: userBio,
-						userJoinDate: userJoinDate,
+						userImage: userData.image,
+						userAt: userData.at,
+						userName: userData.name,
+						userFollows: userData.follows,
+						userFollowers: userData.followers,
+						userTweets: userData.tweets,
+						userLikes: userData.likes,
+						userRetweets: userData.retweets,
+						userBio: userData.bio,
+						userJoinDate: userData.joinDate,
 					}}
 				>
 					<Switch>

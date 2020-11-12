@@ -61,11 +61,7 @@ const Main = (props) => {
 				</Suspense>
 			) : (
 				<Suspense fallback={<LoaderContainer />}>
-					<Switch>
-						<Route exact path="/">
-							<Explore />
-						</Route>
-					</Switch>
+					<Explore />
 				</Suspense>
 			)}
 

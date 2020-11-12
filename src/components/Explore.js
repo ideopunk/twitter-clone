@@ -7,8 +7,8 @@ const Explore = () => {
 	const [tweetDatas, setTweetDatas] = useState([]);
 
 	useEffect(() => {
-		document.title = "Explore / Fake Twitter"
-	}, [])
+		document.title = "Explore / Fake Twitter";
+	}, []);
 
 	useEffect(() => {
 		db.collection("tweets")
@@ -17,15 +17,11 @@ const Explore = () => {
 			.then((snapshot) => {
 				let tempArray = [];
 				snapshot.forEach((doc) => {
-
 					// don't include replies
 					if (!doc.data().replyTo) {
 						tempArray.push({ ...doc.data(), id: doc.id });
 					}
 				});
-				return tempArray;
-			})
-			.then((tempArray) => {
 				setTweetDatas(tempArray);
 			});
 	}, []);

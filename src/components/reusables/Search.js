@@ -3,7 +3,7 @@ import { Link, Route, useHistory } from "react-router-dom";
 
 const Search = (props) => {
 	const { defaultValue } = props;
-	const [searchPhrase, setSearchPhrase] = useState(defaultValue || "");
+	const [searchPhrase, setSearchPhrase] = useState("");
 
 	let history = useHistory();
 
@@ -21,8 +21,10 @@ const Search = (props) => {
 	};
 
 	useEffect(() => {
-		setSearchPhrase(defaultValue)
-	}, [defaultValue])
+		if (defaultValue) {
+			setSearchPhrase(defaultValue);
+		}
+	}, [defaultValue]);
 
 	return (
 		<form className="search-form" onSubmit={(e) => handleSubmit(e)}>
