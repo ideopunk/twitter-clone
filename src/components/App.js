@@ -65,7 +65,6 @@ const App = () => {
 		<BrowserRouter>
 			<div className="App">
 				{/* If the user is logged in, wait to render until the context is set */}
-				{/* {checked && ( */}
 				<UserContext.Provider
 					value={{
 						userID: userID,

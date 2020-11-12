@@ -5,10 +5,12 @@ import LoaderContainer from "./reusables/LoaderContainer";
 import Messages from "./Messages";
 import Menu from "./Menu";
 import Search from "./reusables/Search";
+import SearchResults from "./SearchResults";
 import LoginCard from "./reusables/LoginCard";
 import FollowSuggests from "./reusables/FollowSuggests";
 import TOS from "./reusables/TOS";
 import UserContext from "./context/context.js";
+
 const Home = lazy(() => import("./Home"));
 const ProfileRoutes = lazy(() => import("./ProfileRoutes"));
 const Explore = lazy(() => import("./Explore"));
@@ -19,7 +21,6 @@ const Hashtag = lazy(() => import("./Hashtag"));
 const Main = (props) => {
 	const { userID } = useContext(UserContext);
 	console.log(userID);
-
 
 	return (
 		<div className="main">
@@ -40,12 +41,16 @@ const Main = (props) => {
 						<Route exact path="/messages">
 							<Messages />
 						</Route>
+						<Route path="/search/:searchTerm">
+							<SearchResults />
+						</Route>
 						<Route path="/hashtag/:tag">
 							<Hashtag />
 						</Route>
 						<Route path="/tweet/:tweetID">
 							<TweetAndReplies />
 						</Route>
+
 						<Route path="/:profile">
 							<ProfileRoutes />
 						</Route>

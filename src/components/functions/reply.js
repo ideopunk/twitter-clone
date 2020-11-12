@@ -6,10 +6,10 @@ const reply = (props) => {
 	console.log(props);
 	const { tweetID, userName, text, userAt, userID, userTweets } = props;
 
-	const hashRE = /#\w+/;
+	const hashRE = /(?<=#)\w+/;
 	const hashFound = text.match(hashRE);
 
-	const palRE = /@\w+/;
+	const palRE = /(?<=@)\w+/;
 	const palFound = text.match(palRE);
 
 	db.collection("tweets")

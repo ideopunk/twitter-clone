@@ -40,7 +40,7 @@ const ProfileFollows = (props) => {
 				<SideArrow />
 				<div className="profile-home-link-text">
 					<h3 className="no-dec">{stuff.name}</h3>
-					<p className="grey">{stuff.at}</p>
+					<p className="grey">@{stuff.at}</p>
 				</div>
 			</Link>
 			<div style={{ height: "3.5rem" }}></div>

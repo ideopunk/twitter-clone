@@ -2,7 +2,8 @@ import { db } from "../../config/fbConfig";
 
 const simpleTweet = (props) => {
 	const { userName, text, userAt, userID, userTweets } = props;
-	console.log(text)
+	console.log(text);
+
 	const hashRE = /(?<=#)\w+/;
 	const hashFound = text.match(hashRE);
 

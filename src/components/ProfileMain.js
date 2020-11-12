@@ -178,7 +178,7 @@ const ProfileMain = (props) => {
 						/>
 					)}
 					<h3>{profileData.name}</h3>
-					<p className="grey">{profileData.at}</p>
+					<p className="grey">@{profileData.at}</p>
 					<p className="bio">{profileData.bio}</p>
 					<p className="grey">
 						<span>{profileData.website}</span>

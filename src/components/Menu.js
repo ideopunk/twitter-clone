@@ -136,7 +136,7 @@ const Menu = (props) => {
 							<img src={userImage} alt="user-profile" className="profile-image" />
 							<div className="menu-profile-button-text">
 								<p>{userName}</p>
-								<p className="grey">{userAt}</p>
+								<p className="grey">@{userAt}</p>
 							</div>
 							<PowerIcon className="menu-icon power-button" />
 						</button>

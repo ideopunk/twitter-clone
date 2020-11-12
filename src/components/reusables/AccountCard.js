@@ -37,7 +37,7 @@ const AccountCard = (props) => {
 				<div className="account-top">
 					<div>
 						<p className="tweeter-name">{name}</p>
-						<p className="tweeter-at">{at}</p>
+						<p className="tweeter-at">@{at}</p>
 					</div>
 					<FollowButton
 						tweeterID={id}

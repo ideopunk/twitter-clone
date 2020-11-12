@@ -65,7 +65,7 @@ const Tweet = (props) => {
 	));
 	const linkedText = reactStringReplace(hashedText, /(@\w+)/g, (match, i) => (
 		<Link
-			to={`/${match}`}
+			to={`/${match.slice(1)}`}
 			key={i + match}
 			className="hover-under"
 			style={{ color: "rgb(29, 242, 161)" }}
@@ -201,7 +201,7 @@ const Tweet = (props) => {
 						</Link>
 						<Link to={`/${at}`} style={{ textDecoration: "none" }}>
 							<p className="tweeter-name">{name}</p>
-							<p className="tweeter-at">{at}</p>
+							<p className="tweeter-at">@{at}</p>
 						</Link>
 
 						<div style={{ marginLeft: "auto" }}>
@@ -239,7 +239,7 @@ const Tweet = (props) => {
 						<div className="tweet-top-data">
 							<Link to={`/${at}`} style={{ textDecoration: "none" }}>
 								<span className="tweeter-name hover-under">{name}</span>
-								<span className="tweeter-at hover-under">{at}</span>
+								<span className="tweeter-at hover-under">{`@${at}`}</span>
 							</Link>
 							<Link
 								to={`/tweet/${tweetID}`}
@@ -265,7 +265,7 @@ const Tweet = (props) => {
 							</div>
 						</div>
 					)}
-					{replyAt ? <p className="tweet-reply">Replying to {replyAt}</p> : ""}
+					{replyAt ? <p className="tweet-reply">Replying to @{replyAt}</p> : ""}
 					<p className={`tweet-text ${big ? "big-tweet-text" : ""}`}> {linkedText}</p>
 
 					{big && <p className="pad grey">{timeSince}</p>}
