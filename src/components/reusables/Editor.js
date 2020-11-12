@@ -108,21 +108,13 @@ const Editor = (props) => {
 
 	return (
 		<form className="modal" onSubmit={handleSubmit}>
-			<div className="editor-header">
-				<div
-					style={{
-						display: "flex",
-						justifyContent: "space-between",
-						alignItems: "center",
-					}}
-				>
-					<CloseIcon />
-					<h3 style={{ height: "100%" }}>Edit profile</h3>
-				</div>
+			<div className="modal-header">
+				<CloseIcon />
+				<h3>Edit profile</h3>
 				<input
 					type="submit"
 					className="btn"
-					style={{ width: "3.5rem", height: "2rem" }}
+					style={{ width: "3.5rem", height: "2rem", marginLeft: "auto", marginRight: "1rem" }}
 					value="Save"
 				/>
 			</div>

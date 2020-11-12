@@ -6,32 +6,53 @@ import LoaderContainer from "../reusables/LoaderContainer";
 import Tweet from "./Tweet";
 
 const NotificationsFeed = ({ notifications }) => {
-	const notificationsMapped = notifications.map((notification) => {
-		let thingy;
-		switch (notification.type) {
-			case "follow":
-				thingy = (
-					<div>
-						<h1>{notification}</h1>
-					</div>
-				);
-				break;
-			case "retweet":
-				thingy = <div>retweet</div>;
+	const [notificationsMapped, setNotificationsMapped] = useState([]);
 
-				break;
-			case "reply":
-				thingy = <div>reply</div>;
+	useEffect(() => {
+		notifications.forEach((notification) => {
+			let thingy;
+			const { type, subject, object } = notification;
+			console.log(notification);
+			switch (type) {
+				case "follow":
+					thingy = (
+						<div>
+							<h1>{notification}</h1>
+						</div>
+					);
+					setNotificationsMapped(<div className="account-card">{thingy}</div>);
 
-				break;
-			case "like":
-				thingy = <div>like</div>;
-				break;
-			default:
-				console.log("what?");
-		}
-		return thingy;
-	});
+					break;
+				case "retweet":
+					thingy = <div>retweet</div>;
+					setNotificationsMapped(<div className="account-card">{thingy}</div>);
+
+					break;
+				case "reply":
+					thingy = <div>reply</div>;
+					setNotificationsMapped(<div className="account-card">{thingy}</div>);
+
+					break;
+				case "like":
+					db.collection("tweets")
+						.doc(object)
+						.get()
+						.then((doc) => {
+							const data = doc.data();
+							setNotificationsMapped(
+								<div className="account-card">
+									<p>{data.at} liked your tweet</p>
+									<p className="grey">{data.text}</p>
+								</div>
+							);
+						});
+
+					break;
+				default:
+					console.log("what?");
+			}
+		});
+	}, [notifications]);
 
 	return <div className="feed">{notificationsMapped}</div>;
 };

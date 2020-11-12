@@ -16,7 +16,6 @@ import { ReactComponent as PowerIcon } from "../assets/power-outline.svg";
 
 const Menu = (props) => {
 	const { userName, userAt, userID, userImage } = useContext(UserContext);
-	console.log(userID);
 	const [unseenNotes, setUnseenNotes] = useState(0);
 
 	const [composer, setComposer] = useState(false);
