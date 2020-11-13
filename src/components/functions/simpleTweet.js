@@ -15,10 +15,12 @@ const simpleTweet = (props) => {
 			text: text,
 			at: userAt,
 			userID: userID,
-			hashtags: hashFound,
-			userTags: palFound,
+			hashtags: hashFound || [],
+			userTags: palFound || [],
 			timeStamp: new Date(),
 			retweets: [],
+			likes: [],
+			replies: [],
 		})
 		.then((newTweet) => {
 			console.log(newTweet);

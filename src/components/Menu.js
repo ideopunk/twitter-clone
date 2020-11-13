@@ -9,7 +9,6 @@ import fish from "../assets/fish-outline.svg";
 import { ReactComponent as HomeIcon } from "../assets/home-outline.svg";
 import { ReactComponent as ExploreIcon } from "../assets/explore-outline.svg";
 import { ReactComponent as NotificationsIcon } from "../assets/notifications-outline.svg";
-import { ReactComponent as MessagesIcon } from "../assets/messages-outline.svg";
 import { ReactComponent as ProfileIcon } from "../assets/profile-outline.svg";
 import { ReactComponent as MoreIcon } from "../assets/more-outline.svg";
 import { ReactComponent as PowerIcon } from "../assets/power-outline.svg";
@@ -97,16 +96,7 @@ const Menu = (props) => {
 						<span className="menu-item-text">Notifications</span>
 					</NavLink>
 				</li>
-				<li>
-					<NavLink
-						activeClassName="menu-item-active"
-						to="/messages"
-						className="menu-item"
-					>
-						<MessagesIcon />
-						<span className="menu-item-text">Messages</span>
-					</NavLink>
-				</li>
+
 
 				<li>
 					<NavLink
@@ -118,13 +108,14 @@ const Menu = (props) => {
 						<span className="menu-item-text">Profile</span>
 					</NavLink>
 				</li>
-
-				<li>
-					<div className="menu-item" onClick={toggleDropdown}>
-						<MoreIcon />
-						<span className="menu-item-text">More</span>
-					</div>
-				</li>
+				{userID && (
+					<li>
+						<div className="menu-item" onClick={toggleDropdown}>
+							<MoreIcon />
+							<span className="menu-item-text">More</span>
+						</div>
+					</li>
+				)}
 				<li>
 					<button className="btn" onClick={toggleComposer}>
 						Tweet

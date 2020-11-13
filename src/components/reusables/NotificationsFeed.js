@@ -21,16 +21,18 @@ const NotificationsFeed = ({ notifications }) => {
 
 		userRef.get().then((doc) => {
 			const data = doc.data();
-			const seenNotes = data.notifications.map((notification) => notification.seen === true);
+			const seenNotes = data.notifications.map((notification) => {
+				let newNotification = notification;
+				newNotification.seen = true;
+				return newNotification;
+			});
 			userRef.update({ notifications: seenNotes });
 		});
 	}, [userID]);
 
-
 	useEffect(() => {
 		setNotificationsMapped([]);
 		notifications.forEach((notification) => {
-			let thingy;
 			const { type, subject, object } = notification;
 			console.log(notification);
 			switch (type) {

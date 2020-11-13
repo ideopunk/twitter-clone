@@ -18,10 +18,13 @@ const reply = (props) => {
 			text: text,
 			at: userAt,
 			userID: userID,
-			hashtags: hashFound,
-			userTags: palFound,
+			hashtags: hashFound || [],
+			userTags: palFound || [],
 			timeStamp: new Date(),
 			replyTo: tweetID,
+			retweets: [],
+			likes: [],
+			replies: [],
 		})
 
 		.then((newTweet) => {

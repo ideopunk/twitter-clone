@@ -16,7 +16,7 @@ const App = () => {
 	// listen for auth status changes
 	useEffect(() => {
 		console.log("use effect");
-		auth.onAuthStateChanged((user) => {
+		const unsubscribe = auth.onAuthStateChanged((user) => {
 			console.log(user);
 			if (user) {
 				setUserID(user.uid);
@@ -53,51 +53,14 @@ const App = () => {
 					.catch(() => {
 						setUserData((u) => ({ ...u, image: Leaf }));
 					});
+			} else {
+				setUserID(null)
+				setUserData({})
 			}
 		});
+
+		return () => unsubscribe();
 	}, []);
-
-	// listen for auth status changes
-	// useEffect(() => {
-	// 	console.log("use effect");
-	// 	auth.onAuthStateChanged((user) => {
-	// 		console.log(user);
-	// 		if (user) {
-	// 			setUserID(user.uid);
-	// 			console.log(user.uid)
-	// 			db.collection("users")
-	// 				.doc(user.uid)
-	// 				.onSnapshot((snapshot) => {
-	// 					const data = snapshot.data();
-	// 					console.log("app data");
-	// 					setUserAt(data.at);
-	// 					setUserName(data.name);
-
-	// 					// set optional data if we have it.
-	// 					data.follows && setUserFollows(data.follows);
-	// 					data.followers && setUserFollowers(data.followers);
-	// 					data.tweets && setUserTweets(data.tweets);
-	// 					data.likes && setUserLikes(data.likes);
-	// 					data.retweets && setUserRetweets(data.retweets);
-	// 					data.bio && setUserBio(data.bio);
-	// 					setUserJoinDate(data.joinDate);
-	// 				});
-
-	// 			// set user image and header,
-	// 			storage
-	// 				.ref("profile_pictures/" + user.uid + ".png")
-	// 				.getDownloadURL()
-	// 				.then((url) => setUserImage(url))
-	// 				.catch(() => {
-	// 					setUserImage(Leaf);
-	// 				});
-	// 		}
-	// 	});
-	// }, []);
-
-	useEffect(() => {
-		console.log(userData)
-	}, [userData]);
 
 	return (
 		<BrowserRouter>

@@ -1,9 +1,8 @@
 import { db } from "../../config/fbConfig";
 
 const deleteAccount = (accountID) => {
-	// delete user's tweets
-	let doomedArray = [];
 
+	// delete user's tweets
 	db.collection("tweets")
 		.where("userID", "==", accountID)
 		.get()

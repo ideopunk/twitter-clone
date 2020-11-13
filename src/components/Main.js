@@ -2,7 +2,6 @@ import React, { useContext, Suspense, lazy, useEffect } from "react";
 import { Switch, Route, useHistory } from "react-router-dom";
 import LoginPrompt from "./LoginPrompt";
 import LoaderContainer from "./reusables/LoaderContainer";
-import Messages from "./Messages";
 import Menu from "./Menu";
 import Search from "./reusables/Search";
 import SearchResults from "./SearchResults";
@@ -37,9 +36,6 @@ const Main = (props) => {
 
 						<Route exact path="/notifications">
 							<Notifications />
-						</Route>
-						<Route exact path="/messages">
-							<Messages />
 						</Route>
 						<Route path="/search/:searchTerm">
 							<SearchResults />
