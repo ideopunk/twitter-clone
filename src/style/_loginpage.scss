@@ -13,11 +13,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    row-gap: 1rem;
+
 }
 
 .login-form {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    row-gap: 1rem;
 }

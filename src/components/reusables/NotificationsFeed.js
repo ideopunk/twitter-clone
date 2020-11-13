@@ -1,18 +1,31 @@
 import React, { useEffect, useState, useContext } from "react";
-import { auth, db, storage } from "../../config/fbConfig";
+import { db, storage } from "../../config/fbConfig";
 
 import Leaf from "../../assets/leaf-outline.svg";
 import { ReactComponent as LikeFilled } from "../../assets/like-icon-filled.svg";
 import { ReactComponent as ProfileFilled } from "../../assets/profile-filled.svg";
 import { ReactComponent as Retweet } from "../../assets/retweet-icon.svg";
 
-import notify from "../functions/notify";
 import UserContext from "../context/context.js";
 import LoaderContainer from "../reusables/LoaderContainer";
 import Tweet from "./Tweet";
 
 const NotificationsFeed = ({ notifications }) => {
+	const { userID } = useContext(UserContext);
+
 	const [notificationsMapped, setNotificationsMapped] = useState([]);
+
+	// the notifications have been observed.
+	useEffect(() => {
+		const userRef = db.collection("users").doc(userID);
+
+		userRef.get().then((doc) => {
+			const data = doc.data();
+			const seenNotes = data.notifications.map((notification) => notification.seen === true);
+			userRef.update({ notifications: seenNotes });
+		});
+	}, [userID]);
+
 
 	useEffect(() => {
 		setNotificationsMapped([]);
@@ -48,9 +61,9 @@ const NotificationsFeed = ({ notifications }) => {
 												<img
 													src={image}
 													alt="headshot"
-													className="profile-image"
+													className="profile-image small-profile-image"
 												/>
-												<p>
+												<p style={{ marginTop: "0.5rem" }}>
 													<span className="bold">{data.name}</span>{" "}
 													followed you
 												</p>
@@ -90,18 +103,26 @@ const NotificationsFeed = ({ notifications }) => {
 											setNotificationsMapped((n) => [
 												...n,
 												<div className="account-card" key={doc.id}>
-													<Retweet style={{ fill: "blue" }} />
+													<Retweet
+														className="menu-icon"
+														style={{ fill: "blue" }}
+													/>
 													<div>
 														<img
 															src={image}
 															alt="headshot"
-															className="profile-image"
+															className="profile-image small-profile-image"
 														/>
-														<p>
+														<p style={{ marginTop: "0.5rem" }}>
 															{likerData.at} Retweeted your{" "}
 															{"replyTo" in data ? "reply" : "tweet"}{" "}
 														</p>
-														<p className="grey">{data.text}</p>
+														<p
+															className="grey"
+															style={{ marginTop: "0.5rem" }}
+														>
+															{data.text}
+														</p>
 													</div>
 												</div>,
 											]);
@@ -163,19 +184,31 @@ const NotificationsFeed = ({ notifications }) => {
 											}
 											setNotificationsMapped((n) => [
 												...n,
-												<div className="account-card" key={doc.id}>
-													<LikeFilled />
+												<div
+													className="account-card"
+													key={doc.id}
+													style={{ alignItems: "flex-start" }}
+												>
+													<LikeFilled
+														className="menu-icon"
+														style={{ fill: "red" }}
+													/>
 													<div>
 														<img
 															src={image}
 															alt="headshot"
-															className="profile-image"
+															className="profile-image small-profile-image"
 														/>
-														<p>
+														<p style={{ marginTop: "0.5rem" }}>
 															{likerData.at} liked your{" "}
 															{"replyTo" in data ? "reply" : "tweet"}{" "}
 														</p>
-														<p className="grey">{data.text}</p>
+														<p
+															className="grey"
+															style={{ marginTop: "0.5rem" }}
+														>
+															{data.text}
+														</p>
 													</div>
 												</div>,
 											]);

@@ -44,18 +44,37 @@ const LoginPage = () => {
 				</span>
 				<h3>Log in to Fake Twitter</h3>
 				<form className="login-form" onSubmit={(e) => handleSubmit(e)}>
-					<label>
-						Email
-						<input required onChange={(e) => handleEmailChange(e)} />
+					<label className="form-label">
+						<span className="form-name">Email</span>
+						<input
+							className="form-input"
+							maxLength={50}
+							required
+							onChange={(e) => handleEmailChange(e)}
+							value={email}
+						/>
 					</label>
-					<label>
-						Password
-						<input type="password" required onChange={(e) => handlePasswordChange(e)} />
+
+					<label className="form-label">
+						<span className="form-name">Password</span>
+						<input
+							type="password"
+							className="form-input"
+							maxLength={50}
+							required
+							onChange={(e) => handlePasswordChange(e)}
+							value={password}
+						/>
 					</label>
-					<input className="lg-btn" style={{}} type="submit" value="Log in" />
+
+					<input
+						className="lg-btn btn"
+						style={{ width: "100%" }}
+						type="submit"
+						value="Log in"
+					/>
 					<div>
-						<p onClick={toggleReset}>Forgot password?</p>
-						<Link to="signup">Sign up for Fake Twitter</Link>
+						<span onClick={toggleReset}>Forgot password?</span> · <Link to="signup">Sign up for Fake Twitter</Link>
 					</div>
 				</form>
 			</div>

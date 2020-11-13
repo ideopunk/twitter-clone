@@ -7,7 +7,9 @@ const retweet = (tweetID, userID, userRetweets) => {
 		.doc(tweetID)
 		.get()
 		.then((snapshot) => {
-			notify("retweet", userID, snapshot.data().userID, tweetID);
+			if (userID !== snapshot.data().userID) {
+				notify("retweet", userID, snapshot.data().userID, tweetID);
+			}
 
 			return snapshot.data().retweets;
 		})

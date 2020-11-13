@@ -7,7 +7,9 @@ const likeDB = (tweet, userID, userLikes) => {
 		.get()
 		.then((snapshot) => {
 			// uhh side effect!
-			notify("like", userID, snapshot.data().userID, tweet);
+			if (userID !== snapshot.data().userID) {
+				notify("like", userID, snapshot.data().userID, tweet);
+			}
 
 			return snapshot.data().likes;
 		})

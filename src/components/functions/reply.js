@@ -45,7 +45,9 @@ const reply = (props) => {
 					db.collection("tweets").doc(tweetID).update({ replies: newReplies });
 
 					// notify
-					notify("reply", userID, originalData.userID, newTweet.id);
+					if (userID !== originalData.userID) {
+						notify("reply", userID, originalData.userID, newTweet.id);
+					}
 				});
 		});
 };

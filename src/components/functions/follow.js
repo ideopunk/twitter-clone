@@ -1,8 +1,7 @@
 import { db } from "../../config/fbConfig";
-import notify from "./notify"
+import notify from "./notify";
 
 const follow = (followID, userID, userFollows) => {
-
 	db.runTransaction((transaction) => {
 		return db
 			.collection("users")
@@ -25,7 +24,11 @@ const follow = (followID, userID, userFollows) => {
 					.doc(userID)
 					.update({ follows: newList })
 					.then(() => console.log("added to follows list"))
-					.then(() => notify("follow", userID, followID))
+					.then(() => {
+						if (userID !== followID) {
+							notify("follow", userID, followID);
+						}
+					});
 			});
 	})
 		.then(() => console.log("successful transaction"))
