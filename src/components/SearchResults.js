@@ -41,6 +41,18 @@ const SearchResults = () => {
 				});
 				setTweetDatas((t) => [...t, ...tempArray]);
 			});
+
+		db.collection("tweets")
+			.where("name", "==", searchTerm)
+			.get()
+			.then((snapshot) => {
+				let tempArray = [];
+				snapshot.forEach((doc) => {
+					// don't include replies
+					tempArray.push({ ...doc.data(), id: doc.id });
+				});
+				setTweetDatas((t) => [...t, ...tempArray]);
+			});
 	}, [searchTerm]);
 
 	return (

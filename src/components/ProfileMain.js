@@ -124,8 +124,10 @@ const ProfileMain = (props) => {
 	// if this isn't our own profile, are we following this user?
 	useEffect(() => {
 		console.log("set following");
-		!userProfile && setFollowed(userFollows.includes(profileID));
-	}, [userProfile, userFollows, profileID]);
+		if (userID) {
+			!userProfile && setFollowed(userFollows.includes(profileID));
+		}
+	}, [userProfile, userFollows, profileID, userID]);
 
 	const toggleEditor = () => {
 		setEditor(!editor);
@@ -150,7 +152,7 @@ const ProfileMain = (props) => {
 						<p className="grey">{profileData.tweetAmount} tweets</p>
 					</div>
 				</Link>
-			<div style={{ height: "3.5rem" }}></div>
+				<div style={{ height: "3.5rem" }}></div>
 
 				<img
 					className="profile-header-image"
@@ -171,12 +173,16 @@ const ProfileMain = (props) => {
 							</button>
 						</div>
 					) : (
-						<FollowButton
-							tweeterID={profileID}
-							followed={followed}
-							style={{ height: "3rem" }}
-						/>
+						userID && (
+							<FollowButton
+								tweeterID={profileID}
+								followed={followed}
+								style={{ height: "3rem" }}
+							/>
+						)
 					)}
+					<div style={{ height: "3.5rem" }}></div>
+
 					<h3>{profileData.name}</h3>
 					<p className="grey">@{profileData.at}</p>
 					<p className="bio">{profileData.bio}</p>
@@ -238,19 +244,27 @@ const ProfileMain = (props) => {
 
 			<Switch>
 				<Route exact path={`${path}/with_replies`}>
-					<ProfileFeed profileID={profileID} repliesIncluded={true} name={profileData.name}/>
+					<ProfileFeed
+						profileID={profileID}
+						repliesIncluded={true}
+						name={profileData.name}
+					/>
 				</Route>
 
 				<Route exact path={`${path}/media`}>
-					<ProfileFeed profileID={profileID} repliesIncluded={false} name={profileData.name}/>
+					<ProfileFeed
+						profileID={profileID}
+						repliesIncluded={false}
+						name={profileData.name}
+					/>
 				</Route>
 
 				<Route exact path={`${path}/likes`}>
-					<LikeFeed profileID={profileID} name={profileData.name}/>
+					<LikeFeed profileID={profileID} name={profileData.name} />
 				</Route>
 
 				<Route exact path={path}>
-					<ProfileFeed profileID={profileID} name={profileData.name}/>
+					<ProfileFeed profileID={profileID} name={profileData.name} />
 				</Route>
 			</Switch>
 			{editor ? (

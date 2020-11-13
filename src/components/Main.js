@@ -20,8 +20,8 @@ const Hashtag = lazy(() => import("./Hashtag"));
 const Main = (props) => {
 	const { userID } = useContext(UserContext);
 	console.log(userID);
-	const location = useLocation()
-	console.log(location)
+	const location = useLocation();
+	console.log(location);
 
 	return (
 		<div className="main">
@@ -59,7 +59,26 @@ const Main = (props) => {
 				</Suspense>
 			) : (
 				<Suspense fallback={<LoaderContainer />}>
-					<Explore />
+					<Switch>
+						<Route path="/explore">
+							<Explore />
+						</Route>
+						<Route path="/search/:searchTerm">
+							<SearchResults />
+						</Route>
+						<Route path="/hashtag/:tag">
+							<Hashtag />
+						</Route>
+						<Route path="/tweet/:tweetID">
+							<TweetAndReplies />
+						</Route>
+						<Route path="/:profile">
+							<ProfileRoutes />
+						</Route>
+						<Route>
+							<Explore />
+						</Route>
+					</Switch>
 				</Suspense>
 			)}
 

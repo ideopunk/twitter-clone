@@ -10,6 +10,7 @@ const SignupPage = () => {
 	const [image, setImage] = useState(null);
 	const [allAts, setAllAts] = useState([]);
 	const [legitAt, setLegitAt] = useState(true);
+	const [error, setError] = useState("");
 
 	// on pageload, grab all the usernames, to be sure they're unique.
 	useEffect(() => {
@@ -18,7 +19,6 @@ const SignupPage = () => {
 			.get()
 			.then((snapshot) =>
 				snapshot.forEach((user) => {
-					console.log(user.data().at);
 					tempArray.push(user.data().at);
 				})
 			)
@@ -52,8 +52,13 @@ const SignupPage = () => {
 		setUserAt(e.target.value);
 	};
 
+	const resetError = () => {
+		setError("")
+	}
+
 	const handleEmailChange = (e) => {
 		setEmail(e.target.value);
+		resetError();
 	};
 
 	const handlePasswordChange = (e) => {
@@ -103,6 +108,12 @@ const SignupPage = () => {
 					setEmail("");
 					setUserAt("");
 					setUserName("");
+				})
+				.catch((err) => {
+					console.log(err)
+					if (err.code === "auth/email-already-in-use") {
+						setError(err.message);
+					}
 				});
 		}
 	};
@@ -158,6 +169,7 @@ const SignupPage = () => {
 					</div>
 					<p>This is all fake! It's all for a portfolio! Have fun!</p>
 					<input className="btn" type="submit" value="Sign up" />
+					{error && <h3>{error}</h3>}
 				</form>
 			</div>
 		</div>

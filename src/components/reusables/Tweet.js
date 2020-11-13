@@ -319,7 +319,7 @@ const Tweet = (props) => {
 							<div className="tweet-svg-holder">
 								<Quote />
 							</div>
-							{!big && repliesAmount}
+							{!big && (repliesAmount || "")}
 						</div>
 						<div
 							className={`tweet-svg-div grey retweet-div ${
@@ -340,7 +340,7 @@ const Tweet = (props) => {
 							<div className="tweet-svg-holder">
 								{liked ? <LikeFilled value={tweetID} /> : <Like value={tweetID} />}
 							</div>
-							{!big && likeAmount}
+							{!big && (likeAmount || "")}
 						</div>
 						<div className="tweet-svg-div grey copy-div">
 							<CopyToClipboard text={`/tweet/${tweetID}`}>

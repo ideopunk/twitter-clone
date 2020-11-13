@@ -36,7 +36,7 @@ const Search = (props) => {
 				</svg>
 				<input
 					className="search-input"
-					placeholder="Search fake Twitter"
+					placeholder="Search hashtags or users"
 					value={searchPhrase}
 					required
 					onChange={(e) => handleChange(e)}
