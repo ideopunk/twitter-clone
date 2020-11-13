@@ -13,11 +13,18 @@ import { ReactComponent as Like } from "../../assets/like-icon.svg";
 import { ReactComponent as LikeFilled } from "../../assets/like-icon-filled.svg";
 import { ReactComponent as Copy } from "../../assets/copy-icon.svg";
 import { ReactComponent as Dots } from "../../assets/dots.svg";
+import toast from "react-simple-toasts";
+import { toastConfig } from "react-simple-toasts";
+
 const Cover = lazy(() => import("./Cover"));
 const Composer = lazy(() => import("./Composer"));
 const UsersList = lazy(() => import("./UsersList"));
 
 const reactStringReplace = require("react-string-replace");
+
+toastConfig({
+	time: 1500,
+});
 
 const Tweet = (props) => {
 	const [image, setImage] = useState("");
@@ -118,52 +125,72 @@ const Tweet = (props) => {
 
 	const toggleDropdown = (e) => {
 		e.stopPropagation();
-		setDropdown(!dropdown);
+		if (userID) {
+			setDropdown(!dropdown);
+		}
 	};
 
 	const toggleReply = () => {
-		setReply(!reply);
+		if (userID) {
+			setReply(!reply);
+		}
 	};
 
 	const deleteTweet = () => {
-		import("../functions/deleteTweet.js").then((deleteTweet) =>
-			deleteTweet.default(tweetID, userTweets, userID)
-		);
+		if (userID) {
+			import("../functions/deleteTweet.js").then((deleteTweet) =>
+				deleteTweet.default(tweetID, userTweets, userID)
+			);
+		}
 	};
 
 	const like = () => {
-		import("../functions/likeDB.js").then((likeDB) =>
-			likeDB.default(tweetID, userID, userLikes)
-		);
+		if (userID) {
+			import("../functions/likeDB.js").then((likeDB) =>
+				likeDB.default(tweetID, userID, userLikes)
+			);
+		}
 	};
 
 	const unlike = () => {
-		import("../functions/unlike.js").then((unlike) =>
-			unlike.default(tweetID, userID, userLikes)
-		);
+		if (userID) {
+			import("../functions/unlike.js").then((unlike) =>
+				unlike.default(tweetID, userID, userLikes)
+			);
+		}
 	};
 
 	const follow = () => {
-		import("../functions/follow.js").then((follow) =>
-			follow.default(tweeterID, userID, userFollows)
-		);
+		if (userID) {
+			import("../functions/follow.js").then((follow) =>
+				follow.default(tweeterID, userID, userFollows)
+			);
+		}
 	};
 
 	const unfollow = () => {
-		import("../functions/unfollow.js").then((unfollow) =>
-			unfollow.default(tweeterID, userID, userFollows)
-		);
+		if (userID) {
+			import("../functions/unfollow.js").then((unfollow) =>
+				unfollow.default(tweeterID, userID, userFollows)
+			);
+		}
 	};
 
 	const retweet = () => {
-		!userRetweets.includes(tweetID) &&
-			import("../functions/retweet.js").then((retweet) =>
-				retweet.default(tweetID, userID, userRetweets)
-			);
+		if (userID) {
+			!userRetweets.includes(tweetID) &&
+				import("../functions/retweet.js").then((retweet) =>
+					retweet.default(tweetID, userID, userRetweets)
+				);
+		}
 	};
 
 	const unRetweet = () => {
-		import("../functions/unRetweet.js").then((unRetweet) => unRetweet.default(tweetID, userID));
+		if (userID) {
+			import("../functions/unRetweet.js").then((unRetweet) =>
+				unRetweet.default(tweetID, userID)
+			);
+		}
 	};
 
 	const imageLoad = () => {
@@ -183,7 +210,7 @@ const Tweet = (props) => {
 					</div>
 				</Link>
 			)}
-			
+
 			<div className={`tweet-inside ${big ? "big-tweet-inside" : ""}`}>
 				{big ? (
 					<div className="tweet-top-data pad">
@@ -216,7 +243,7 @@ const Tweet = (props) => {
 									tweeterID={tweeterID}
 								/>
 							)}
-							<Dots className="dots" onClick={(e) => toggleDropdown(e)} />
+							<Dots className="dots grey" onClick={(e) => toggleDropdown(e)} />
 						</div>
 					</div>
 				) : image ? (
@@ -317,7 +344,10 @@ const Tweet = (props) => {
 						</div>
 						<div className="tweet-svg-div grey copy-div">
 							<CopyToClipboard text={`/tweet/${tweetID}`}>
-								<div className="tweet-svg-holder">
+								<div
+									className="tweet-svg-holder"
+									onClick={() => toast("Copied to clipboard")}
+								>
 									<Copy />
 								</div>
 							</CopyToClipboard>
@@ -339,9 +369,9 @@ const Tweet = (props) => {
 			</div>
 			{modal ? (
 				<Suspense fallback={<LoaderContainer />}>
-				<Cover toggle={() => setModal("")}>
-
-					<UsersList type={modal} tweetID={tweetID} /> </Cover>
+					<Cover toggle={() => setModal("")}>
+						<UsersList type={modal} tweetID={tweetID} />{" "}
+					</Cover>
 				</Suspense>
 			) : (
 				""

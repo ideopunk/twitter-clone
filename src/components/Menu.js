@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { db, auth } from "../config/fbConfig";
 import Composer from "./reusables/Composer";
 import Cover from "./reusables/Cover";
@@ -19,6 +19,7 @@ const Menu = (props) => {
 
 	const [composer, setComposer] = useState(false);
 	const [dropdown, setDropdown] = useState(false);
+	let history = useHistory();
 
 	useEffect(() => {
 		if (userID) {
@@ -41,6 +42,7 @@ const Menu = (props) => {
 		auth.signOut().then(() => {
 			console.log("user signed out");
 		});
+		history.push("/explore");
 	};
 
 	const toggleComposer = () => {
@@ -61,53 +63,58 @@ const Menu = (props) => {
 						to="/"
 						exact={true}
 						className="menu-item"
+						style={{ width: "3.25rem" }}
 					>
-						<span className="menu-icon">
+						<span className="menu-icon" style={{ margin: "0" }}>
 							<img className="menu-logo" src={fish} alt="fish" />
 						</span>
 					</NavLink>
 				</li>
-				<li>
-					<NavLink
-						activeClassName="menu-item-active"
-						to="/"
-						exact={true}
-						className="menu-item"
-					>
-						<HomeIcon />
-						<span className="menu-item-text">Home</span>
-					</NavLink>
-				</li>
+				{userID && (
+					<li>
+						<NavLink
+							activeClassName="menu-item-active"
+							to="/"
+							exact={true}
+							className="menu-item"
+						>
+							<HomeIcon />
+							<span className="menu-item-text">Home</span>
+						</NavLink>
+					</li>
+				)}
 				<li>
 					<NavLink activeClassName="menu-item-active" to="/explore" className="menu-item">
 						<ExploreIcon />
 						<span className="menu-item-text">Explore</span>
 					</NavLink>
 				</li>
-				<li>
-					<NavLink
-						activeClassName="menu-item-active"
-						to="/notifications"
-						className="menu-item"
-						style={{ position: "relative" }}
-					>
-						<NotificationsIcon />
-						{unseenNotes ? <div className="pseudo">{unseenNotes}</div> : ""}
-						<span className="menu-item-text">Notifications</span>
-					</NavLink>
-				</li>
-
-
-				<li>
-					<NavLink
-						activeClassName="menu-item-active"
-						to={`/${userAt}`}
-						className="menu-item"
-					>
-						<ProfileIcon />
-						<span className="menu-item-text">Profile</span>
-					</NavLink>
-				</li>
+				{userID && (
+					<li>
+						<NavLink
+							activeClassName="menu-item-active"
+							to="/notifications"
+							className="menu-item"
+							style={{ position: "relative" }}
+						>
+							<NotificationsIcon />
+							{unseenNotes ? <div className="pseudo">{unseenNotes}</div> : ""}
+							<span className="menu-item-text">Notifications</span>
+						</NavLink>
+					</li>
+				)}
+				{userID && (
+					<li>
+						<NavLink
+							activeClassName="menu-item-active"
+							to={`/${userAt}`}
+							className="menu-item"
+						>
+							<ProfileIcon />
+							<span className="menu-item-text">Profile</span>
+						</NavLink>
+					</li>
+				)}
 				{userID && (
 					<li>
 						<div className="menu-item" onClick={toggleDropdown}>
@@ -122,7 +129,7 @@ const Menu = (props) => {
 					</button>
 				</li>
 				{userID && (
-					<li className="">
+					<li style={{ marginTop: "auto" }}>
 						<button className="menu-profile-button" onClick={signOut}>
 							<img src={userImage} alt="user-profile" className="profile-image" />
 							<div className="menu-profile-button-text">
@@ -156,10 +163,18 @@ const Dropdown = () => {
 	};
 
 	return (
-		<form className="modal">
-			Would you like to delete your account and all of your tweets? Replies to your tweets
-			will not be deleted.
-			<input type="submit" onClick={() => deleteAccount(userID)} />
+		<form className="modal pad">
+			<h3 className="pad warning">
+				Would you like to delete your account and all of your tweets? Replies to your tweets
+				will not be deleted.
+			</h3>
+			<input
+				className="btn"
+				type="submit"
+				value="Sure, delete my account!"
+				style={{ marginTop: "auto" }}
+				onClick={() => deleteAccount(userID)}
+			/>
 		</form>
 	);
 };

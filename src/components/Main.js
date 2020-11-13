@@ -1,5 +1,5 @@
 import React, { useContext, Suspense, lazy, useEffect } from "react";
-import { Switch, Route, useHistory } from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
 import LoginPrompt from "./LoginPrompt";
 import LoaderContainer from "./reusables/LoaderContainer";
 import Menu from "./Menu";
@@ -20,6 +20,8 @@ const Hashtag = lazy(() => import("./Hashtag"));
 const Main = (props) => {
 	const { userID } = useContext(UserContext);
 	console.log(userID);
+	const location = useLocation()
+	console.log(location)
 
 	return (
 		<div className="main">
@@ -62,7 +64,7 @@ const Main = (props) => {
 			)}
 
 			<div className="sidebar">
-				<Search />
+				{location.pathname !== "/explore" && <Search />}
 				{!userID && <LoginCard />}
 				<FollowSuggests />
 				<TOS />
