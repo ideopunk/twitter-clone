@@ -32,11 +32,12 @@ const ProfileMain = (props) => {
 	const [followed, setFollowed] = useState("");
 	const [imageLoaded, setImageLoaded] = useState(false);
 
+	useEffect(() => {console.log(userProfile)}, [userProfile])
 	// set profile data
 	useEffect(() => {
-		console.log("set user data");
-		console.log(userJoinDate);
+		setProfileData({ follows: [], followers: [] });
 
+		console.log("profileID:  " + profileID);
 		// if it's the current user's profile...
 		userProfile
 			? setProfileData({
@@ -72,25 +73,8 @@ const ProfileMain = (props) => {
 							joinDate: new Date(data.joinDate.seconds * 1000),
 						}));
 					});
-	}, [
-		userProfile,
-		profileID,
-		userImage,
-		userAt,
-		userID,
-		userName,
-		userBio,
-		userJoinDate,
-		userFollowers,
-		userFollows,
-		userTweets,
-	]);
 
-	// set header
-	useEffect(() => {
-		console.log("set header");
-
-		!profileData.header &&
+		// !profileData.header &&
 			storage
 				.ref("header_pictures/" + profileID + ".png")
 				.getDownloadURL()
@@ -101,10 +85,7 @@ const ProfileMain = (props) => {
 					console.log(e);
 					setProfileData((prevData) => ({ ...prevData, header: EllipsisFilled }));
 				});
-	}, [profileID, profileData.header]);
 
-	// set profile picture
-	useEffect(() => {
 		userProfile
 			? // if it's the user's profile...
 			  setProfileData((prevData) => ({ ...prevData, image: userImage }))
@@ -119,12 +100,57 @@ const ProfileMain = (props) => {
 						console.log(e);
 						setProfileData((prevData) => ({ ...prevData, image: Leaf }));
 					});
-	}, [userProfile, userImage, profileID]);
+	}, [
+		userProfile,
+		profileID,
+		userImage,
+		userAt,
+		userID,
+		userName,
+		userBio,
+		userJoinDate,
+		userFollowers,
+		userFollows,
+		userTweets,
+		// profileData.header,
+	]);
+
+	// // set header
+	// useEffect(() => {
+	// 	!profileData.header &&
+	// 		storage
+	// 			.ref("header_pictures/" + profileID + ".png")
+	// 			.getDownloadURL()
+	// 			.then((url) => {
+	// 				setProfileData((prevData) => ({ ...prevData, header: url }));
+	// 			})
+	// 			.catch((e) => {
+	// 				console.log(e);
+	// 				setProfileData((prevData) => ({ ...prevData, header: EllipsisFilled }));
+	// 			});
+	// }, [profileID, profileData.header]);
+
+	// // set profile picture
+	// useEffect(() => {
+	// 	userProfile
+	// 		? // if it's the user's profile...
+	// 		  setProfileData((prevData) => ({ ...prevData, image: userImage }))
+	// 		: // if it's not...
+	// 		  storage
+	// 				.ref("profile_pictures/" + profileID + ".png")
+	// 				.getDownloadURL()
+	// 				.then((url) => {
+	// 					setProfileData((prevData) => ({ ...prevData, image: url }));
+	// 				})
+	// 				.catch((e) => {
+	// 					console.log(e);
+	// 					setProfileData((prevData) => ({ ...prevData, image: Leaf }));
+	// 				});
+	// }, [userProfile, userImage, profileID]);
 
 	// if this isn't our own profile, are we following this user?
 	useEffect(() => {
-		console.log("set following");
-		if (userID) {
+		if (userID && userFollows) {
 			!userProfile && setFollowed(userFollows.includes(profileID));
 		}
 	}, [userProfile, userFollows, profileID, userID]);
@@ -134,7 +160,6 @@ const ProfileMain = (props) => {
 	};
 
 	const imageLoad = () => {
-		console.log("image load");
 		setImageLoaded(true);
 	};
 
@@ -273,6 +298,7 @@ const ProfileMain = (props) => {
 						header={profileData.header}
 						bio={profileData.bio}
 						website={profileData.website}
+						toggle={toggleEditor}
 					/>
 				</Cover>
 			) : (

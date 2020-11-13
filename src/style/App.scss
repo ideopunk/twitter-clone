@@ -112,15 +112,20 @@ h3 {
 .form-label {
 	display: block;
 	position: relative;
+	color: rgb(117, 117, 117);
+
 	// margin-bottom: 2rem;
 	width: 100%;
 }
 
 .form-name {
 	position: absolute;
-	color: rgb(117, 117, 117);
 	left: 0.25rem;
 	top: 0.25rem;
+}
+
+.form-label:focus-within {
+	color: $sitecolor;
 }
 
 .form-input {

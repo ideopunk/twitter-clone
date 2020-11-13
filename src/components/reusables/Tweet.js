@@ -19,7 +19,7 @@ import { toastConfig } from "react-simple-toasts";
 const Cover = lazy(() => import("./Cover"));
 const Composer = lazy(() => import("./Composer"));
 const UsersList = lazy(() => import("./UsersList"));
-
+const TweetDropDown = lazy(() => import("./TweetDropdown"));
 const reactStringReplace = require("react-string-replace");
 
 toastConfig({
@@ -109,7 +109,6 @@ const Tweet = (props) => {
 				setImage(url);
 			})
 			.catch((err) => {
-				console.log(err);
 				setImage(Leaf);
 			});
 
@@ -233,15 +232,17 @@ const Tweet = (props) => {
 
 						<div style={{ marginLeft: "auto" }}>
 							{dropdown && (
-								<Dropdown
-									deleteTweet={deleteTweet}
-									unfollow={unfollow}
-									follow={follow}
-									followed={followed}
-									tweetID={tweetID}
-									userID={userID}
-									tweeterID={tweeterID}
-								/>
+								<Suspense fallback={<LoaderContainer />}>
+									<TweetDropDown
+										deleteTweet={deleteTweet}
+										unfollow={unfollow}
+										follow={follow}
+										followed={followed}
+										tweetID={tweetID}
+										userID={userID}
+										tweeterID={tweeterID}
+									/>
+								</Suspense>
 							)}
 							<Dots className="dots grey" onClick={(e) => toggleDropdown(e)} />
 						</div>
@@ -276,15 +277,17 @@ const Tweet = (props) => {
 							</Link>
 							<div style={{ marginLeft: "auto" }}>
 								{dropdown ? (
-									<Dropdown
-										deleteTweet={deleteTweet}
-										unfollow={unfollow}
-										follow={follow}
-										followed={followed}
-										tweetID={tweetID}
-										userID={userID}
-										tweeterID={tweeterID}
-									/>
+									<Suspense fallback={<LoaderContainer />}>
+										<TweetDropDown
+											deleteTweet={deleteTweet}
+											unfollow={unfollow}
+											follow={follow}
+											followed={followed}
+											tweetID={tweetID}
+											userID={userID}
+											tweeterID={tweeterID}
+										/>{" "}
+									</Suspense>
 								) : (
 									""
 								)}
@@ -370,35 +373,12 @@ const Tweet = (props) => {
 			{modal ? (
 				<Suspense fallback={<LoaderContainer />}>
 					<Cover toggle={() => setModal("")}>
-						<UsersList type={modal} tweetID={tweetID} />{" "}
+						<UsersList type={modal} tweetID={tweetID} clear={() => setModal("")} />{" "}
 					</Cover>
 				</Suspense>
 			) : (
 				""
 			)}
-		</div>
-	);
-};
-
-const Dropdown = (props) => {
-	const { followed, tweetID, userID, tweeterID } = props;
-	const [userTweet, setUserTweet] = useState(false);
-
-	useEffect(() => {
-		userID === tweeterID && setUserTweet(true);
-	}, [userID, tweeterID]);
-
-	return userTweet ? (
-		<div className="tweet-dropdown" value={tweetID} onClick={props.deleteTweet}>
-			Delete this tweet
-		</div>
-	) : (
-		<div
-			className="tweet-dropdown"
-			value={tweeterID}
-			onClick={followed ? props.unfollow : props.follow}
-		>
-			{followed ? "Unfollow this account" : "Follow this account"}
 		</div>
 	);
 };

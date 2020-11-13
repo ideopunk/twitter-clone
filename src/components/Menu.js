@@ -28,7 +28,6 @@ const Menu = (props) => {
 				.get()
 				.then((doc) => {
 					const data = doc.data();
-					console.log(data);
 					if (data.notifications) {
 						setUnseenNotes(
 							data.notifications.filter((notification) => !notification.seen).length

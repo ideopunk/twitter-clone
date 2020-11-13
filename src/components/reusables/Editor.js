@@ -5,7 +5,7 @@ import { auth, db, storage } from "../../config/fbConfig";
 import { ReactComponent as CloseIcon } from "../../assets/close.svg";
 import { ReactComponent as CameraIcon } from "../../assets/camera-icon.svg";
 const Editor = (props) => {
-	const { header, bio, website } = props;
+	const { header, bio, website, toggle } = props;
 	const { userImage, userName, userID } = useContext(UserContext);
 
 	const [name, setName] = useState(userName);
@@ -109,16 +109,21 @@ const Editor = (props) => {
 	return (
 		<form className="modal" onSubmit={handleSubmit}>
 			<div className="modal-header">
-				<CloseIcon />
+				<CloseIcon onClick={() => toggle()} />
 				<h3>Edit profile</h3>
 				<input
 					type="submit"
 					className="btn"
-					style={{ width: "3.5rem", height: "2rem", marginLeft: "auto", marginRight: "1rem" }}
+					style={{
+						width: "3.5rem",
+						height: "2rem",
+						marginLeft: "auto",
+						marginRight: "1rem",
+					}}
 					value="Save"
 				/>
 			</div>
-			<div style={{ position: "relative" }}>
+			<div className="header-container">
 				<img src={newHeader} className="profile-header-image" alt="header" />
 				<div className="header-icons">
 					<label htmlFor="header-input">
@@ -126,7 +131,7 @@ const Editor = (props) => {
 					</label>
 					<input id="header-input" type="file" onChange={handleHeaderPicChange} />
 
-					<CloseIcon />
+					<CloseIcon style={{marginRight: "0"}}/>
 				</div>
 			</div>
 			<div className="edit-form-text">

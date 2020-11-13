@@ -9,4 +9,6 @@ Twitter clone.
 
 structured urls a little differently. tweets are not branches of profiles.
 
-no pinned tweets, bookmarks, lists. 
+no pinned tweets, bookmarks, lists, messages
+
+login and signup pages are simplified. 

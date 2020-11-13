@@ -4,7 +4,7 @@ import { db } from "../../config/fbConfig";
 import LoaderContainer from "./LoaderContainer";
 import { ReactComponent as CloseIcon } from "../../assets/close.svg";
 
-const UsersList = ({ tweetID, type }) => {
+const UsersList = ({ tweetID, type, clear }) => {
 	const [accounts, setAccounts] = useState([]);
 
 	useEffect(() => {
@@ -35,7 +35,7 @@ const UsersList = ({ tweetID, type }) => {
 			<div
 				className="modal-header"
 			>
-				<CloseIcon />
+				<CloseIcon onClick={() => clear()} />
 				<h3>
 					{type === "retweets" ? "Retweeted by" : "Liked by"}
 				</h3>

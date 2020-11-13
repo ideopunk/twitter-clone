@@ -7,6 +7,7 @@ import { auth } from "../config/fbConfig";
 const LoginPage = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [error, setError] = useState("");
 
 	const handleEmailChange = (e) => {
 		setEmail(e.target.value);
@@ -19,11 +20,22 @@ const LoginPage = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		console.log(email, password);
-		auth.signInWithEmailAndPassword(email, password).then((cred) => {
-			console.log(cred.user);
-			setEmail("");
-			setPassword("");
-		});
+		auth.signInWithEmailAndPassword(email, password)
+			.then((cred) => {
+				console.log(cred.user);
+				setEmail("");
+				setPassword("");
+			})
+			.catch((err) => {
+				console.log(err);	
+				if (err.code === "auth/wrong-password") {
+					setError("I think you got your password wrong!!");
+				} else if (err.code === "auth/user-not-found") {
+					setError("That email isn't in our records!");
+				} else if (err.code === "auth/invalid-email") {
+					setError("That's not an email address!");
+				}
+			});
 	};
 
 	return (
@@ -38,6 +50,12 @@ const LoginPage = () => {
 					/>
 				</span>
 				<h3>Log in to Fake Twitter</h3>
+				{error && (
+					<p style={{ color: "red" }}>
+						The email and password you entered did not match our records. Please
+						double-check and try again.
+					</p>
+				)}
 				<form className="login-form" onSubmit={(e) => handleSubmit(e)}>
 					<label className="form-label">
 						<span className="form-name">Email</span>

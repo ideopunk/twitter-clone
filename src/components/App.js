@@ -15,18 +15,14 @@ const App = () => {
 
 	// listen for auth status changes
 	useEffect(() => {
-		console.log("use effect");
 		const unsubscribe = auth.onAuthStateChanged((user) => {
-			console.log(user);
 			if (user) {
 				setUserID(user.uid);
-				console.log(user.uid);
 				db.collection("users")
 					.doc(user.uid)
 					.get()
 					.then((snapshot) => {
 						const data = snapshot.data();
-						console.log("app data");
 
 						// set optional data if we have it.
 						setUserData((u) => ({

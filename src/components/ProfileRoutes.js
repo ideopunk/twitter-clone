@@ -23,13 +23,13 @@ const ProfileRoutes = () => {
 			setProfileID(userID);
 			setUserProfile(true);
 		} else {
+			setUserProfile(false)
 			db.collection("users")
 				.where("at", "==", urlAt)
 				.get()
 				.then((snapshot) => {
 					if (snapshot.size > 0) {
 						snapshot.forEach((doc) => {
-							console.log(doc);
 							setProfileID(doc.id);
 						});
 					} else {

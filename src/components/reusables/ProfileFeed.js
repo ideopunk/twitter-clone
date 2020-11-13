@@ -8,9 +8,7 @@ const ProfileFeed = (props) => {
 	const { profileID, repliesIncluded, name } = props;
 	const [tweetDatas, setTweetDatas] = useState([]);
 
-	console.log(name)
 	const route = useRouteMatch()
-	console.log(useParams())
 	const params = useParams()
 	// set doc title 
 	useEffect(() => {
@@ -34,7 +32,6 @@ const ProfileFeed = (props) => {
 			.then((snapshot) => {
 				let tempArray = [];
 				snapshot.forEach((doc) => {
-                    console.log(repliesIncluded)
 					if (repliesIncluded) {
 						tempArray.push({ ...doc.data(), id: doc.id });
 					} else {

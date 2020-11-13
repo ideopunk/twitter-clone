@@ -19,9 +19,7 @@ const Hashtag = lazy(() => import("./Hashtag"));
 
 const Main = (props) => {
 	const { userID } = useContext(UserContext);
-	console.log(userID);
 	const location = useLocation();
-	console.log(location);
 
 	return (
 		<div className="main">
