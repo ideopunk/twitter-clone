@@ -365,6 +365,7 @@ const Tweet = (props) => {
 								replyData={props}
 								replyImage={image}
 								replyTimeSince={timeSince}
+								toggle={toggleReply}
 							/>
 						</Cover>
 					</Suspense>

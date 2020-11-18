@@ -25,13 +25,13 @@ const Menu = (props) => {
 		if (userID) {
 			db.collection("users")
 				.doc(userID)
-				.get()
-				.then((doc) => {
+				.onSnapshot((doc) => {
 					const data = doc.data();
+					const newLength = data.notifications.filter(
+						(notification) => !notification.seen
+					).length;
 					if (data.notifications) {
-						setUnseenNotes(
-							data.notifications.filter((notification) => !notification.seen).length
-						);
+						setUnseenNotes(oldLength => oldLength !== newLength && newLength);
 					}
 				});
 		}

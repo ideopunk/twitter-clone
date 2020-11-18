@@ -8,15 +8,17 @@ const Notifications = () => {
 	const { userID } = useContext(UserContext);
 
 	const [notifications, setNotifications] = useState([]);
-	
+
 	useEffect(() => {
-		document.title = "Notifications / Fake Twitter"
-	}, [])
+		document.title = "Notifications / Fake Twitter";
+	}, []);
 
 	useEffect(() => {
 		const userRef = db.collection("users").doc(userID);
 
-		userRef.get().then((doc) => setNotifications(doc.data().notifications));
+		const unsub = userRef.onSnapshot((doc) => setNotifications(doc.data().notifications));
+
+		return () => unsub();
 	}, [userID]);
 
 	return (
