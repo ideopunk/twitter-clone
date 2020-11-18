@@ -12,26 +12,35 @@ const Explore = () => {
 	}, []);
 
 	useEffect(() => {
-		db.collection("tweets")
+		setTweetDatas([]);
+		const unsub = db
+			.collection("tweets")
 			.orderBy("timeStamp", "desc")
-			.get()
-			.then((snapshot) => {
+			.onSnapshot((snapshot) => {
 				let tempArray = [];
-				snapshot.forEach((doc) => {
+				const changes = snapshot.docChanges();
+
+				changes.forEach((change) => {
+					const doc = change.doc;
+
 					// don't include replies
 					if (!doc.data().replyTo) {
 						tempArray.push({ ...doc.data(), id: doc.id });
 					}
 				});
-				setTweetDatas(tempArray);
+				setTweetDatas((t) =>
+					[...t, ...tempArray].sort((a, b) => b.timeStamp.seconds - a.timeStamp.seconds)
+				);
 			});
+
+		return () => unsub();
 	}, []);
 
 	return (
 		<div className="explore center-feed">
 			<div className="pad side-box-title">
 				<Search className="pad" />
-				</div>
+			</div>
 			{tweetDatas.length ? <Feed tweetDatas={tweetDatas} /> : <LoaderContainer />}
 		</div>
 	);

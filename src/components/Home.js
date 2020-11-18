@@ -16,15 +16,18 @@ const Home = (props) => {
 	}, []);
 
 	useEffect(() => {
-		db.collection("users")
+		setTweetDatas([]);
+
+		const unsub = db
+			.collection("users")
 			.where("followers", "array-contains", userID)
-			.get()
-			.then((snapshot) => {
+			.onSnapshot((snapshot) => {
 				console.log(snapshot);
 				let tempArray = [];
-
+				const changes = snapshot.docChanges();
 				// for each user we follow...
-				snapshot.forEach((doc) => {
+				changes.forEach((change) => {
+					const doc = change.doc;
 					console.log(doc.data());
 					console.log(doc.data().tweets);
 					doc.data().tweets && tempArray.push(...doc.data().tweets);
@@ -43,9 +46,17 @@ const Home = (props) => {
 							}
 						});
 						console.log(finalArray);
-						setTweetDatas(finalArray);
+						setTweetDatas((t) =>
+							[...t, ...finalArray].sort(
+								(a, b) => b.timeStamp.seconds - a.timeStamp.seconds
+							)
+						);
 					});
 			});
+
+		return () => {
+			unsub();
+		};
 	}, [userID]);
 
 	return (

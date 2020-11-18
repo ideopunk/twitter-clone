@@ -26,7 +26,6 @@ const ProfileFeed = (props) => {
 	// listen to  tweetdata
 	useEffect(() => {
 		setTweetDatas("");
-		console.log("set tweetdata");
 		const unsub = db
 			.collection("tweets")
 			.where("userID", "==", profileID)
@@ -35,7 +34,6 @@ const ProfileFeed = (props) => {
 			.onSnapshot((snapshot) => {
 				let tempArray = [];
 				const changes = snapshot.docChanges();
-				console.log(changes);
 				changes.forEach((change) => {
 					const doc = change.doc;
 					if (repliesIncluded) {
@@ -44,8 +42,6 @@ const ProfileFeed = (props) => {
 						tempArray.push({ ...doc.data(), id: doc.id });
 					}
 				});
-				console.log("temparray");
-				console.log(tempArray);
 				setTweetDatas((t) =>
 					[...t, ...tempArray].sort((a, b) => b.timeStamp.seconds - a.timeStamp.seconds)
 				);

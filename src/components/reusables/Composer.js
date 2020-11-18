@@ -30,7 +30,10 @@ const Composer = (props) => {
 				simpleTweet.default({ userName, text, userAt, userID, userTweets })
 			);
 		}
-		toggle();
+		setText("");
+		if (toggle) {
+			toggle();
+		}
 	};
 
 	const handleChange = (e) => {
@@ -67,6 +70,7 @@ const Composer = (props) => {
 						className="composer-input"
 						placeholder={replyData ? "Tweet your reply" : "What's happening?"}
 						onChange={handleChange}
+						value={text}
 					/>
 					<div className="composer-options">
 						<div className="composer-icon-div">

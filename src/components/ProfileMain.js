@@ -115,38 +115,6 @@ const ProfileMain = (props) => {
 		// profileData.header,
 	]);
 
-	// // set header
-	// useEffect(() => {
-	// 	!profileData.header &&
-	// 		storage
-	// 			.ref("header_pictures/" + profileID + ".png")
-	// 			.getDownloadURL()
-	// 			.then((url) => {
-	// 				setProfileData((prevData) => ({ ...prevData, header: url }));
-	// 			})
-	// 			.catch((e) => {
-	// 				console.log(e);
-	// 				setProfileData((prevData) => ({ ...prevData, header: EllipsisFilled }));
-	// 			});
-	// }, [profileID, profileData.header]);
-
-	// // set profile picture
-	// useEffect(() => {
-	// 	userProfile
-	// 		? // if it's the user's profile...
-	// 		  setProfileData((prevData) => ({ ...prevData, image: userImage }))
-	// 		: // if it's not...
-	// 		  storage
-	// 				.ref("profile_pictures/" + profileID + ".png")
-	// 				.getDownloadURL()
-	// 				.then((url) => {
-	// 					setProfileData((prevData) => ({ ...prevData, image: url }));
-	// 				})
-	// 				.catch((e) => {
-	// 					console.log(e);
-	// 					setProfileData((prevData) => ({ ...prevData, image: Leaf }));
-	// 				});
-	// }, [userProfile, userImage, profileID]);
 
 	// if this isn't our own profile, are we following this user?
 	useEffect(() => {
