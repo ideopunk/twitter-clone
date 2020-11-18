@@ -6,7 +6,6 @@
 
 	// overflow: hidden;
 	// border: $testborder;
-
 }
 
 // .tweet * {
@@ -18,7 +17,6 @@
 	width: 100%;
 	height: 100%;
 }
-
 
 .tweet-inside {
 	display: flex;
@@ -143,7 +141,6 @@
 	fill: $sitecolor;
 }
 
-
 // "active" responses
 
 .liked {
@@ -221,4 +218,24 @@
 
 .hover-under:hover {
 	text-decoration: underline;
+}
+
+.tweet-dropdown {
+	border: $siteborder;
+	padding: 0.5rem;
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-color: white;
+	width: 11rem;
+	transition: $lighttransition;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	column-gap: 0.5rem;
+	box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+}
+
+.tweet-dropdown:hover {
+	background-color: lighten($sitegrey, 50%);
 }

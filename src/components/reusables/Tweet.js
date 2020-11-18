@@ -231,7 +231,8 @@ const Tweet = (props) => {
 							<p className="tweeter-at">@{at}</p>
 						</Link>
 
-						<div style={{ marginLeft: "auto" }}>
+						<div style={{ marginLeft: "auto", position: "relative" }}>
+							<Dots className="dots grey" onClick={(e) => toggleDropdown(e)} />
 							{dropdown && (
 								<Suspense fallback={<LoaderContainer />}>
 									<TweetDropdown
@@ -246,7 +247,6 @@ const Tweet = (props) => {
 									/>
 								</Suspense>
 							)}
-							<Dots className="dots grey" onClick={(e) => toggleDropdown(e)} />
 						</div>
 					</div>
 				) : image ? (
@@ -277,8 +277,9 @@ const Tweet = (props) => {
 							>
 								<span className="tweet-time hover-under grey">{timeSince}</span>
 							</Link>
-							<div style={{ marginLeft: "auto" }}>
-								{dropdown ? (
+							<div style={{ marginLeft: "auto", position: "relative" }}>
+								<Dots className="dots" onClick={toggleDropdown} />
+								{dropdown && (
 									<Suspense fallback={<LoaderContainer />}>
 										<TweetDropdown
 											deleteTweet={deleteTweet}
@@ -291,10 +292,7 @@ const Tweet = (props) => {
 											toggle={toggleDropdown}
 										/>{" "}
 									</Suspense>
-								) : (
-									""
 								)}
-								<Dots className="dots" onClick={toggleDropdown} />
 							</div>
 						</div>
 					)}

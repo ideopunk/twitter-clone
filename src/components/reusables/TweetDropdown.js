@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
+import { ReactComponent as Garbage } from "../../assets/garbage.svg";
+import { ReactComponent as ProfileIcon } from "../../assets/profile-outline.svg";
 
 const TweetDropdown = (props) => {
 	const { followed, tweetID, userID, tweeterID } = props;
@@ -15,7 +17,7 @@ const TweetDropdown = (props) => {
 	useEffect(() => {
 		const handleClickOutside = (e) => {
 			if (ref.current && !ref.current.contains(e.target)) {
-				props.toggle(e)
+				props.toggle(e);
 			}
 		};
 
@@ -28,7 +30,8 @@ const TweetDropdown = (props) => {
 
 	return userTweet ? (
 		<div className="tweet-dropdown" value={tweetID} onClick={props.deleteTweet} ref={ref}>
-			Delete this tweet
+			<Garbage style={{fill: "red"}}/>
+			<span style={{color: "red"}}>Delete this tweet</span>
 		</div>
 	) : (
 		<div
@@ -37,6 +40,7 @@ const TweetDropdown = (props) => {
 			onClick={followed ? props.unfollow : props.follow}
 			ref={ref}
 		>
+			<ProfileIcon className="tweet-icon"/>
 			{followed ? "Unfollow this account" : "Follow this account"}
 		</div>
 	);
