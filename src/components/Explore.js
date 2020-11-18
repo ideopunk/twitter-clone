@@ -23,7 +23,6 @@ const Explore = () => {
 
 
 				changes.forEach((change) => {
-					console.log(change.type);
 					const doc = change.doc;
 
 					// don't include replies

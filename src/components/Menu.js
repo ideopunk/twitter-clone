@@ -15,12 +15,39 @@ import { ReactComponent as PowerIcon } from "../assets/power-outline.svg";
 
 const Menu = (props) => {
 	const { userName, userAt, userID, userImage } = useContext(UserContext);
+	const [homeNotice, setHomeNotice] = useState(0);
 	const [unseenNotes, setUnseenNotes] = useState(0);
 
 	const [composer, setComposer] = useState(false);
 	const [dropdown, setDropdown] = useState(false);
 	let history = useHistory();
 
+	// new home tweets watch
+	useEffect(() => {
+		console.log("use effect menu");
+		const unsub = db
+			.collection("users")
+			.where("followers", "array-contains", userID || 0)
+			.onSnapshot((snapshot) => {
+				console.log("snapshot");
+				let tempAmount = 0;
+
+				snapshot.forEach((doc) => {
+					const data = doc.data();
+					tempAmount = tempAmount +  data.tweets.length
+				});
+
+				console.log(tempAmount);
+				
+				// IF the amount of tweets changes, and it isn't changing from zero, show the button. 
+				setHomeNotice((t) => (t !== tempAmount && t !== 0? tempAmount : 0));
+			});
+
+		return () => unsub();
+	}, [userID]);
+
+
+	// notifications watch
 	useEffect(() => {
 		if (userID) {
 			db.collection("users")
@@ -31,12 +58,13 @@ const Menu = (props) => {
 						(notification) => !notification.seen
 					).length;
 					if (data.notifications) {
-						setUnseenNotes(oldLength => oldLength !== newLength && newLength);
+						setUnseenNotes((oldLength) => oldLength !== newLength && newLength);
 					}
 				});
 		}
 	}, [userID]);
 
+	// freeze if modal up
 	useEffect(() => {
 		if (dropdown || composer) {
 			document.body.style.position = "fixed";
@@ -64,7 +92,7 @@ const Menu = (props) => {
 	return (
 		<>
 			<ul className="menu">
-				<li>
+				<li onClick={() => setHomeNotice(0)}>
 					<NavLink
 						activeClassName="menu-item-active"
 						to="/"
@@ -78,7 +106,7 @@ const Menu = (props) => {
 					</NavLink>
 				</li>
 				{userID && (
-					<li>
+					<li onClick={() => setHomeNotice(0)}>
 						<NavLink
 							activeClassName="menu-item-active"
 							to="/"
@@ -86,6 +114,7 @@ const Menu = (props) => {
 							className="menu-item"
 						>
 							<HomeIcon />
+							{homeNotice ? <div className="home-notice" /> : ""}
 							<span className="menu-item-text">Home</span>
 						</NavLink>
 					</li>

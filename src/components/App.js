@@ -50,8 +50,8 @@ const App = () => {
 						setUserData((u) => ({ ...u, image: Leaf }));
 					});
 			} else {
-				setUserID(null)
-				setUserData({})
+				setUserID(null);
+				setUserData({});
 			}
 		});
 

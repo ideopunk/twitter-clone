@@ -27,6 +27,7 @@ const Feed = (props) => {
 			);
 		});
 		console.log(tweets)
+		
 		// filter out repeats (such as with self-retweets)
 		let IDs = [];
 		let tempUniqueTweets = [];

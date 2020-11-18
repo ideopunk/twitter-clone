@@ -95,11 +95,6 @@ const Tweet = (props) => {
 		}
 	}, [retweets, userID, userAt]);
 
-	// tweet rendered
-	useEffect(() => {
-		console.log("rendered");
-	}, []);
-
 	// get picture for tweet, set to Leaf if no picture found.
 	useEffect(() => {
 		storage
@@ -109,6 +104,7 @@ const Tweet = (props) => {
 				setImage(url);
 			})
 			.catch((err) => {
+				console.log(err);
 				setImage(Leaf);
 			});
 

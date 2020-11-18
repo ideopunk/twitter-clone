@@ -22,15 +22,12 @@ const Home = (props) => {
 			.collection("users")
 			.where("followers", "array-contains", userID)
 			.onSnapshot((snapshot) => {
-				console.log(snapshot);
 				let tempArray = [];
-				
+
 				const changes = snapshot.docChanges();
 				// for each user we follow...
 				changes.forEach((change) => {
 					const doc = change.doc;
-					console.log(doc.data());
-					console.log(doc.data().tweets);
 					doc.data().tweets && tempArray.push(...doc.data().tweets);
 				});
 
@@ -39,15 +36,12 @@ const Home = (props) => {
 					.orderBy("timeStamp", "desc")
 					.get()
 					.then((snapshot) => {
-						console.log(snapshot);
-						console.log(tempArray);
 						let finalArray = [];
 						snapshot.forEach((doc) => {
 							if (tempArray.includes(doc.id) && !doc.data().replyTo) {
 								finalArray.push({ ...doc.data(), id: doc.id });
 							}
 						});
-						console.log(finalArray);
 						setTweetDatas((t) =>
 							[...t, ...finalArray].sort(
 								(a, b) => b.timeStamp.seconds - a.timeStamp.seconds
