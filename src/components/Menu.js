@@ -37,6 +37,14 @@ const Menu = (props) => {
 		}
 	}, [userID]);
 
+	useEffect(() => {
+		if (dropdown || composer) {
+			document.body.style.position = "fixed";
+		} else {
+			document.body.style.position = "";
+		}
+	}, [composer, dropdown]);
+
 	const signOut = () => {
 		auth.signOut().then(() => {
 			console.log("user signed out");
@@ -123,7 +131,11 @@ const Menu = (props) => {
 					</li>
 				)}
 				<li>
-					<button className="btn" onClick={toggleComposer}>
+					<button
+						className="btn"
+						onClick={toggleComposer}
+						style={{ marginBottom: "0.75rem" }}
+					>
 						Tweet
 					</button>
 				</li>
@@ -142,7 +154,7 @@ const Menu = (props) => {
 			</ul>
 			{composer && (
 				<Cover toggle={toggleComposer}>
-					<Composer modal={true} />
+					<Composer modal={true} toggle={toggleComposer} />
 				</Cover>
 			)}
 			{dropdown && (

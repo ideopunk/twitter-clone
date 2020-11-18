@@ -10,7 +10,7 @@ import UserContext from "../context/context.js";
 import ComposerCircle from "./ComposerCircle";
 
 const Composer = (props) => {
-	const { modal, replyData, replyImage } = props;
+	const { modal, replyData, replyImage, toggle } = props;
 
 	const { userName, userAt, userID, userImage, userTweets } = useContext(UserContext);
 
@@ -25,16 +25,13 @@ const Composer = (props) => {
 				reply.default({ tweetID, userName, userID, userAt, userTweets, text })
 			);
 		} else {
-			console.log(text)
+			console.log(text);
 			import("../functions/simpleTweet.js").then((simpleTweet) =>
-				simpleTweet.default({userName, text, userAt, userID, userTweets})
+				simpleTweet.default({ userName, text, userAt, userID, userTweets })
 			);
 		}
+		toggle();
 	};
-
-	useEffect(() => {
-		console.log(replyData);
-	}, [replyData]);
 
 	const handleChange = (e) => {
 		console.log(e.target.value);

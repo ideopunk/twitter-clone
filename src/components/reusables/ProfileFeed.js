@@ -23,11 +23,12 @@ const ProfileFeed = (props) => {
 		console.log(tweetDatas);
 	}, [tweetDatas]);
 
-	// set tweetdata
+	// listen to  tweetdata
 	useEffect(() => {
 		setTweetDatas("");
 		console.log("set tweetdata");
-		db.collection("tweets")
+		const unsub = db
+			.collection("tweets")
 			.where("userID", "==", profileID)
 			.orderBy("timeStamp", "desc")
 			.limit(50)
@@ -50,26 +51,29 @@ const ProfileFeed = (props) => {
 				);
 			});
 
-		// add retweets
-		db.collection("tweets")
+		// listen to  retweets
+		const retweetUnsub = db
+			.collection("tweets")
 			.where("retweets", "array-contains", profileID)
 			.orderBy("timeStamp", "desc")
 			.limit(50)
-			.get()
-			.then((snapshot) => {
+			.onSnapshot((snapshot) => {
 				let tempArray = [];
 				snapshot.forEach((doc) => {
 					console.log(doc.data().timeStamp);
 					tempArray.push({ ...doc.data(), id: doc.id });
 				});
-				return tempArray;
-			})
-			.then((tempArray) => {
 				setTweetDatas((t) =>
 					// sort function ensures they're still in the right order when retweets are added
 					[...t, ...tempArray].sort((a, b) => b.timeStamp.seconds - a.timeStamp.seconds)
 				);
 			});
+
+		// unmount
+		return () => {
+			unsub();
+			retweetUnsub();
+		};
 	}, [profileID, repliesIncluded]);
 
 	return tweetDatas.length ? <Feed tweetDatas={tweetDatas} /> : <LoaderContainer />;

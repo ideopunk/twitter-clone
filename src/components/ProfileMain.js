@@ -155,6 +155,14 @@ const ProfileMain = (props) => {
 		}
 	}, [userProfile, userFollows, profileID, userID]);
 
+	useEffect(() => {
+		if (editor) {
+			document.body.style.position = "fixed"
+		} else {
+			document.body.style.position = ""
+		}
+	}, [editor])
+
 	const toggleEditor = () => {
 		setEditor(!editor);
 	};
