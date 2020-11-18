@@ -34,34 +34,33 @@ const Menu = (props) => {
 
 				snapshot.forEach((doc) => {
 					const data = doc.data();
-					tempAmount = tempAmount +  data.tweets.length
+					tempAmount = tempAmount + data.tweets.length;
 				});
 
 				console.log(tempAmount);
-				
-				// IF the amount of tweets changes, and it isn't changing from zero, show the button. 
-				setHomeNotice((t) => (t !== tempAmount && t !== 0? tempAmount : 0));
+
+				// IF the amount of tweets changes, and it isn't changing from zero, show the button.
+				setHomeNotice((t) => (t !== tempAmount && t !== 0 ? tempAmount : 1));
 			});
 
 		return () => unsub();
 	}, [userID]);
 
-
 	// notifications watch
 	useEffect(() => {
-		if (userID) {
-			db.collection("users")
-				.doc(userID)
-				.onSnapshot((doc) => {
-					const data = doc.data();
-					const newLength = data.notifications.filter(
-						(notification) => !notification.seen
-					).length;
-					if (data.notifications) {
-						setUnseenNotes((oldLength) => oldLength !== newLength && newLength);
-					}
-				});
-		}
+		const unsub = db
+			.collection("users")
+			.doc(userID || "fake")
+			.onSnapshot((doc) => {
+				const data = doc.data();
+				const newLength = data.notifications.filter((notification) => !notification.seen)
+					.length;
+				if (data.notifications) {
+					setUnseenNotes((oldLength) => oldLength !== newLength && newLength);
+				}
+			});
+
+		return () => unsub();
 	}, [userID]);
 
 	// freeze if modal up
@@ -92,7 +91,7 @@ const Menu = (props) => {
 	return (
 		<>
 			<ul className="menu">
-				<li onClick={() => setHomeNotice(0)}>
+				<li onClick={() => setHomeNotice(1)}>
 					<NavLink
 						activeClassName="menu-item-active"
 						to="/"
@@ -106,7 +105,7 @@ const Menu = (props) => {
 					</NavLink>
 				</li>
 				{userID && (
-					<li onClick={() => setHomeNotice(0)}>
+					<li onClick={() => setHomeNotice(1)}>
 						<NavLink
 							activeClassName="menu-item-active"
 							to="/"
@@ -114,7 +113,7 @@ const Menu = (props) => {
 							className="menu-item"
 						>
 							<HomeIcon />
-							{homeNotice ? <div className="home-notice" /> : ""}
+							{homeNotice > 1 ? <div className="home-notice" /> : ""}
 							<span className="menu-item-text">Home</span>
 						</NavLink>
 					</li>
