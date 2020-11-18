@@ -24,6 +24,7 @@ const Home = (props) => {
 			.onSnapshot((snapshot) => {
 				console.log(snapshot);
 				let tempArray = [];
+				
 				const changes = snapshot.docChanges();
 				// for each user we follow...
 				changes.forEach((change) => {
@@ -33,6 +34,7 @@ const Home = (props) => {
 					doc.data().tweets && tempArray.push(...doc.data().tweets);
 				});
 
+				// why won't you remove tweets that were deleted?
 				db.collection("tweets")
 					.orderBy("timeStamp", "desc")
 					.get()

@@ -18,18 +18,25 @@ const Explore = () => {
 			.orderBy("timeStamp", "desc")
 			.onSnapshot((snapshot) => {
 				let tempArray = [];
+				let deletionArray = [];
 				const changes = snapshot.docChanges();
 
+
 				changes.forEach((change) => {
+					console.log(change.type);
 					const doc = change.doc;
 
 					// don't include replies
-					if (!doc.data().replyTo) {
+					if (!doc.data().replyTo && change.type !== "removed") {
 						tempArray.push({ ...doc.data(), id: doc.id });
+					} else if (change.type === "removed") {
+						deletionArray.push(doc.id);
 					}
 				});
 				setTweetDatas((t) =>
-					[...t, ...tempArray].sort((a, b) => b.timeStamp.seconds - a.timeStamp.seconds)
+					[...t, ...tempArray]
+						.sort((a, b) => b.timeStamp.seconds - a.timeStamp.seconds)
+						.filter((doc) => !deletionArray.includes(doc.id))
 				);
 			});
 

@@ -19,7 +19,7 @@ import { toastConfig } from "react-simple-toasts";
 const Cover = lazy(() => import("./Cover"));
 const Composer = lazy(() => import("./Composer"));
 const UsersList = lazy(() => import("./UsersList"));
-const TweetDropDown = lazy(() => import("./TweetDropdown"));
+const TweetDropdown = lazy(() => import("./TweetDropdown"));
 const reactStringReplace = require("react-string-replace");
 
 toastConfig({
@@ -123,6 +123,7 @@ const Tweet = (props) => {
 	}, [tweeterID, time, big]);
 
 	const toggleDropdown = (e) => {
+		console.log("toggle dropdown");
 		e.stopPropagation();
 		if (userID) {
 			setDropdown(!dropdown);
@@ -233,7 +234,7 @@ const Tweet = (props) => {
 						<div style={{ marginLeft: "auto" }}>
 							{dropdown && (
 								<Suspense fallback={<LoaderContainer />}>
-									<TweetDropDown
+									<TweetDropdown
 										deleteTweet={deleteTweet}
 										unfollow={unfollow}
 										follow={follow}
@@ -241,6 +242,7 @@ const Tweet = (props) => {
 										tweetID={tweetID}
 										userID={userID}
 										tweeterID={tweeterID}
+										toggle={toggleDropdown}
 									/>
 								</Suspense>
 							)}
@@ -278,7 +280,7 @@ const Tweet = (props) => {
 							<div style={{ marginLeft: "auto" }}>
 								{dropdown ? (
 									<Suspense fallback={<LoaderContainer />}>
-										<TweetDropDown
+										<TweetDropdown
 											deleteTweet={deleteTweet}
 											unfollow={unfollow}
 											follow={follow}
@@ -286,6 +288,7 @@ const Tweet = (props) => {
 											tweetID={tweetID}
 											userID={userID}
 											tweeterID={tweeterID}
+											toggle={toggleDropdown}
 										/>{" "}
 									</Suspense>
 								) : (
