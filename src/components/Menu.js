@@ -1,15 +1,18 @@
 import React, { useState, useContext, useEffect } from "react";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink, useHistory, useLocation, useParams, useRouteMatch } from "react-router-dom";
 import { db, auth } from "../config/fbConfig";
 import Composer from "./reusables/Composer";
 import Cover from "./reusables/Cover";
 import UserContext from "./context/context.js";
 
 import fish from "../assets/fish-outline.svg";
-import { ReactComponent as HomeIcon } from "../assets/home-outline.svg";
+import { ReactComponent as HomeOutlineIcon } from "../assets/home-outline.svg";
+import { ReactComponent as HomeFilled } from "../assets/home-filled.svg";
 import { ReactComponent as ExploreIcon } from "../assets/explore-outline.svg";
+import { ReactComponent as NotificationsFilled } from "../assets/notifications-filled.svg";
 import { ReactComponent as NotificationsIcon } from "../assets/notifications-outline.svg";
 import { ReactComponent as ProfileIcon } from "../assets/profile-outline.svg";
+import { ReactComponent as ProfileFilled } from "../assets/profile-filled.svg";
 import { ReactComponent as MoreIcon } from "../assets/more-outline.svg";
 import { ReactComponent as PowerIcon } from "../assets/power-outline.svg";
 
@@ -20,8 +23,13 @@ const Menu = (props) => {
 
 	const [composer, setComposer] = useState(false);
 	const [dropdown, setDropdown] = useState(false);
-	let history = useHistory();
 
+	let RM = useRouteMatch();
+	let params = useParams();
+	let history = useHistory();
+	let location = useLocation();
+
+	console.log(location);
 	// new home tweets watch
 	useEffect(() => {
 		console.log("use effect menu");
@@ -54,9 +62,11 @@ const Menu = (props) => {
 			.doc(userID || "fake")
 			.onSnapshot((doc) => {
 				const data = doc.data();
-				const newLength = data.notifications.filter((notification) => !notification.seen)
-					.length;
-				if (data.notifications) {
+
+				if (data && data.notifications) {
+					const newLength = data.notifications.filter(
+						(notification) => !notification.seen
+					).length;
 					setUnseenNotes((oldLength) => oldLength !== newLength && newLength);
 				}
 			});
@@ -113,7 +123,7 @@ const Menu = (props) => {
 							exact={true}
 							className="menu-item"
 						>
-							<HomeIcon />
+							{location.pathname === "/" ? <HomeFilled /> : <HomeOutlineIcon />}
 							{homeNotice > 1 ? <div className="home-notice" /> : ""}
 							<span className="menu-item-text">Home</span>
 						</NavLink>
@@ -133,7 +143,11 @@ const Menu = (props) => {
 							className="menu-item"
 							style={{ position: "relative" }}
 						>
-							<NotificationsIcon />
+							{location.pathname === "/notifications" ? (
+								<NotificationsFilled />
+							) : (
+								<NotificationsIcon />
+							)}
 							{unseenNotes ? <div className="pseudo">{unseenNotes}</div> : ""}
 							<span className="menu-item-text">Notifications</span>
 						</NavLink>
@@ -146,7 +160,13 @@ const Menu = (props) => {
 							to={`/${userAt}`}
 							className="menu-item"
 						>
-							<ProfileIcon />
+							{location.pathname.length > 1 &&
+							location.pathname !== "/notifications" &&
+							location.pathname !== "/explore" ? (
+								<ProfileFilled />
+							) : (
+								<ProfileIcon />
+							)}
 							<span className="menu-item-text">Profile</span>
 						</NavLink>
 					</li>

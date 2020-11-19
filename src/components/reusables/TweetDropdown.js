@@ -3,6 +3,7 @@ import { ReactComponent as Garbage } from "../../assets/garbage.svg";
 import { ReactComponent as ProfileIcon } from "../../assets/profile-outline.svg";
 import LoaderContainer from "./LoaderContainer";
 const Cover = lazy(() => import("./Cover"));
+const Toast = lazy(() => import("./Toast"));
 
 const Warning = lazy(() => import("./Warning"));
 

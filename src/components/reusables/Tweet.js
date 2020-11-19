@@ -29,6 +29,8 @@ const Tweet = (props) => {
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const [modal, setModal] = useState("");
 	const [toast, setToast] = useState("");
+	const [deleteToast, setDeleteToast] = useState(false);
+
 	const {
 		name,
 		at,
@@ -133,6 +135,7 @@ const Tweet = (props) => {
 				deleteTweet.default(tweetID, userTweets, userID)
 			);
 		}
+		setDeleteToast(true);
 	};
 
 	const like = () => {
@@ -184,6 +187,8 @@ const Tweet = (props) => {
 		}
 	};
 
+	// toasts last one second.
+
 	useEffect(() => {
 		let timer = null;
 		if (toast) {
@@ -194,6 +199,18 @@ const Tweet = (props) => {
 
 		return () => clearTimeout(timer);
 	}, [toast]);
+
+	// toasts last one second.
+	useEffect(() => {
+		let timer = null;
+		if (deleteToast) {
+			timer = setTimeout(() => {
+				setDeleteToast(false);
+			}, 6000);
+		}
+
+		return () => clearTimeout(timer);
+	}, [deleteToast]);
 
 	const imageLoad = () => {
 		setImageLoaded(true);
@@ -383,6 +400,13 @@ const Tweet = (props) => {
 			{toast ? (
 				<Suspense fallback={<LoaderContainer />}>
 					<Toast message="Tweet copied" />
+				</Suspense>
+			) : (
+				""
+			)}
+			{deleteToast ? (
+				<Suspense fallback={<LoaderContainer />}>
+					<Toast message="Your Tweet was deleted wahh" />
 				</Suspense>
 			) : (
 				""
