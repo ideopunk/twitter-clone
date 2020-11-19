@@ -46,9 +46,12 @@
 .grey-btn {
 	color: black;
 	background-color: lighten($sitegrey, 45%);
+	transition: $lighttransition;
 }
 
-
+.grey-btn:hover {
+	background-color: lighten($sitegrey, 20%);
+}
 .log-in-button:hover {
 	background-color: darken($sitecolor, 5%);
 }

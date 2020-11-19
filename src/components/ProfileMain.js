@@ -164,7 +164,7 @@ const ProfileMain = (props) => {
 				<div className="profile-card">
 					<img className="main-image" src={profileData.image} alt="profile" />
 					{userProfile ? (
-						<div style={{ height: "3rem" }}>
+						<div>
 							<button
 								className="btn profile-edit-button"
 								style={{ width: "8rem" }}

@@ -1,6 +1,8 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, lazy, Suspense } from "react";
 import UserContext from "../context/context.js";
-import Cover from "./Cover";
+import LoaderContainer from "./LoaderContainer.js";
+const Cover = lazy(() => import("./Cover"));
+const Warning = lazy(() => import("./Warning"));
 
 const FollowButton = (props) => {
 	const { userID, userFollows } = useContext(UserContext);
@@ -45,27 +47,19 @@ const FollowButton = (props) => {
 			</button>
 
 			{warning && (
-				<Cover toggle={toggleWarning}>
-					<UnfollowWarning cancel={toggleWarning} at={at} unfollow={unfollow}/>
-				</Cover>
+				<Suspense fallback={<LoaderContainer />}>
+					<Cover toggle={toggleWarning}>
+						<Warning
+							cancel={toggleWarning}
+							title={`Unfollow @${at}?`}
+							action={unfollow}
+							actionName="Unfollow"
+							message="Their Tweets will no longer show up in your home timeline. You can still view their profile though!"
+						/>
+					</Cover>
+				</Suspense>
 			)}
 		</>
-	);
-};
-
-const UnfollowWarning = (props) => {
-	return (
-		<div className="modal pad" style={{textAlign:"center", maxWidth:"300px"}}>
-			<h3 className="pad">Unfollow @{props.at}?</h3>
-			<p className="pad grey">
-				Their Tweets will no longer show up in your home timeline. You can still view their
-				profile though!
-			</p>
-			<div className="flex pad" style={{columnGap:"1rem"}}>
-				<button className="btn grey-btn" onClick={props.cancel}>Cancel</button>
-				<button className="btn" onClick={props.unfollow}>Unfollow</button>
-			</div>
-		</div>
 	);
 };
 
