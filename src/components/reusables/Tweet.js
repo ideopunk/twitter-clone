@@ -13,18 +13,13 @@ import { ReactComponent as Like } from "../../assets/like-icon.svg";
 import { ReactComponent as LikeFilled } from "../../assets/like-icon-filled.svg";
 import { ReactComponent as Copy } from "../../assets/copy-icon.svg";
 import { ReactComponent as Dots } from "../../assets/dots.svg";
-import toast from "react-simple-toasts";
-import { toastConfig } from "react-simple-toasts";
 
 const Cover = lazy(() => import("./Cover"));
 const Composer = lazy(() => import("./Composer"));
 const UsersList = lazy(() => import("./UsersList"));
 const TweetDropdown = lazy(() => import("./TweetDropdown"));
 const reactStringReplace = require("react-string-replace");
-
-toastConfig({
-	time: 1500,
-});
+const Toast = lazy(() => import("./Toast"));
 
 const Tweet = (props) => {
 	const [image, setImage] = useState("");
@@ -33,7 +28,7 @@ const Tweet = (props) => {
 	const [reply, setReply] = useState(false);
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const [modal, setModal] = useState("");
-
+	const [toast, setToast] = useState("");
 	const {
 		name,
 		at,
@@ -188,6 +183,17 @@ const Tweet = (props) => {
 			);
 		}
 	};
+
+	useEffect(() => {
+		let timer = null;
+		if (toast) {
+			timer = setTimeout(() => {
+				setToast(false);
+			}, 1000);
+		}
+
+		return () => clearTimeout(timer);
+	}, [toast]);
 
 	const imageLoad = () => {
 		setImageLoaded(true);
@@ -344,10 +350,7 @@ const Tweet = (props) => {
 						</div>
 						<div className="tweet-svg-div grey copy-div">
 							<CopyToClipboard text={`/tweet/${tweetID}`}>
-								<div
-									className="tweet-svg-holder"
-									onClick={() => toast("Copied to clipboard")}
-								>
+								<div className="tweet-svg-holder" onClick={() => setToast(true)}>
 									<Copy />
 								</div>
 							</CopyToClipboard>
@@ -373,6 +376,13 @@ const Tweet = (props) => {
 					<Cover toggle={() => setModal("")}>
 						<UsersList type={modal} tweetID={tweetID} clear={() => setModal("")} />{" "}
 					</Cover>
+				</Suspense>
+			) : (
+				""
+			)}
+			{toast ? (
+				<Suspense fallback={<LoaderContainer />}>
+					<Toast message="Tweet copied" />
 				</Suspense>
 			) : (
 				""
