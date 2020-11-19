@@ -29,7 +29,8 @@ const Home = (props) => {
 					console.log(change.type);
 					const doc = change.doc;
 					const data = doc.data();
-					// don't include replies. Only include follows
+
+					// don't include replies. And only include follows
 					if (
 						!data.replyTo &&
 						change.type !== "removed" &&
@@ -49,48 +50,6 @@ const Home = (props) => {
 
 		return () => unsub();
 	}, [userFollows]);
-
-	// useEffect(() => {
-	// 	setTweetDatas([]);
-
-	// 	const unsub = db
-	// 		.collection("users")
-	// 		.where("followers", "array-contains", userID)
-	// 		.onSnapshot((snapshot) => {
-	// 			let tempArray = [];
-
-	// 			const changes = snapshot.docChanges();
-	// 			// for each user we follow...
-	// 			changes.forEach((change) => {
-	// 				console.log(change);
-	// 				console.log(change.doc.data().tweets);
-	// 				const doc = change.doc;
-	// 				doc.data().tweets && tempArray.push(...doc.data().tweets);
-	// 			});
-
-	// 			// why won't you remove tweets that were deleted?
-	// 			db.collection("tweets")
-	// 				.orderBy("timeStamp", "desc")
-	// 				.get()
-	// 				.then((snapshot) => {
-	// 					let finalArray = [];
-	// 					snapshot.forEach((doc) => {
-	// 						if (tempArray.includes(doc.id) && !doc.data().replyTo) {
-	// 							finalArray.push({ ...doc.data(), id: doc.id });
-	// 						}
-	// 					});
-	// 					setTweetDatas((t) =>
-	// 						[...t, ...finalArray].sort(
-	// 							(a, b) => b.timeStamp.seconds - a.timeStamp.seconds
-	// 						)
-	// 					);
-	// 				});
-	// 		});
-
-	// 	return () => {
-	// 		unsub();
-	// 	};
-	// }, [userID]);
 
 	return (
 		<div className="home center-feed">

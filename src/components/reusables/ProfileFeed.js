@@ -33,17 +33,22 @@ const ProfileFeed = (props) => {
 			.limit(50)
 			.onSnapshot((snapshot) => {
 				let tempArray = [];
+				let deletionArray = [];
 				const changes = snapshot.docChanges();
 				changes.forEach((change) => {
 					const doc = change.doc;
-					if (repliesIncluded) {
+					if (change.type === "removed") {
+						deletionArray.push(doc.id);
+					} else if (repliesIncluded) {
 						tempArray.push({ ...doc.data(), id: doc.id });
 					} else if (!doc.data().replyTo) {
 						tempArray.push({ ...doc.data(), id: doc.id });
 					}
 				});
 				setTweetDatas((t) =>
-					[...t, ...tempArray].sort((a, b) => b.timeStamp.seconds - a.timeStamp.seconds)
+					[...t, ...tempArray]
+						.sort((a, b) => b.timeStamp.seconds - a.timeStamp.seconds)
+						.filter((doc) => !deletionArray.includes(doc.id))
 				);
 			});
 

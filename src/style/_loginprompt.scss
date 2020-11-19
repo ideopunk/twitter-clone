@@ -43,7 +43,10 @@
 	background-color: white;
 }
 
-
+.grey-btn {
+	color: black;
+	background-color: lighten($sitegrey, 45%);
+}
 
 
 .log-in-button:hover {

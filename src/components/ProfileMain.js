@@ -178,6 +178,7 @@ const ProfileMain = (props) => {
 							<FollowButton
 								tweeterID={profileID}
 								followed={followed}
+								at={profileData.at}
 								style={{ height: "3rem" }}
 							/>
 						)
