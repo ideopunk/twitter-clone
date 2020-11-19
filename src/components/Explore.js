@@ -21,8 +21,8 @@ const Explore = () => {
 				let deletionArray = [];
 				const changes = snapshot.docChanges();
 
-
 				changes.forEach((change) => {
+					console.log(change.type);
 					const doc = change.doc;
 
 					// don't include replies

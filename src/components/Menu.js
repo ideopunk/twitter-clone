@@ -39,7 +39,8 @@ const Menu = (props) => {
 
 				console.log(tempAmount);
 
-				// IF the amount of tweets changes, and it isn't changing from zero, show the button.
+				// if this is the first mount, set amount to 1.
+				// if new amount isn't 0 and isn't same as old amount, update to new amount.
 				setHomeNotice((t) => (t !== tempAmount && t !== 0 ? tempAmount : 1));
 			});
 
