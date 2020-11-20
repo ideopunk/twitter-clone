@@ -103,3 +103,7 @@ circle {
 	position: absolute;
 	font-size: $smallfont;
 }
+
+.drag-over {
+	border: 2px dashed $sitecolor;
+}

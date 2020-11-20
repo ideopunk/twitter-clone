@@ -15,6 +15,7 @@ const Composer = (props) => {
 	const { userName, userAt, userID, userImage, userTweets } = useContext(UserContext);
 
 	const [text, setText] = useState("");
+	const [dragOver, setDragOver] = useState(false);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -37,10 +38,29 @@ const Composer = (props) => {
 	};
 
 	const handleChange = (e) => {
+		console.log(e.target.childNodes[0])
 		console.log(e.target.textContent);
 		setText(e.target.textContent);
 	};
 
+	const handleDrop = (e) => {
+		e.stopPropagation();
+		e.preventDefault();
+		const file = e.dataTransfer.files[0]
+		console.log(file)
+	}
+
+	const handleDragOver = (e) => {
+
+		console.log(e.target)
+		if (!dragOver) {
+			setDragOver(true)
+		}
+	}
+
+	const handleDragLeave = (e) => {
+		setDragOver(false)
+	}
 	return (
 		<form className={`${modal ? `modal` : ""} ${replyData ? "" : "composer"}`}>
 			{replyData && (
@@ -64,18 +84,13 @@ const Composer = (props) => {
 					<img src={userImage} alt="user-profile" className="profile-image" />
 				</Link>
 				<div className="composer-right">
-					{/* <input
-						maxLength={280}
-						required
-						className="composer-input"
-						placeholder={replyData ? "Tweet your reply" : "What's happening?"}
-						onChange={handleChange}
-						value={text}
-					/> */}
 					<div
 						contentEditable
-						className="composer-input"
+						className={`composer-input ${dragOver? "drag-over" : ""}`}
 						onInput={handleChange}
+						onDrop={handleDrop}
+						onDragOver={handleDragOver}
+						onDragLeave={handleDragLeave}
 						suppressContentEditableWarning
 					>
 						{text}
