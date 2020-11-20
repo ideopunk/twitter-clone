@@ -198,12 +198,12 @@ const ProfileMain = (props) => {
 						</span>
 					</p>
 					<p>
-						<Link to={`${url}/following`} style={{ textDecoration: "none" }}>
+						<Link to={`${url}/following`} className="hover-under">
 							<span style={{ marginRight: "1rem" }}>
 								{profileData.follows.length} <span className="grey">Following</span>
 							</span>
 						</Link>
-						<Link to={`${url}/followers`} style={{ textDecoration: "none" }}>
+						<Link to={`${url}/followers`} className="hover-under">
 							<span>
 								{profileData.followers.length}{" "}
 								<span className="grey">Followers</span>

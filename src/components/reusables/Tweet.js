@@ -61,8 +61,7 @@ const Tweet = (props) => {
 		<Link
 			to={`/hashtag/${match.slice(1)}`}
 			key={i + match}
-			className="hover-under"
-			style={{ color: "rgb(29, 242, 161)" }}
+			className="hover-under begotten-link"
 		>
 			{match}
 		</Link>
@@ -71,8 +70,7 @@ const Tweet = (props) => {
 		<PreviewLink
 			to={`/${match.slice(1)}`}
 			key={i + match}
-			className="hover-under"
-			style={{ color: "rgb(29, 242, 161)" }}
+			className="hover-under begotten-link"
 		>
 			{match}
 		</PreviewLink>
@@ -222,7 +220,7 @@ const Tweet = (props) => {
 			className={`tweet ${imageLoaded ? "" : "hide"} ${big ? "" : "pad"} `}
 		>
 			{retweetedBy && (
-				<PreviewLink to={`/${retweetedBy}`} style={{ textDecoration: "none" }}>
+				<PreviewLink to={`/${retweetedBy}`} className="hover-under">
 					<div className="retweeted-by">
 						<Retweet />
 						<p>Retweeted by {retweetedBy}</p>

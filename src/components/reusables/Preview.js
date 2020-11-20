@@ -78,23 +78,17 @@ const Preview = ({ at }) => {
 				/>{" "}
 			</div>
 			<div>
-				<h3>{profileData.name}</h3>
+				<h3 className="hover-under">{profileData.name}</h3>
 				<p className="grey">@{profileData.at}</p>
 			</div>
 			<p className="bio">{profileData.bio}</p>
 			<div>
-				<span
-					style={{ textDecoration: "none" }}
-					onClick={() => redirect(`/${at}/following`)}
-				>
+				<span className="hover-under" onClick={() => redirect(`/${at}/following`)}>
 					<span style={{ marginRight: "1rem" }}>
 						{profileData.follows.length} <span className="grey">Following</span>
 					</span>
 				</span>
-				<span
-					style={{ textDecoration: "none" }}
-					onClick={() => redirect(`/${at}/followers`)}
-				>
+				<span className="hover-under" onClick={() => redirect(`/${at}/followers`)}>
 					<span>
 						{profileData.followers.length} <span className="grey">Followers</span>
 					</span>
@@ -112,7 +106,8 @@ const PreviewLink = (props) => {
 			to={props.to}
 			onMouseOver={() => setHover(true)}
 			onMouseLeave={() => setHover(false)}
-			style={{ textDecoration: "none", position: "relative", height: "fit-content" }}
+			style={{ position: "relative", height: "fit-content" }}
+			className={props.className + " hover-under"}
 		>
 			{props.children}
 			{hover && <Preview at={props.to} />}
