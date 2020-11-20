@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, Suspense } from "react";
 import { db, storage } from "../../config/fbConfig";
 import { Link, useHistory } from "react-router-dom";
 import UserContext from "../context/context.js";
@@ -16,6 +16,8 @@ const Preview = ({ at }) => {
 	const history = useHistory();
 
 	useEffect(() => {
+		let mounted = true;
+
 		db.collection("users")
 			.where("at", "==", at.slice(1))
 			.get()
@@ -23,20 +25,23 @@ const Preview = ({ at }) => {
 				if (snapshot.size > 0) {
 					snapshot.forEach((doc) => {
 						const data = doc.data();
-						setProfileData({
-							at: data.at,
-							name: data.name,
-							follows: data.follows || [],
-							followers: data.followers || [],
-							bio: data.bio,
-							id: doc.id,
-							website: data.website,
-							tweetAmount: data.tweets.length,
-							joinDate: new Date(data.joinDate.seconds * 1000),
-						});
+						if (mounted) {
+							setProfileData({
+								at: data.at,
+								name: data.name,
+								follows: data.follows || [],
+								followers: data.followers || [],
+								bio: data.bio,
+								id: doc.id,
+								website: data.website,
+								tweetAmount: data.tweets.length,
+								joinDate: new Date(data.joinDate.seconds * 1000),
+							});
+						}
 					});
 				}
 			});
+		return () => (mounted = false);
 	}, [at]);
 
 	// are we following them?
@@ -48,18 +53,25 @@ const Preview = ({ at }) => {
 
 	// set image
 	useEffect(() => {
+		let mounted = true;
 		if (profileData.id) {
 			storage
 				.ref("profile_pictures/" + profileData.id + ".png")
 				.getDownloadURL()
 				.then((url) => {
-					setImage(url);
+					if (mounted) {
+						setImage(url);
+					}
 				})
 				.catch((err) => {
 					console.log(err);
-					setImage(Leaf);
+					if (mounted) {
+						setImage(Leaf);
+					}
 				});
 		}
+
+		return () => (mounted = false);
 	}, [profileData.id]);
 
 	const redirect = (location) => {
@@ -110,7 +122,12 @@ const PreviewLink = (props) => {
 			className={props.className + " hover-under"}
 		>
 			{props.children}
-			{hover && <Preview at={props.to} />}
+			{hover && (
+				<Suspense fallback={<LoaderContainer />}>
+					{" "}
+					<Preview at={props.to} />
+				</Suspense>
+			)}
 		</Link>
 	);
 };

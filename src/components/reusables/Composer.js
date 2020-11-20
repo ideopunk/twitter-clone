@@ -37,8 +37,8 @@ const Composer = (props) => {
 	};
 
 	const handleChange = (e) => {
-		console.log(e.target.value);
-		setText(e.target.value);
+		console.log(e.target.textContent);
+		setText(e.target.textContent);
 	};
 
 	return (
@@ -64,14 +64,22 @@ const Composer = (props) => {
 					<img src={userImage} alt="user-profile" className="profile-image" />
 				</Link>
 				<div className="composer-right">
-					<input
+					{/* <input
 						maxLength={280}
 						required
 						className="composer-input"
 						placeholder={replyData ? "Tweet your reply" : "What's happening?"}
 						onChange={handleChange}
 						value={text}
-					/>
+					/> */}
+					<div
+						contentEditable
+						className="composer-input"
+						onInput={handleChange}
+						suppressContentEditableWarning
+					>
+						{text}
+					</div>
 					<div className="composer-options">
 						<div className="composer-icon-div">
 							<Picture />
