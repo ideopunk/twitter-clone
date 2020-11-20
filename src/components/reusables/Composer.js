@@ -2,10 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { ReactComponent as Picture } from "../../assets/picture-icon.svg";
-import { ReactComponent as Gif } from "../../assets/gif-icon.svg";
 import { ReactComponent as Poll } from "../../assets/poll-icon.svg";
-import { ReactComponent as Emoji } from "../../assets/emoji-icon.svg";
-import { ReactComponent as Schedule } from "../../assets/schedule-icon.svg";
 import UserContext from "../context/context.js";
 import ComposerCircle from "./ComposerCircle";
 
@@ -16,6 +13,7 @@ const Composer = (props) => {
 
 	const [text, setText] = useState("");
 	const [dragOver, setDragOver] = useState(false);
+	const [IMG, setIMG] = useState("")
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -38,7 +36,18 @@ const Composer = (props) => {
 	};
 
 	const handleChange = (e) => {
-		console.log(e.target.childNodes[0])
+		console.log(e.target.childNodes);
+
+		// did they add an image?
+		e.target.childNodes.forEach((node) => {
+			console.log(node.nodeType);
+			console.log(node.tagName);
+			console.log(node.src)
+			if (node.tagName === "IMG") {
+				setIMG(node.src)
+			}
+		});
+
 		console.log(e.target.textContent);
 		setText(e.target.textContent);
 	};
@@ -46,21 +55,20 @@ const Composer = (props) => {
 	const handleDrop = (e) => {
 		e.stopPropagation();
 		e.preventDefault();
-		const file = e.dataTransfer.files[0]
-		console.log(file)
-	}
+		const file = e.dataTransfer.files[0];
+		console.log(file);
+	};
 
 	const handleDragOver = (e) => {
-
-		console.log(e.target)
+		console.log(e.target);
 		if (!dragOver) {
-			setDragOver(true)
+			setDragOver(true);
 		}
-	}
+	};
 
 	const handleDragLeave = (e) => {
-		setDragOver(false)
-	}
+		setDragOver(false);
+	};
 	return (
 		<form className={`${modal ? `modal` : ""} ${replyData ? "" : "composer"}`}>
 			{replyData && (
@@ -86,7 +94,7 @@ const Composer = (props) => {
 				<div className="composer-right">
 					<div
 						contentEditable
-						className={`composer-input ${dragOver? "drag-over" : ""}`}
+						className={`composer-input ${dragOver ? "drag-over" : ""}`}
 						onInput={handleChange}
 						onDrop={handleDrop}
 						onDragOver={handleDragOver}
@@ -100,16 +108,7 @@ const Composer = (props) => {
 							<Picture />
 						</div>
 						<div className="composer-icon-div">
-							<Gif />
-						</div>
-						<div className="composer-icon-div">
 							<Poll />
-						</div>
-						<div className="composer-icon-div">
-							<Emoji />
-						</div>
-						<div className="composer-icon-div">
-							<Schedule />
 						</div>
 						<div className="composer-circle-container">
 							{text && <ComposerCircle length={text.length} />}
