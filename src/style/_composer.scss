@@ -5,7 +5,7 @@
 	display: flex;
 	padding: 1rem;
 	box-sizing: border-box;
-	max-height: 400px;
+	// max-height: 400px;
 	// height: fit-content;
 }
 
@@ -29,7 +29,6 @@
 	width: 100%;
 	flex: 1;
 	border: 0;
-	border-bottom: $siteborder;
 	outline: none;
 	padding-bottom: 0.75rem;
 }
@@ -52,8 +51,6 @@
 	// margin-right: 2rem;
 	border-radius: 50%;
 }
-
-
 
 .composer-svg {
 	fill: $sitecolor;
@@ -98,7 +95,6 @@ circle {
 	stroke: $sitegrey;
 }
 
-
 .circle-warning {
 	position: absolute;
 	font-size: $smallfont;
@@ -106,4 +102,24 @@ circle {
 
 .drag-over {
 	border: 2px dashed $sitecolor;
+}
+
+.composer-input-container {
+	border-bottom: 2px solid rgb(230, 236, 240);
+	padding-bottom: 1rem;
+}
+
+.composer-image-container {
+	border-radius: 20px;
+	max-width: 100%;
+	max-height: 280px;
+	overflow: hidden;
+	position: relative;
+}
+.composer-preview-image {
+	flex: 1;
+	width: 100%;
+	max-height: 300px;
+	object-fit: cover;
+
 }

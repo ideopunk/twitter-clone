@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import { ReactComponent as Picture } from "../../assets/picture-icon.svg";
 import { ReactComponent as Poll } from "../../assets/poll-icon.svg";
+import { ReactComponent as Close } from "../../assets/close.svg";
 import UserContext from "../context/context.js";
 import ComposerCircle from "./ComposerCircle";
 
@@ -13,7 +14,16 @@ const Composer = (props) => {
 
 	const [text, setText] = useState("");
 	const [dragOver, setDragOver] = useState(false);
-	const [IMG, setIMG] = useState("")
+	const [IMG, setIMG] = useState(null);
+	const [previewIMG, setPreviewIMG] = useState("");
+
+	useEffect(() => {
+		if (IMG) {
+			const file = URL.createObjectURL(IMG);
+			console.log(file);
+			setPreviewIMG(file);
+		}
+	}, [IMG]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -36,39 +46,53 @@ const Composer = (props) => {
 	};
 
 	const handleChange = (e) => {
+		console.log(e);
 		console.log(e.target.childNodes);
 
+		console.log(window.getSelection());
 		// did they add an image?
 		e.target.childNodes.forEach((node) => {
 			console.log(node.nodeType);
 			console.log(node.tagName);
-			console.log(node.src)
+			console.log(node.src);
 			if (node.tagName === "IMG") {
-				setIMG(node.src)
+				setIMG(node.src);
 			}
 		});
 
 		console.log(e.target.textContent);
-		setText(e.target.textContent);
+		setText(e.target.value);
+		// setText(e.target.textContent);
 	};
 
 	const handleDrop = (e) => {
 		e.stopPropagation();
 		e.preventDefault();
 		const file = e.dataTransfer.files[0];
+		setIMG(file);
+		setDragOver(false)
 		console.log(file);
+		console.log(e.dataTransfer);
 	};
 
 	const handleDragOver = (e) => {
-		console.log(e.target);
 		if (!dragOver) {
 			setDragOver(true);
 		}
 	};
 
-	const handleDragLeave = (e) => {
+	const handlePaste = (e) => {
+		e.stopPropagation();
+		e.preventDefault();
+		console.log(e.target);
+		console.log(e.dataTransfer);
+	};
+
+	const handleDragLeave = () => {
+		console.log('drag leave')
 		setDragOver(false);
 	};
+	 
 	return (
 		<form className={`${modal ? `modal` : ""} ${replyData ? "" : "composer"}`}>
 			{replyData && (
@@ -93,6 +117,20 @@ const Composer = (props) => {
 				</Link>
 				<div className="composer-right">
 					<div
+						className={`composer-input-container ${dragOver ? "drag-over" : ""}`}
+						onDragOver={handleDragOver}
+						onDragLeave={handleDragLeave}
+					>
+						<input
+							type="text"
+							className={`composer-input`}
+							onChange={handleChange}
+							onDrop={handleDrop}
+							onPaste={handlePaste}
+							placeholder="What's happening?"
+							value={text}
+						/>
+						{/* <div
 						contentEditable
 						className={`composer-input ${dragOver ? "drag-over" : ""}`}
 						onInput={handleChange}
@@ -102,7 +140,19 @@ const Composer = (props) => {
 						suppressContentEditableWarning
 					>
 						{text}
+					</div> */}
+						{previewIMG ? (
+							<div className="composer-image-container">
+							<img
+								src={previewIMG}
+								alt="user-submitted-pic"
+								className="composer-preview-image"
+							/></div>
+						) : (
+							""
+						)}
 					</div>
+
 					<div className="composer-options">
 						<div className="composer-icon-div">
 							<Picture />
