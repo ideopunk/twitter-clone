@@ -29,7 +29,7 @@ const ProfileMain = (props) => {
 
 	const [profileData, setProfileData] = useState({ follows: [], followers: [] });
 	const [editor, setEditor] = useState(false);
-	const [followed, setFollowed] = useState("");
+	const [followed, setFollowed] = useState(false)
 	const [imageLoaded, setImageLoaded] = useState(false);
 
 	useEffect(() => {console.log(userProfile)}, [userProfile])

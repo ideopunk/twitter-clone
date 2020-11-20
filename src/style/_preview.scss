@@ -1,0 +1,24 @@
+.preview {
+	background-color: white;
+	color: black;
+	display: flex;
+	flex-direction: column;
+	row-gap: 0.75rem;
+	z-index: 1;
+	box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+	width: 200px;
+	padding: 0.75rem;
+	position: absolute;
+	left: 0;
+	top: 105%;
+	transition: $lighttransition;
+	border-radius: 10px;
+}
+
+.appear {
+	opacity: 1;
+}
+.preview-top {
+	display: flex;
+	justify-content: space-between;
+}

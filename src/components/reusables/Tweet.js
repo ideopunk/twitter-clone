@@ -20,6 +20,7 @@ const UsersList = lazy(() => import("./UsersList"));
 const TweetDropdown = lazy(() => import("./TweetDropdown"));
 const reactStringReplace = require("react-string-replace");
 const Toast = lazy(() => import("./Toast"));
+const PreviewLink = lazy(() => import("./Preview"));
 
 const Tweet = (props) => {
 	const [image, setImage] = useState("");
@@ -30,7 +31,6 @@ const Tweet = (props) => {
 	const [modal, setModal] = useState("");
 	const [toast, setToast] = useState("");
 	const [deleteToast, setDeleteToast] = useState(false);
-
 	const {
 		name,
 		at,
@@ -68,14 +68,14 @@ const Tweet = (props) => {
 		</Link>
 	));
 	const linkedText = reactStringReplace(hashedText, /(@\w+)/g, (match, i) => (
-		<Link
+		<PreviewLink
 			to={`/${match.slice(1)}`}
 			key={i + match}
 			className="hover-under"
 			style={{ color: "rgb(29, 242, 161)" }}
 		>
 			{match}
-		</Link>
+		</PreviewLink>
 	));
 
 	// is this a retweet?
@@ -222,18 +222,19 @@ const Tweet = (props) => {
 			className={`tweet ${imageLoaded ? "" : "hide"} ${big ? "" : "pad"} `}
 		>
 			{retweetedBy && (
-				<Link to={`/${retweetedBy}`} style={{ textDecoration: "none" }}>
+				<PreviewLink to={`/${retweetedBy}`} style={{ textDecoration: "none" }}>
 					<div className="retweeted-by">
 						<Retweet />
 						<p>Retweeted by {retweetedBy}</p>
 					</div>
-				</Link>
+				</PreviewLink>
 			)}
 
 			<div className={`tweet-inside ${big ? "big-tweet-inside" : ""}`}>
 				{big ? (
 					<div className="tweet-top-data pad">
-						<Link to={`/${at}`}>
+						<PreviewLink to={`/${at}`}>
+							{/* // <Link to={`/${at}`} onMouseOver=> */}
 							{image ? (
 								<img
 									className={`profile-image`}
@@ -244,11 +245,11 @@ const Tweet = (props) => {
 							) : (
 								<div className="profile-image" />
 							)}
-						</Link>
-						<Link to={`/${at}`} style={{ textDecoration: "none" }}>
+						</PreviewLink>
+						<PreviewLink to={`/${at}`} style={{ textDecoration: "none" }}>
 							<p className="tweeter-name">{name}</p>
 							<p className="tweeter-at">@{at}</p>
-						</Link>
+						</PreviewLink>
 
 						<div style={{ marginLeft: "auto", position: "relative" }}>
 							<Dots className="dots grey" onClick={(e) => toggleDropdown(e)} />
@@ -269,27 +270,27 @@ const Tweet = (props) => {
 						</div>
 					</div>
 				) : image ? (
-					<Link to={`/${at}`}>
+					<PreviewLink to={`/${at}`}>
 						<img
 							className={`profile-image`}
 							alt="user-profile"
 							src={image}
 							onLoad={imageLoad}
 						/>
-					</Link>
+					</PreviewLink>
 				) : (
-					<Link to={`/${at}`}>
+					<PreviewLink to={`/${at}`}>
 						<div className="profile-image" />
-					</Link>
+					</PreviewLink>
 				)}
 
 				<div className="tweet-main">
 					{!big && (
 						<div className="tweet-top-data">
-							<Link to={`/${at}`} style={{ textDecoration: "none" }}>
+							<PreviewLink to={`/${at}`} style={{ textDecoration: "none" }}>
 								<span className="tweeter-name hover-under">{name}</span>
 								<span className="tweeter-at hover-under">{`@${at}`}</span>
-							</Link>
+							</PreviewLink>
 							<Link
 								to={`/tweet/${tweetID}`}
 								style={{ textDecoration: "none", color: "black" }}

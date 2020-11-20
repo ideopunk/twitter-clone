@@ -24,12 +24,9 @@ const Menu = (props) => {
 	const [composer, setComposer] = useState(false);
 	const [dropdown, setDropdown] = useState(false);
 
-	let RM = useRouteMatch();
-	let params = useParams();
 	let history = useHistory();
 	let location = useLocation();
 
-	console.log(location);
 	// new home tweets watch
 	useEffect(() => {
 		console.log("use effect menu");

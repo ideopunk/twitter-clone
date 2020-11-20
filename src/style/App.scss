@@ -197,6 +197,7 @@ h3 {
 @import "./sidebar";
 @import "./profile";
 @import "./account";
+@import "./preview";
 
 .no-dec:visited,
 .no-dec:link,
@@ -214,6 +215,10 @@ h3 {
 
 .hide {
 	display: none;
+}
+
+.transparent {
+	opacity: 0;
 }
 
 .bold {
