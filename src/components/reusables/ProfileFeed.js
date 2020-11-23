@@ -5,7 +5,7 @@ import LoaderContainer from "./LoaderContainer";
 import { db } from "../../config/fbConfig";
 
 const ProfileFeed = (props) => {
-	const { profileID, repliesIncluded, name } = props;
+	const { profileID, repliesIncluded, name, mediaOnly } = props;
 	const [tweetDatas, setTweetDatas] = useState([]);
 
 	const route = useRouteMatch();
@@ -39,6 +39,10 @@ const ProfileFeed = (props) => {
 					const doc = change.doc;
 					if (change.type === "removed") {
 						deletionArray.push(doc.id);
+					} else if (mediaOnly) {
+						if (doc.data().imageCount) {
+							tempArray.push({ ...doc.data(), id: doc.id });
+						}
 					} else if (repliesIncluded) {
 						tempArray.push({ ...doc.data(), id: doc.id });
 					} else if (!doc.data().replyTo) {
@@ -62,7 +66,13 @@ const ProfileFeed = (props) => {
 				let tempArray = [];
 				snapshot.forEach((doc) => {
 					console.log(doc.data().timeStamp);
-					tempArray.push({ ...doc.data(), id: doc.id });
+					if (mediaOnly) {
+						if (doc.data().imageCount) {
+							tempArray.push({ ...doc.data(), id: doc.id });
+						}
+					} else {
+						tempArray.push({ ...doc.data(), id: doc.id });
+					}
 				});
 				setTweetDatas((t) =>
 					// sort function ensures they're still in the right order when retweets are added

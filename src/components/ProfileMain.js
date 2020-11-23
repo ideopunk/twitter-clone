@@ -257,6 +257,7 @@ const ProfileMain = (props) => {
 					<ProfileFeed
 						profileID={profileID}
 						repliesIncluded={false}
+						mediaOnly={true}
 						name={profileData.name}
 					/>
 				</Route>
