@@ -23,6 +23,7 @@ const Feed = (props) => {
 					likes={tweet.likes}
 					getReplies={getReplies}
 					replies={tweet.replies}
+					imageCount={tweet.imageCount}
 				/>
 			);
 		});

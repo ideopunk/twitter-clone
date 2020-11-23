@@ -109,10 +109,6 @@ circle {
 	padding-bottom: 1rem;
 }
 
-
-
-
-
 .preview-images {
 	display: flex;
 	flex-basis: auto;
@@ -133,7 +129,7 @@ circle {
 	box-sizing: border-box;
 }
 
-.composer-image-container {
+.image-container {
 	border-radius: 20px;
 	overflow: hidden;
 	flex-basis: 0;
@@ -141,16 +137,14 @@ circle {
 	// flex: 1 50%;
 	box-sizing: border-box;
 	position: relative;
+	margin-bottom: 0.5rem;
 }
 .composer-preview-image {
 	width: 100%;
 	height: 100%;
-	
+
 	object-fit: none;
 }
-
-
-
 
 .img-close-container {
 	display: flex;

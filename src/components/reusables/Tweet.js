@@ -31,6 +31,8 @@ const Tweet = (props) => {
 	const [modal, setModal] = useState("");
 	const [toast, setToast] = useState("");
 	const [deleteToast, setDeleteToast] = useState(false);
+	const [pics, setPics] = useState([]);
+
 	const {
 		name,
 		at,
@@ -44,6 +46,7 @@ const Tweet = (props) => {
 		tweetID,
 		tweeterID,
 		big,
+		imageCount,
 	} = props;
 	const { userID, userAt, userLikes, userFollows, userTweets, userRetweets } = useContext(
 		UserContext
@@ -75,6 +78,31 @@ const Tweet = (props) => {
 			{match}
 		</PreviewLink>
 	));
+
+	// do we have pictures?
+	useEffect(() => {
+		console.log(imageCount);
+		if (imageCount) {
+			for (let i = 0; i < imageCount; i++) {
+				storage
+					.ref("tweet_pictures/" + tweetID + "/" + i + ".png")
+					.getDownloadURL()
+					.then((url) => {
+						const jsx = (
+							<div className="image-container">
+								<img
+									src={url}
+									alt="user-submitted-pic"
+									className="composer-preview-image"
+								/>
+							</div>
+						);
+						setPics((p) => [...p, jsx]);
+					})
+					.catch((err) => console.log(err));
+			}
+		}
+	}, [imageCount, tweetID]);
 
 	// is this a retweet?
 	useEffect(() => {
@@ -317,6 +345,22 @@ const Tweet = (props) => {
 					{replyAt ? <p className="tweet-reply">Replying to @{replyAt}</p> : ""}
 					<p className={`tweet-text ${big ? "big-tweet-text" : ""}`}> {linkedText}</p>
 
+					{imageCount ? (
+						imageCount > 1 ? (
+							<div className="preview-images">
+								<div className="preview-images-half">
+									{pics.slice(0, Math.round(pics.length / 2))}
+								</div>
+								<div className="preview-images-half">
+									{pics.slice(Math.round(pics.length / 2))}
+								</div>
+							</div>
+						) : (
+							<div className="preview-images">{pics}</div>
+						)
+					) : (
+						""
+					)}
 					{big && <p className="pad grey">{timeSince}</p>}
 
 					{big && (

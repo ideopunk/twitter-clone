@@ -22,23 +22,23 @@ const Composer = (props) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log("hand sub");
-		if (replyData) {
-			const { tweetID } = replyData;
-			import("../functions/reply.js").then((reply) =>
-				reply.default({ tweetID, userName, userID, userAt, userTweets, text, IMGs })
-			);
-		} else {
-			console.log(text);
-			import("../functions/simpleTweet.js").then((simpleTweet) =>
-				simpleTweet.default({ userName, text, userAt, userID, userTweets, IMGs })
-			);
-		}
-		setText("");
-		setIMGs([]);
-		setPreviewIMGs([]);
-		if (toggle) {
-			toggle();
+		if (text || IMGs) {
+			if (replyData) {
+				const { tweetID } = replyData;
+				import("../functions/reply.js").then((reply) =>
+					reply.default({ tweetID, userName, userID, userAt, userTweets, text, IMGs })
+				);
+			} else {
+				import("../functions/simpleTweet.js").then((simpleTweet) =>
+					simpleTweet.default({ userName, text, userAt, userID, userTweets, IMGs })
+				);
+			}
+			setText("");
+			setIMGs([]);
+			setPreviewIMGs([]);
+			if (toggle) {
+				toggle();
+			}
 		}
 	};
 
@@ -61,7 +61,13 @@ const Composer = (props) => {
 	};
 
 	const addImage = (file) => {
-		if (IMGs.length < 4) {
+		console.log(file);
+		const names = IMGs.map((IMG) => IMG.name);
+		if (IMGs.length > 3) {
+			setToast("Please choose up to 4 photos.");
+		} else if (names.includes(file.name)) {
+			setToast("You've already uploaded that image!");
+		} else {
 			setIMGs((i) => [...i, file]);
 		}
 	};
@@ -100,7 +106,7 @@ const Composer = (props) => {
 				console.log(file);
 				console.log(img);
 				const jsx = (
-					<div className="composer-image-container" key={img.name} name={img.name}>
+					<div className="image-container" key={img.name} name={img.name}>
 						<img
 							src={file}
 							alt="user-submitted-pic"
@@ -202,7 +208,9 @@ const Composer = (props) => {
 							{text && <ComposerCircle length={text.length} />}
 						</div>
 						<input
-							className={`btn tweet-btn ${text ? `active-button` : ""}`}
+							className={`btn tweet-btn ${
+								text || IMGs.length ? `active-button` : ""
+							}`}
 							style={{ width: "100px", marginLeft: "auto" }}
 							type="submit"
 							onClick={handleSubmit}
@@ -213,7 +221,7 @@ const Composer = (props) => {
 			</div>
 			{toast ? (
 				<Suspense fallback={<LoaderContainer />}>
-					<Toast message="Please choose either 1 GIF or up to 4 photos." />
+					<Toast message={toast} />
 				</Suspense>
 			) : (
 				""

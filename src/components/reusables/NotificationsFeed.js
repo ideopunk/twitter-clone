@@ -154,6 +154,7 @@ const NotificationsFeed = ({ notifications }) => {
 									likes={data.likes}
 									getReplies={false}
 									replies={data.replies}
+									imageCount={data.imageCount}
 								/>,
 							]);
 						});

@@ -1,11 +1,10 @@
 import { db, storage } from "../../config/fbConfig";
 
 const simpleTweet = (props) => {
-	const { userName, text, userAt, userID, userTweets, IMG } = props;
+	const { userName, text, userAt, userID, userTweets, IMGs } = props;
 	console.log(text);
 
-	const imgRef = storage.ref("tweet-pictures/" + userID + ".png");
-
+	const imgAmount = IMGs.length || 0;
 
 	const hashRE = /(?<=#)\w+/;
 	const hashFound = text.match(hashRE);
@@ -24,12 +23,34 @@ const simpleTweet = (props) => {
 			retweets: [],
 			likes: [],
 			replies: [],
+			imageCount: imgAmount,
 		})
 		.then((newTweet) => {
 			console.log(newTweet);
 			db.collection("users")
 				.doc(userID)
 				.update({ tweets: [...userTweets, newTweet.id] });
+
+			for (const [index, img] of IMGs.entries()) {
+				const imgRef = storage.ref("tweet_pictures/" + newTweet.id + "/" + index + ".png");
+				const uploadTask = imgRef.put(img);
+				uploadTask.on(
+					"state_changed",
+
+					// how it's going
+					(snapshot) => {},
+
+					// how it goofed it
+					(error) => {
+						console.log(error);
+					},
+
+					// how it succeeded
+					() => {
+						console.log("success");
+					}
+				);
+			}
 		});
 };
 

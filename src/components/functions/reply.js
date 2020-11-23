@@ -1,9 +1,11 @@
-import { db } from "../../config/fbConfig";
+import { db, storage } from "../../config/fbConfig";
 import notify from "./notify";
 
 const reply = (props) => {
 	console.log(props);
-	const { tweetID, userName, text, userAt, userID, userTweets, IMG } = props;
+	const { tweetID, userName, text, userAt, userID, userTweets, IMGs } = props;
+
+	const imgAmount = IMGs.length || 0;
 
 	const hashRE = /(?<=#)\w+/;
 	const hashFound = text.match(hashRE);
@@ -25,11 +27,12 @@ const reply = (props) => {
 			retweets: [],
 			likes: [],
 			replies: [],
+			imageCount: imgAmount,
 		})
 
 		.then((newTweet) => {
-			// add it to the user's tweets
 
+			// add it to the user's tweets
 			console.log(newTweet);
 			db.collection("users")
 				.doc(userID)
@@ -52,6 +55,28 @@ const reply = (props) => {
 						notify("reply", userID, originalData.userID, newTweet.id);
 					}
 				});
+
+			// create references for images.
+			for (const [index, img] of IMGs.entries()) {
+				const imgRef = storage.ref("tweet_pictures/" + newTweet.id + "/" + index + ".png");
+				const uploadTask = imgRef.put(img);
+				uploadTask.on(
+					"state_changed",
+
+					// how it's going
+					(snapshot) => {},
+
+					// how it goofed it
+					(error) => {
+						console.log(error);
+					},
+
+					// how it succeeded
+					() => {
+						console.log("success");
+					}
+				);
+			}
 		});
 };
 

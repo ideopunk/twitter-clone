@@ -75,6 +75,8 @@ const TweetAndReplies = () => {
 				getReplies={false}
 				replies={mainTweet.replies}
 				big={true}
+				imageCount={mainTweet.imageCount}
+
 			/>
 			{mainTweet.replies && (
 				<Suspense fallback={<LoaderContainer />}>
