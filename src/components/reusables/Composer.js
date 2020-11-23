@@ -115,6 +115,8 @@ const Composer = (props) => {
 			}
 			console.log(tempArray);
 			setPreviewIMGs(tempArray);
+		} else {
+			setPreviewIMGs([]);
 		}
 	}, [IMGs]);
 
