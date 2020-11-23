@@ -121,5 +121,24 @@ circle {
 	width: 100%;
 	max-height: 300px;
 	object-fit: cover;
+}
 
+.img-close-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.77);;
+	width: 2rem;
+	height: 2rem;
+	border-radius: 50%;
+	top: 0.5rem;
+	left: 0.5rem;
+	position: absolute;
+	z-index: 1;
+}
+
+.img-close {
+	width: 1.5em;
+	height: 1.5	em;
+	fill: white;
 }

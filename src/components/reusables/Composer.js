@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { ReactComponent as Picture } from "../../assets/picture-icon.svg";
-import { ReactComponent as Poll } from "../../assets/poll-icon.svg";
 import { ReactComponent as Close } from "../../assets/close.svg";
 import UserContext from "../context/context.js";
 import ComposerCircle from "./ComposerCircle";
@@ -15,8 +14,9 @@ const Composer = (props) => {
 	const [text, setText] = useState("");
 	const [dragOver, setDragOver] = useState(false);
 	const [IMG, setIMG] = useState(null);
-	const [previewIMG, setPreviewIMG] = useState("");
+	const [previewIMG, setPreviewIMG] = useState(null);
 
+	// when an image is uploaded, create a preview.
 	useEffect(() => {
 		if (IMG) {
 			const file = URL.createObjectURL(IMG);
@@ -31,12 +31,12 @@ const Composer = (props) => {
 		if (replyData) {
 			const { tweetID } = replyData;
 			import("../functions/reply.js").then((reply) =>
-				reply.default({ tweetID, userName, userID, userAt, userTweets, text })
+				reply.default({ tweetID, userName, userID, userAt, userTweets, text, IMG })
 			);
 		} else {
 			console.log(text);
 			import("../functions/simpleTweet.js").then((simpleTweet) =>
-				simpleTweet.default({ userName, text, userAt, userID, userTweets })
+				simpleTweet.default({ userName, text, userAt, userID, userTweets, IMG })
 			);
 		}
 		setText("");
@@ -70,7 +70,7 @@ const Composer = (props) => {
 		e.preventDefault();
 		const file = e.dataTransfer.files[0];
 		setIMG(file);
-		setDragOver(false)
+		setDragOver(false);
 		console.log(file);
 		console.log(e.dataTransfer);
 	};
@@ -89,10 +89,14 @@ const Composer = (props) => {
 	};
 
 	const handleDragLeave = () => {
-		console.log('drag leave')
+		console.log("drag leave");
 		setDragOver(false);
 	};
-	 
+
+	const removeImage = () => {
+		setIMG(null)
+		setPreviewIMG(null)
+	}
 	return (
 		<form className={`${modal ? `modal` : ""} ${replyData ? "" : "composer"}`}>
 			{replyData && (
@@ -130,24 +134,18 @@ const Composer = (props) => {
 							placeholder="What's happening?"
 							value={text}
 						/>
-						{/* <div
-						contentEditable
-						className={`composer-input ${dragOver ? "drag-over" : ""}`}
-						onInput={handleChange}
-						onDrop={handleDrop}
-						onDragOver={handleDragOver}
-						onDragLeave={handleDragLeave}
-						suppressContentEditableWarning
-					>
-						{text}
-					</div> */}
+
 						{previewIMG ? (
 							<div className="composer-image-container">
-							<img
-								src={previewIMG}
-								alt="user-submitted-pic"
-								className="composer-preview-image"
-							/></div>
+								<img
+									src={previewIMG}
+									alt="user-submitted-pic"
+									className="composer-preview-image"
+								/>
+								<div className="img-close-container">
+									<Close className="img-close" onClick={removeImage} />
+								</div>
+							</div>
 						) : (
 							""
 						)}
@@ -156,9 +154,6 @@ const Composer = (props) => {
 					<div className="composer-options">
 						<div className="composer-icon-div">
 							<Picture />
-						</div>
-						<div className="composer-icon-div">
-							<Poll />
 						</div>
 						<div className="composer-circle-container">
 							{text && <ComposerCircle length={text.length} />}

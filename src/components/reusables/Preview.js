@@ -7,6 +7,7 @@ import Leaf from "../../assets/leaf-outline.svg";
 
 import LoaderContainer from "./LoaderContainer";
 
+// previews show when hovering over user tags.
 const Preview = ({ at }) => {
 	const { userFollows, userFollowers } = useContext(UserContext);
 
