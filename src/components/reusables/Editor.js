@@ -130,8 +130,6 @@ const Editor = (props) => {
 						<CameraIcon />
 					</label>
 					<input id="header-input" type="file" onChange={handleHeaderPicChange} />
-
-					<CloseIcon style={{marginRight: "0"}}/>
 				</div>
 			</div>
 			<div className="edit-form-text">

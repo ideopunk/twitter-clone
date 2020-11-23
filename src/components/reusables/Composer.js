@@ -1,10 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 
 import { ReactComponent as Picture } from "../../assets/picture-icon.svg";
 import { ReactComponent as Close } from "../../assets/close.svg";
 import UserContext from "../context/context.js";
 import ComposerCircle from "./ComposerCircle";
+import LoaderContainer from "./LoaderContainer";
+
+const Toast = lazy(() => import("./Toast"));
 
 const Composer = (props) => {
 	const { modal, replyData, replyImage, toggle } = props;
@@ -13,17 +16,9 @@ const Composer = (props) => {
 
 	const [text, setText] = useState("");
 	const [dragOver, setDragOver] = useState(false);
-	const [IMG, setIMG] = useState(null);
-	const [previewIMG, setPreviewIMG] = useState(null);
-
-	// when an image is uploaded, create a preview.
-	useEffect(() => {
-		if (IMG) {
-			const file = URL.createObjectURL(IMG);
-			console.log(file);
-			setPreviewIMG(file);
-		}
-	}, [IMG]);
+	const [IMGs, setIMGs] = useState([]);
+	const [previewIMGs, setPreviewIMGs] = useState([]);
+	const [toast, setToast] = useState(false);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -31,48 +26,44 @@ const Composer = (props) => {
 		if (replyData) {
 			const { tweetID } = replyData;
 			import("../functions/reply.js").then((reply) =>
-				reply.default({ tweetID, userName, userID, userAt, userTweets, text, IMG })
+				reply.default({ tweetID, userName, userID, userAt, userTweets, text, IMGs })
 			);
 		} else {
 			console.log(text);
 			import("../functions/simpleTweet.js").then((simpleTweet) =>
-				simpleTweet.default({ userName, text, userAt, userID, userTweets, IMG })
+				simpleTweet.default({ userName, text, userAt, userID, userTweets, IMGs })
 			);
 		}
 		setText("");
+		setIMGs([]);
+		setPreviewIMGs([]);
 		if (toggle) {
 			toggle();
 		}
 	};
 
 	const handleChange = (e) => {
-		console.log(e);
-		console.log(e.target.childNodes);
-
-		console.log(window.getSelection());
-		// did they add an image?
-		e.target.childNodes.forEach((node) => {
-			console.log(node.nodeType);
-			console.log(node.tagName);
-			console.log(node.src);
-			if (node.tagName === "IMG") {
-				setIMG(node.src);
-			}
-		});
-
-		console.log(e.target.textContent);
 		setText(e.target.value);
-		// setText(e.target.textContent);
 	};
 
 	const handleDrop = (e) => {
 		e.stopPropagation();
 		e.preventDefault();
 		const file = e.dataTransfer.files[0];
-		setIMG(file);
+		addImage(file);
 		setDragOver(false);
 		console.log(file);
 		console.log(e.dataTransfer);
+	};
+
+	const handleUpload = (e) => {
+		e.target.files[0] ? addImage(e.target.files[0]) : console.log("naw");
+	};
+
+	const addImage = (file) => {
+		if (IMGs.length < 4) {
+			setIMGs((i) => [...i, file]);
+		}
 	};
 
 	const handleDragOver = (e) => {
@@ -93,10 +84,55 @@ const Composer = (props) => {
 		setDragOver(false);
 	};
 
-	const removeImage = () => {
-		setIMG(null)
-		setPreviewIMG(null)
-	}
+	// when an image is uploaded, create a preview.
+	useEffect(() => {
+		const removeImage = (name) => {
+			console.log(name);
+			console.log(IMGs);
+			setIMGs((prev) => prev.filter((img) => img.name !== name));
+			// setPreviewIMGs((prev) => prev.filter((img) => img.name !== name));
+		};
+
+		if (IMGs.length) {
+			let tempArray = [];
+			for (const img of IMGs) {
+				const file = URL.createObjectURL(img);
+				console.log(file);
+				console.log(img);
+				const jsx = (
+					<div className="composer-image-container" key={img.name} name={img.name}>
+						<img
+							src={file}
+							alt="user-submitted-pic"
+							className="composer-preview-image"
+						/>
+						<div className="img-close-container">
+							<Close className="img-close" onClick={() => removeImage(img.name)} />
+						</div>
+					</div>
+				);
+				tempArray.push(jsx);
+			}
+			console.log(tempArray);
+			setPreviewIMGs(tempArray);
+		}
+	}, [IMGs]);
+
+	useEffect(() => {
+		console.log(previewIMGs);
+	}, [previewIMGs]);
+
+	useEffect(() => {
+		let timer = null;
+		if (toast) {
+			timer = setTimeout(() => {
+				setToast(false);
+			}, 1000);
+		}
+
+		return () => clearTimeout(timer);
+	}, [toast]);
+
 	return (
 		<form className={`${modal ? `modal` : ""} ${replyData ? "" : "composer"}`}>
 			{replyData && (
@@ -134,26 +170,31 @@ const Composer = (props) => {
 							placeholder="What's happening?"
 							value={text}
 						/>
-
-						{previewIMG ? (
-							<div className="composer-image-container">
-								<img
-									src={previewIMG}
-									alt="user-submitted-pic"
-									className="composer-preview-image"
-								/>
-								<div className="img-close-container">
-									<Close className="img-close" onClick={removeImage} />
+						{previewIMGs.length > 1 ? (
+							<div className="preview-images">
+								<div className="preview-images-half">
+									{previewIMGs.slice(0, Math.round(previewIMGs.length / 2))}
+								</div>
+								<div className="preview-images-half">
+									{previewIMGs.slice(Math.round(previewIMGs.length / 2))}
 								</div>
 							</div>
 						) : (
-							""
+							<div className="preview-images">{previewIMGs}</div>
 						)}
 					</div>
 
 					<div className="composer-options">
 						<div className="composer-icon-div">
-							<Picture />
+							<label htmlFor="picture-input">
+								<Picture />
+							</label>
+							<input
+								id="picture-input"
+								className="hide"
+								type="file"
+								onChange={handleUpload}
+							/>
 						</div>
 						<div className="composer-circle-container">
 							{text && <ComposerCircle length={text.length} />}
@@ -168,6 +209,13 @@ const Composer = (props) => {
 					</div>
 				</div>
 			</div>
+			{toast ? (
+				<Suspense fallback={<LoaderContainer />}>
+					<Toast message="Please choose either 1 GIF or up to 4 photos." />
+				</Suspense>
+			) : (
+				""
+			)}
 		</form>
 	);
 };

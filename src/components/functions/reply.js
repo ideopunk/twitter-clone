@@ -3,7 +3,7 @@ import notify from "./notify";
 
 const reply = (props) => {
 	console.log(props);
-	const { tweetID, userName, text, userAt, userID, userTweets } = props;
+	const { tweetID, userName, text, userAt, userID, userTweets, IMG } = props;
 
 	const hashRE = /(?<=#)\w+/;
 	const hashFound = text.match(hashRE);

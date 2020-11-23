@@ -1,8 +1,11 @@
-import { db } from "../../config/fbConfig";
+import { db, storage } from "../../config/fbConfig";
 
 const simpleTweet = (props) => {
-	const { userName, text, userAt, userID, userTweets } = props;
+	const { userName, text, userAt, userID, userTweets, IMG } = props;
 	console.log(text);
+
+	const imgRef = storage.ref("tweet-pictures/" + userID + ".png");
+
 
 	const hashRE = /(?<=#)\w+/;
 	const hashFound = text.match(hashRE);
