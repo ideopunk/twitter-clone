@@ -4,6 +4,7 @@ import FollowButton from "../reusables/FollowButton";
 import { db, storage } from "../../config/fbConfig";
 import Leaf from "../../assets/leaf-outline.svg";
 import { Link, useRouteMatch, useLocation } from "react-router-dom";
+import AccountCard from "./AccountCard";
 
 const FollowSuggest = () => {
 	const { userID, userFollows } = useContext(UserContext);
@@ -37,18 +38,12 @@ const FollowSuggest = () => {
 									setArray((a) => [
 										...a,
 
-										<div className="tweet" key={user.id}>
-											<img
-												src={image}
-												alt="suggest"
-												className="profile-image"
-											/>
-											<div className="tweet-main">
-												<p className="tweeter-name">{data.name}</p>
-												<p className="tweeter-at">{data.at}</p>
-											</div>
-											<FollowButton tweeterID={user.id} followed={false} />
-										</div>,
+										<AccountCard
+											key={user.id}
+											id={user.id}
+											name={data.name}
+											at={data.at}
+										/>,
 									]);
 								});
 						}

@@ -20,10 +20,9 @@ const App = () => {
 				setUserID(user.uid);
 				db.collection("users")
 					.doc(user.uid)
-					.get()
-					.then((snapshot) => {
+					.onSnapshot((snapshot) => {
 						const data = snapshot.data();
-
+						console.log("new snap")
 						// set optional data if we have it.
 						setUserData((u) => ({
 							...u,

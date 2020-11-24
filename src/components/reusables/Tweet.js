@@ -6,6 +6,7 @@ import UserContext from "../context/context.js";
 import Leaf from "../../assets/leaf-outline.svg";
 import LoaderContainer from "./LoaderContainer";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import PreviewLink from "./Preview";
 
 import { ReactComponent as Quote } from "../../assets/quote-outline.svg";
 import { ReactComponent as Retweet } from "../../assets/retweet-icon.svg";
@@ -20,7 +21,6 @@ const UsersList = lazy(() => import("./UsersList"));
 const TweetDropdown = lazy(() => import("./TweetDropdown"));
 const reactStringReplace = require("react-string-replace");
 const Toast = lazy(() => import("./Toast"));
-const PreviewLink = lazy(() => import("./Preview"));
 
 const Tweet = (props) => {
 	const [image, setImage] = useState("");
@@ -60,6 +60,13 @@ const Tweet = (props) => {
 	const repliesAmount = replies ? replies.length : "";
 	const [retweetedBy, setRetweetedBy] = useState("");
 
+	useEffect(() => {
+		console.log(time)
+		console.log(likes)
+		console.log(liked)
+	
+	}, [time, likes, liked])
+	
 	const location = useLocation();
 
 	const hashedText = reactStringReplace(text, /(#\w+)/g, (match, i) => (
@@ -83,7 +90,6 @@ const Tweet = (props) => {
 
 	// do we have pictures?
 	useEffect(() => {
-		console.log(imageCount);
 		if (imageCount) {
 			for (let i = 0; i < imageCount; i++) {
 				storage
@@ -91,7 +97,7 @@ const Tweet = (props) => {
 					.getDownloadURL()
 					.then((url) => {
 						const jsx = (
-							<div className="image-container">
+							<div className="image-container" key={url}>
 								<img
 									src={url}
 									alt="user-submitted-pic"
@@ -247,10 +253,14 @@ const Tweet = (props) => {
 		setImageLoaded(true);
 	};
 
+	const redirect = (e) => {
+		// console.log(e)
+		// console.log(e.target)
+	}
 	return (
 		<div
-			// className={`tweet ${imageLoaded ? "" : "hide"} ${big ? "" : "pad"} ${replyTo ? "reply-tweet" : ""}`}
 			className={`tweet ${imageLoaded ? "" : "hide"} ${big ? "" : "pad"} `}
+			onClick={redirect}
 		>
 			{retweetedBy && (
 				<PreviewLink to={`/${retweetedBy}`} className="hover-under">
@@ -323,7 +333,10 @@ const Tweet = (props) => {
 								<span className="tweeter-at hover-under">{`@${at}`}</span>
 							</PreviewLink>
 							<Link
-								to={{pathname:`/tweet/${tweetID}`, state: {prevPath: location.pathname}}}
+								to={{
+									pathname: `/tweet/${tweetID}`,
+									state: { prevPath: location.pathname },
+								}}
 								style={{ textDecoration: "none", color: "black" }}
 							>
 								<span className="tweet-time hover-under grey">{timeSince}</span>

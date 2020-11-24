@@ -29,12 +29,10 @@ const Menu = (props) => {
 
 	// new home tweets watch
 	useEffect(() => {
-		console.log("use effect menu");
 		const unsub = db
 			.collection("users")
 			.where("followers", "array-contains", userID || 0)
 			.onSnapshot((snapshot) => {
-				console.log("snapshot");
 				let tempAmount = 0;
 
 				snapshot.forEach((doc) => {
@@ -42,11 +40,9 @@ const Menu = (props) => {
 					tempAmount = tempAmount + data.tweets.length;
 				});
 
-				console.log(tempAmount);
-
 				// if this is the first mount, set amount to 1.
 				// if new amount isn't 0 and isn't same as old amount, update to new amount.
-				setHomeNotice((t) => (t !== tempAmount && t !== 0 ? tempAmount : 1));
+				setHomeNotice((t) => (t < tempAmount && t !== 0 ? tempAmount : 1));
 			});
 
 		return () => unsub();

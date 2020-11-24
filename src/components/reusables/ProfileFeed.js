@@ -30,13 +30,13 @@ const ProfileFeed = (props) => {
 			.collection("tweets")
 			.where("userID", "==", profileID)
 			.orderBy("timeStamp", "desc")
-			.limit(50)
 			.onSnapshot((snapshot) => {
 				let tempArray = [];
 				let deletionArray = [];
 				const changes = snapshot.docChanges();
 				changes.forEach((change) => {
 					const doc = change.doc;
+					console.log(change.type)
 					if (change.type === "removed") {
 						deletionArray.push(doc.id);
 					} else if (mediaOnly) {

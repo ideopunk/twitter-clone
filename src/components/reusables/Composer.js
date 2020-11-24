@@ -210,7 +210,7 @@ const Composer = (props) => {
 						</div>
 						<input
 							className={`btn tweet-btn ${
-								text || IMGs.length ? `active-button` : ""
+								text || IMGs.length ? `active-button` : "no-hov"
 							}`}
 							style={{ width: "100px", marginLeft: "auto" }}
 							type="submit"

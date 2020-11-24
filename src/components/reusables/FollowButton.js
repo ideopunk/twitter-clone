@@ -6,7 +6,7 @@ const Warning = lazy(() => import("./Warning"));
 
 const FollowButton = (props) => {
 	const { userID, userFollows } = useContext(UserContext);
-	const { tweeterID, followed, at } = props;
+	const { tweeterID, followed, at, small } = props;
 	const [warning, setWarning] = useState(false);
 
 	// freeze if modal up
@@ -25,9 +25,9 @@ const FollowButton = (props) => {
 	};
 
 	const unfollow = () => {
-		import("../functions/unfollow.js").then((unfollow) =>
-			unfollow.default(tweeterID, userID, userFollows)
-		);
+		import("../functions/unfollow.js")
+			.then((unfollow) => unfollow.default(tweeterID, userID, userFollows))
+			.then(() => setWarning(false));
 	};
 
 	const toggleWarning = () => {
@@ -40,7 +40,7 @@ const FollowButton = (props) => {
 				onClick={followed ? toggleWarning : follow}
 				className={`btn ${!props.account && "profile-edit-button"} ${
 					followed ? "following-btn" : "follow-btn"
-				}`}
+				} ${small ? "small-btn" : ""}`}
 				style={{ width: "6rem", height: "2rem" }}
 			>
 				{followed ? "Following" : "Follow"}

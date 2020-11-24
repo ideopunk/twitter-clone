@@ -15,14 +15,16 @@ const follow = (followID, userID, userFollows) => {
 			})
 			.then((newFollowers) => {
 				console.log(newFollowers);
-				db.collection("users").doc(followID).update({ followers: newFollowers });
+				db.collection("users")
+					.doc(followID)
+					.update({ followers: [...new Set(newFollowers)] });
 			})
 			.then(() => {
 				console.log("added to followers list");
 				const newList = [...userFollows, followID];
 				db.collection("users")
 					.doc(userID)
-					.update({ follows: newList })
+					.update({ follows: [...new Set(newList)] })
 					.then(() => console.log("added to follows list"))
 					.then(() => {
 						if (userID !== followID) {

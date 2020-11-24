@@ -29,10 +29,12 @@ const ProfileMain = (props) => {
 
 	const [profileData, setProfileData] = useState({ follows: [], followers: [] });
 	const [editor, setEditor] = useState(false);
-	const [followed, setFollowed] = useState(false)
+	const [followed, setFollowed] = useState(false);
 	const [imageLoaded, setImageLoaded] = useState(false);
 
-	useEffect(() => {console.log(userProfile)}, [userProfile])
+	useEffect(() => {
+		console.log(userProfile);
+	}, [userProfile]);
 	// set profile data
 	useEffect(() => {
 		setProfileData({ follows: [], followers: [] });
@@ -75,16 +77,16 @@ const ProfileMain = (props) => {
 					});
 
 		// !profileData.header &&
-			storage
-				.ref("header_pictures/" + profileID + ".png")
-				.getDownloadURL()
-				.then((url) => {
-					setProfileData((prevData) => ({ ...prevData, header: url }));
-				})
-				.catch((e) => {
-					console.log(e);
-					setProfileData((prevData) => ({ ...prevData, header: EllipsisFilled }));
-				});
+		storage
+			.ref("header_pictures/" + profileID + ".png")
+			.getDownloadURL()
+			.then((url) => {
+				setProfileData((prevData) => ({ ...prevData, header: url }));
+			})
+			.catch((e) => {
+				console.log(e);
+				setProfileData((prevData) => ({ ...prevData, header: EllipsisFilled }));
+			});
 
 		userProfile
 			? // if it's the user's profile...
@@ -115,7 +117,6 @@ const ProfileMain = (props) => {
 		// profileData.header,
 	]);
 
-
 	// if this isn't our own profile, are we following this user?
 	useEffect(() => {
 		if (userID && userFollows) {
@@ -125,11 +126,11 @@ const ProfileMain = (props) => {
 
 	useEffect(() => {
 		if (editor) {
-			document.body.style.position = "fixed"
+			document.body.style.position = "fixed";
 		} else {
-			document.body.style.position = ""
+			document.body.style.position = "";
 		}
-	}, [editor])
+	}, [editor]);
 
 	const toggleEditor = () => {
 		setEditor(!editor);
@@ -186,7 +187,12 @@ const ProfileMain = (props) => {
 					<div style={{ height: "3.5rem" }}></div>
 
 					<h3>{profileData.name}</h3>
-					<p className="grey">@{profileData.at}</p>
+					<p className="grey">
+						@{profileData.at}{" "}
+						{userFollowers && userFollowers.includes(profileID) && (
+							<span className="follows-you">Follows you</span>
+						)}
+					</p>
 					<p className="bio">{profileData.bio}</p>
 					<p className="grey">
 						<span>{profileData.website}</span>

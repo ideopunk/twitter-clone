@@ -12,7 +12,8 @@ $sitegrey: #657786;
 @keyframes appear {
 	from {
 		opacity: 0;
-	} to {
+	}
+	to {
 		opacity: 1;
 	}
 }
@@ -54,6 +55,10 @@ h3 {
 	background-color: darken($sitecolor, 10%);
 }
 
+.small-btn {
+	height: 30px;
+	width: 80px;
+}
 .tweet-button {
 	width: 100%;
 	background-color: $sitecolor;
@@ -97,17 +102,15 @@ h3 {
 	opacity: 1;
 	min-width: 200px;
 	width: 40%;
-	// height: fit-content;
 	margin-left: auto;
 	margin-right: auto;
 	left: 0;
 	right: 0;
 	top: 15%;
 	border-radius: 1rem;
-	border-width: 0;
 	z-index: 20;
 	animation: $fastanimation;
-	
+	// overflow: hidden;
 }
 
 .modal-header {
@@ -190,7 +193,8 @@ h3 {
 	box-sizing: border-box;
 }
 
-.mrg { margin: 0.75rem;
+.mrg {
+	margin: 0.75rem;
 }
 
 @import "./feed";
@@ -219,7 +223,7 @@ h3 {
 
 .follow-btn {
 	color: $sitecolor;
-	border: 2px solid $sitecolor;
+	border: 1px solid $sitecolor;
 	box-sizing: border-box;
 	background-color: inherit;
 }
@@ -258,4 +262,16 @@ h3 {
 	align-items: center;
 	z-index: 2;
 	color: white;
-  }
+}
+
+.follows-you {
+	background-color: #EBEEF0;
+	font-size: 13px;
+	padding: 0.1675rem;
+	margin-left: 0.25rem;
+	box-sizing: border-box;
+}
+
+.no-hov {
+	pointer-events: none;
+}
