@@ -7,7 +7,7 @@ import Composer from "./reusables/Composer";
 import Feed from "./reusables/Feed";
 
 const Home = (props) => {
-	const { userID, userFollows } = useContext(UserContext);
+	const { userFollows } = useContext(UserContext);
 
 	const [tweetDatas, setTweetDatas] = useState([]);
 

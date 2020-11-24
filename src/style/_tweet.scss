@@ -3,14 +3,10 @@
 	border-bottom: $siteborder;
 	box-sizing: border-box;
 	position: relative;
-
+	animation: $lightanimation;
 	// overflow: hidden;
 	// border: $testborder;
 }
-
-// .tweet * {
-// 	border: $testborder;
-// }
 
 .tweet-link {
 	position: absolute;

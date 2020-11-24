@@ -159,6 +159,7 @@ const Menu = (props) => {
 						>
 							{location.pathname.length > 1 &&
 							location.pathname !== "/notifications" &&
+							!location.pathname.includes("tweet") &&
 							location.pathname !== "/explore" ? (
 								<ProfileFilled />
 							) : (

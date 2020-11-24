@@ -85,7 +85,7 @@ const ProfileFeed = (props) => {
 			unsub();
 			retweetUnsub();
 		};
-	}, [profileID, repliesIncluded]);
+	}, [profileID, repliesIncluded, mediaOnly]);
 
 	return tweetDatas.length ? <Feed tweetDatas={tweetDatas} /> : <LoaderContainer />;
 };

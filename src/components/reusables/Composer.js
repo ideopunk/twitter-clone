@@ -36,6 +36,7 @@ const Composer = (props) => {
 			setText("");
 			setIMGs([]);
 			setPreviewIMGs([]);
+			setToast("Your tweet was sent")
 			if (toggle) {
 				toggle();
 			}

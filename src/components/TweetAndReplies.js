@@ -1,16 +1,23 @@
 import React, { lazy, Suspense, useState, useEffect } from "react";
 import Tweet from "./reusables/Tweet";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory, useLocation } from "react-router-dom";
 import { ReactComponent as SideArrow } from "../assets/side-arrow-icon.svg";
 
 import { db } from "../config/fbConfig";
 import LoaderContainer from "./reusables/LoaderContainer";
 const Feed = lazy(() => import("./reusables/Feed"));
 
-const TweetAndReplies = () => {
+const TweetAndReplies = (props) => {
+	console.log(props)
 	const { tweetID } = useParams();
 	const [mainTweet, setMainTweet] = useState({});
 	const [tweetDatas, setTweetDatas] = useState([]);
+
+	const history = useHistory();
+	const location = useLocation();
+
+	console.log(history);
+	console.log(location);
 
 	console.log("tweet and replies");
 	useEffect(() => {
@@ -51,7 +58,7 @@ const TweetAndReplies = () => {
 	return (
 		<div className="home center-feed">
 			<Link
-				to="/"
+				to={location.state.prevPath}
 				className="profile-home-link"
 				style={{ textDecoration: "none", color: "black" }}
 			>
@@ -76,7 +83,6 @@ const TweetAndReplies = () => {
 				replies={mainTweet.replies}
 				big={true}
 				imageCount={mainTweet.imageCount}
-
 			/>
 			{mainTweet.replies && (
 				<Suspense fallback={<LoaderContainer />}>

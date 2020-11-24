@@ -1,11 +1,21 @@
 $testborder: 1px solid red;
 $lighttransition: all linear 0.1s;
+$lightanimation: appear 0.3s ease-out;
+$fastanimation: appear 0.1s ease-out;
 $sitecolor: rgb(29, 242, 161);
 $siteborder: 1px solid rgb(230, 236, 240);
 $smallfont: 13px;
 $bigfont: 1.5rem;
 $sitegrey: #657786;
 @import "./reset";
+
+@keyframes appear {
+	from {
+		opacity: 0;
+	} to {
+		opacity: 1;
+	}
+}
 
 body {
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu,
@@ -96,6 +106,8 @@ h3 {
 	border-radius: 1rem;
 	border-width: 0;
 	z-index: 20;
+	animation: $fastanimation;
+	
 }
 
 .modal-header {

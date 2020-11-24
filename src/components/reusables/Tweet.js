@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, lazy, Suspense } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { db, storage } from "../../config/fbConfig";
 import UserContext from "../context/context.js";
@@ -60,6 +60,8 @@ const Tweet = (props) => {
 	const repliesAmount = replies ? replies.length : "";
 	const [retweetedBy, setRetweetedBy] = useState("");
 
+	const location = useLocation();
+
 	const hashedText = reactStringReplace(text, /(#\w+)/g, (match, i) => (
 		<Link
 			to={`/hashtag/${match.slice(1)}`}
@@ -99,7 +101,10 @@ const Tweet = (props) => {
 						);
 						setPics((p) => [...p, jsx]);
 					})
-					.catch((err) => console.log(err));
+					.catch((err) => {
+						console.log(err);
+						setTimeout(() => {}, 1000);
+					});
 			}
 		}
 	}, [imageCount, tweetID]);
@@ -280,7 +285,7 @@ const Tweet = (props) => {
 						<div style={{ marginLeft: "auto", position: "relative" }}>
 							<Dots className="dots grey" onClick={(e) => toggleDropdown(e)} />
 							{dropdown && (
-								<Suspense fallback={<LoaderContainer />}>
+								<Suspense fallback={<LoaderContainer absolute={true} />}>
 									<TweetDropdown
 										deleteTweet={deleteTweet}
 										unfollow={unfollow}
@@ -318,7 +323,7 @@ const Tweet = (props) => {
 								<span className="tweeter-at hover-under">{`@${at}`}</span>
 							</PreviewLink>
 							<Link
-								to={`/tweet/${tweetID}`}
+								to={{pathname:`/tweet/${tweetID}`, state: {prevPath: location.pathname}}}
 								style={{ textDecoration: "none", color: "black" }}
 							>
 								<span className="tweet-time hover-under grey">{timeSince}</span>
@@ -326,7 +331,7 @@ const Tweet = (props) => {
 							<div style={{ marginLeft: "auto", position: "relative" }}>
 								<Dots className="dots" onClick={toggleDropdown} />
 								{dropdown && (
-									<Suspense fallback={<LoaderContainer />}>
+									<Suspense fallback={<LoaderContainer absolute={true} />}>
 										<TweetDropdown
 											deleteTweet={deleteTweet}
 											unfollow={unfollow}
