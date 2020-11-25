@@ -6,6 +6,7 @@ import { ReactComponent as Close } from "../../assets/close.svg";
 import UserContext from "../context/context.js";
 import ComposerCircle from "./ComposerCircle";
 import LoaderContainer from "./LoaderContainer";
+const reactStringReplace = require("react-string-replace");
 
 const Toast = lazy(() => import("./Toast"));
 
@@ -19,6 +20,12 @@ const Composer = (props) => {
 	const [IMGs, setIMGs] = useState([]);
 	const [previewIMGs, setPreviewIMGs] = useState([]);
 	const [toast, setToast] = useState(false);
+
+	const blueText = reactStringReplace(text, /([#@]\w*)/g, (match, i) => (
+		<span key={i + match} className="hover-under begotten-link">
+			{match}
+		</span>
+	));
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -36,7 +43,7 @@ const Composer = (props) => {
 			setText("");
 			setIMGs([]);
 			setPreviewIMGs([]);
-			setToast("Your tweet was sent")
+			setToast("Your tweet was sent");
 			if (toggle) {
 				toggle();
 			}
@@ -172,13 +179,14 @@ const Composer = (props) => {
 					>
 						<input
 							type="text"
-							className={`composer-input`}
+							className={`composer-input composer-hide`}
 							onChange={handleChange}
 							onDrop={handleDrop}
 							onPaste={handlePaste}
 							placeholder="What's happening?"
 							value={text}
 						/>
+						<div className="composer-input composer-mask">{blueText}</div>
 						{previewIMGs.length > 1 ? (
 							<div className="preview-images">
 								<div className="preview-images-half">

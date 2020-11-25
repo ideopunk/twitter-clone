@@ -33,6 +33,18 @@
 	padding-bottom: 0.75rem;
 }
 
+.composer-hide {
+	color: white;
+	caret-color: black;
+}
+
+.composer-mask {
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	pointer-events: none;
+}
+
 .composer-options {
 	padding: 0.5rem 0;
 	display: flex;
@@ -107,6 +119,7 @@ circle {
 .composer-input-container {
 	border-bottom: 2px solid rgb(230, 236, 240);
 	padding-bottom: 1rem;
+	position: relative;
 }
 
 .preview-images {

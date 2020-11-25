@@ -12,3 +12,5 @@ structured urls a little differently. tweets are not branches of profiles.
 no pinned tweets, bookmarks, lists, messages
 
 login and signup pages are simplified. 
+
+partial styles within input via absolute div and pointer-events none.
