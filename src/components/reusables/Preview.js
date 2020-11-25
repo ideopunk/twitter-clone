@@ -47,7 +47,7 @@ const Preview = ({ at }) => {
 
 	// are we following them?
 	useEffect(() => {
-		if (userFollows.includes(profileData.id)) {
+		if (userFollows && userFollows.includes(profileData.id)) {
 			setFollowed(true);
 		}
 	}, [profileData.id, userFollows]);
@@ -92,7 +92,12 @@ const Preview = ({ at }) => {
 			</div>
 			<div>
 				<h3 className="hover-under">{profileData.name}</h3>
-				<p className="grey">@{profileData.at}</p>
+				<p className="grey">
+					@{profileData.at}{" "}
+					{userFollowers && userFollowers.includes(profileData.id) && (
+						<span className="follows-you">Follows you</span>
+					)}
+				</p>
 			</div>
 			<p className="bio">{profileData.bio}</p>
 			<div>

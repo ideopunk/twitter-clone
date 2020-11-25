@@ -9,10 +9,13 @@ const notify = (type, userID, personID, objectID) => {
 			const data = doc.data();
 			return data.notifications;
 		})
-		.then((oldNotes) =>
+		.then((oldNotes) => {
+			const oldCheckedNotes = oldNotes.filter(
+				(note) => note.type !== type && note.subject !== userID && note.object !== objectID
+			);
 			userRef.update({
 				notifications: [
-					...(oldNotes || []),
+					...(oldCheckedNotes || []),
 					{
 						type: type,
 						subject: userID,
@@ -21,8 +24,8 @@ const notify = (type, userID, personID, objectID) => {
 						seen: false,
 					},
 				],
-			})
-		);
+			});
+		});
 };
 
 export default notify;

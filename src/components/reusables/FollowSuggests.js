@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import UserContext from "../context/context.js";
-import FollowButton from "../reusables/FollowButton";
-import { db, storage } from "../../config/fbConfig";
-import Leaf from "../../assets/leaf-outline.svg";
-import { Link, useRouteMatch, useLocation } from "react-router-dom";
+import { db } from "../../config/fbConfig";
 import AccountCard from "./AccountCard";
 
 const FollowSuggest = () => {
@@ -17,37 +14,25 @@ const FollowSuggest = () => {
 				.collection("users")
 				.get()
 				.then((snapshot) => {
-					let num = 0;
+					let tempArray = [];
 					snapshot.forEach((user) => {
-						if (!userFollows.includes(user.id) && user.id !== userID && num < 2) {
+						if (
+							!userFollows.includes(user.id) &&
+							user.id !== userID &&
+							tempArray.length < 2
+						) {
 							const data = user.data();
-							storage
-								.ref("profile_pictures/" + user.id + ".png")
-								.getDownloadURL()
-								.then((url) => {
-									throw url;
-								})
-								.catch((err) => {
-									let image;
-									if (err["code"]) {
-										image = Leaf;
-									} else {
-										image = err;
-									}
-
-									setArray((a) => [
-										...a,
-
-										<AccountCard
-											key={user.id}
-											id={user.id}
-											name={data.name}
-											at={data.at}
-										/>,
-									]);
-								});
+							tempArray.push(
+								<AccountCard
+									key={user.id}
+									id={user.id}
+									name={data.name}
+									at={data.at}
+								/>
+							);
 						}
 					});
+					setArray(tempArray);
 				});
 	}, [userFollows, userID]);
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { db } from "../config/fbConfig";
 import UserContext from "./context/context.js";
-import LoaderContainer from "./reusables/LoaderContainer";
 import NotificationsFeed from "./reusables/NotificationsFeed";
 
 const Notifications = () => {

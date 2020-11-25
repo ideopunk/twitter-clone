@@ -154,7 +154,7 @@ const Composer = (props) => {
 	// focus cursor
 	useEffect(() => {
 		modal && inputEl.current.focus();
-	}, []);
+	}, [modal]);
 
 	return (
 		<form className={`${modal ? `modal` : ""} ${replyData ? "" : "composer"}`}>
