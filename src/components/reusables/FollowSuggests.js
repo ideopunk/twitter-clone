@@ -37,7 +37,7 @@ const FollowSuggest = () => {
 	}, [userFollows, userID]);
 
 	return (
-		<div className="follow-suggest side-box">
+		<div className={`follow-suggest side-box ${!array.length > 0? "hide" : ""}`}>
 			<h3 className="side-box-title">Who to follow</h3>
 			{array}
 		</div>

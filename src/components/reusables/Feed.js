@@ -1,16 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
+import LoaderContainer from "./LoaderContainer";
 
 import Tweet from "./Tweet";
+const Toast = lazy(() => import("./Toast"));
 
 const Feed = (props) => {
 	const { tweetDatas, getReplies } = props;
 
 	const [uniqueTweets, setUniqueTweets] = useState([]);
+	const [deleteToast, setDeleteToast] = useState(false);
+
+	// toasts last one second.
+	useEffect(() => {
+		let timer = null;
+		if (deleteToast) {
+			timer = setTimeout(() => {
+				setDeleteToast(false);
+			}, 1000);
+		}
+
+		return () => clearTimeout(timer);
+	}, [deleteToast]);
 
 	useEffect(() => {
-		const sortedTweets = tweetDatas.sort(
-			(a, b) => (b.timeStamp.seconds = a.timeStamp.seconds)
-		);
+		const sortedTweets = tweetDatas.sort((a, b) => (b.timeStamp.seconds = a.timeStamp.seconds));
 
 		const tweets = sortedTweets.map((tweet) => {
 			return (
@@ -29,6 +42,7 @@ const Feed = (props) => {
 					replies={tweet.replies}
 					imageCount={tweet.imageCount}
 					change={tweet.change}
+					deleteToast={setDeleteToast}
 				/>
 			);
 		});
@@ -36,7 +50,18 @@ const Feed = (props) => {
 		setUniqueTweets(tweets);
 	}, [tweetDatas, getReplies]);
 
-	return <div className="feed">{uniqueTweets}</div>;
+	return (
+		<div className="feed">
+			{uniqueTweets}
+			{deleteToast ? (
+				<Suspense fallback={<LoaderContainer />}>
+					<Toast message="Your Tweet was deleted wahh" />
+				</Suspense>
+			) : (
+				""
+			)}
+		</div>
+	);
 };
 
 export default Feed;

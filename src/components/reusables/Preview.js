@@ -124,6 +124,9 @@ const PreviewLink = (props) => {
 			to={props.to}
 			onMouseOver={() => setHover(true)}
 			onMouseLeave={() => setHover(false)}
+			// if clicking one of these, don't also click the underlying "tweet".
+			// Otherwise we'll always redirect to tweet page instead of profile.
+			onClick={(e) => e.stopPropagation()}
 			style={{ position: "relative", height: "fit-content" }}
 			className={props.className + " hover-under"}
 		>

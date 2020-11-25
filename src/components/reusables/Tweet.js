@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, lazy, Suspense } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
 
 import { db, storage } from "../../config/fbConfig";
 import UserContext from "../context/context.js";
@@ -30,7 +30,6 @@ const Tweet = (props) => {
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const [modal, setModal] = useState("");
 	const [toast, setToast] = useState("");
-	const [deleteToast, setDeleteToast] = useState(false);
 	const [pics, setPics] = useState([]);
 
 	const {
@@ -61,6 +60,7 @@ const Tweet = (props) => {
 	const [retweetedBy, setRetweetedBy] = useState("");
 
 	const location = useLocation();
+	let history = useHistory();
 
 	const hashedText = reactStringReplace(text, /(#\w+)/g, (match, i) => (
 		<Link
@@ -110,10 +110,11 @@ const Tweet = (props) => {
 
 	// is this a retweet?
 	useEffect(() => {
-		if (retweets.includes(userID)) {
+		if (retweets && retweets.includes(userID)) {
 			setRetweetedBy(userAt);
-		} else if (retweets.length > 0) {
+		} else if (retweets && retweets.length > 0) {
 			db.collection("users")
+				// get the latest person to retweet
 				.doc(retweets[retweets.length - 1])
 				.get()
 				.then((doc) => setRetweetedBy(doc.at));
@@ -153,22 +154,25 @@ const Tweet = (props) => {
 		}
 	};
 
-	const toggleReply = () => {
+	const toggleReply = (e) => {
+		e.stopPropagation();
 		if (userID) {
 			setReply(!reply);
 		}
 	};
 
-	const deleteTweet = () => {
+	const deleteTweet = (e) => {
+		e.stopPropagation();
 		if (userID) {
 			import("../functions/deleteTweet.js").then((deleteTweet) =>
 				deleteTweet.default(tweetID, userTweets, userID)
 			);
 		}
-		setDeleteToast(true);
+		props.deleteToast(true);
 	};
 
-	const like = () => {
+	const like = (e) => {
+		e.stopPropagation();
 		if (userID) {
 			import("../functions/likeDB.js").then((likeDB) =>
 				likeDB.default(tweetID, userID, userLikes)
@@ -176,7 +180,8 @@ const Tweet = (props) => {
 		}
 	};
 
-	const unlike = () => {
+	const unlike = (e) => {
+		e.stopPropagation();
 		if (userID) {
 			import("../functions/unlike.js").then((unlike) =>
 				unlike.default(tweetID, userID, userLikes)
@@ -184,7 +189,8 @@ const Tweet = (props) => {
 		}
 	};
 
-	const follow = () => {
+	const follow = (e) => {
+		e.stopPropagation();
 		if (userID) {
 			import("../functions/follow.js").then((follow) =>
 				follow.default(tweeterID, userID, userFollows)
@@ -192,7 +198,8 @@ const Tweet = (props) => {
 		}
 	};
 
-	const unfollow = () => {
+	const unfollow = (e) => {
+		e.stopPropagation();
 		if (userID) {
 			import("../functions/unfollow.js").then((unfollow) =>
 				unfollow.default(tweeterID, userID, userFollows)
@@ -200,7 +207,8 @@ const Tweet = (props) => {
 		}
 	};
 
-	const retweet = () => {
+	const retweet = (e) => {
+		e.stopPropagation();
 		if (userID) {
 			!userRetweets.includes(tweetID) &&
 				import("../functions/retweet.js").then((retweet) =>
@@ -209,7 +217,8 @@ const Tweet = (props) => {
 		}
 	};
 
-	const unRetweet = () => {
+	const unRetweet = (e) => {
+		e.stopPropagation();
 		if (userID) {
 			import("../functions/unRetweet.js").then((unRetweet) =>
 				unRetweet.default(tweetID, userID)
@@ -218,7 +227,6 @@ const Tweet = (props) => {
 	};
 
 	// toasts last one second.
-
 	useEffect(() => {
 		let timer = null;
 		if (toast) {
@@ -230,26 +238,16 @@ const Tweet = (props) => {
 		return () => clearTimeout(timer);
 	}, [toast]);
 
-	// toasts last one second.
-	useEffect(() => {
-		let timer = null;
-		if (deleteToast) {
-			timer = setTimeout(() => {
-				setDeleteToast(false);
-			}, 6000);
-		}
-
-		return () => clearTimeout(timer);
-	}, [deleteToast]);
-
 	const imageLoad = () => {
 		setImageLoaded(true);
 	};
 
 	const redirect = (e) => {
-		// console.log(e)
-		// console.log(e.target)
+		console.log(e);
+		console.log(e.target);
+		history.push({ pathname: `/tweet/${tweetID}`, state: { prevPath: location.pathname } });
 	};
+
 	return (
 		<div
 			className={`tweet ${imageLoaded ? "" : "hide"} ${big ? "" : "pad"} `}
@@ -421,7 +419,13 @@ const Tweet = (props) => {
 						</div>
 						<div className="tweet-svg-div grey copy-div">
 							<CopyToClipboard text={`/tweet/${tweetID}`}>
-								<div className="tweet-svg-holder" onClick={() => setToast(true)}>
+								<div
+									className="tweet-svg-holder"
+									onClick={(e) => {
+										e.stopPropagation();
+										setToast(true);
+									}}
+								>
 									<Copy />
 								</div>
 							</CopyToClipboard>
@@ -454,13 +458,6 @@ const Tweet = (props) => {
 			{toast ? (
 				<Suspense fallback={<LoaderContainer />}>
 					<Toast message="Tweet copied" />
-				</Suspense>
-			) : (
-				""
-			)}
-			{deleteToast ? (
-				<Suspense fallback={<LoaderContainer />}>
-					<Toast message="Your Tweet was deleted wahh" />
 				</Suspense>
 			) : (
 				""
