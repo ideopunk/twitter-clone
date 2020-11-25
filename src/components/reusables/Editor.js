@@ -107,7 +107,7 @@ const Editor = (props) => {
 	};
 
 	return (
-		<form className="modal" onSubmit={handleSubmit}>
+		<form className="modal" onSubmit={handleSubmit} style={{top: "2rem"}}>
 			<div className="modal-header">
 				<CloseIcon onClick={() => toggle()} />
 				<h3>Edit profile</h3>

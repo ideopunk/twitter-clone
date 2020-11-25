@@ -60,12 +60,6 @@ const Tweet = (props) => {
 	const repliesAmount = replies ? replies.length : "";
 	const [retweetedBy, setRetweetedBy] = useState("");
 
-	useEffect(() => {
-		console.log(time);
-		console.log(likes);
-		console.log(liked);
-	}, [time, likes, liked]);
-
 	const location = useLocation();
 
 	const hashedText = reactStringReplace(text, /(#\w+)/g, (match, i) => (

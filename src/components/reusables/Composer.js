@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, lazy, Suspense } from "react";
+import React, { useContext, useEffect, useState, useRef, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 
 import { ReactComponent as Picture } from "../../assets/picture-icon.svg";
@@ -149,6 +149,13 @@ const Composer = (props) => {
 		return () => clearTimeout(timer);
 	}, [toast]);
 
+	const inputEl = useRef(null);
+
+	// focus cursor
+	useEffect(() => {
+		modal && inputEl.current.focus();
+	}, []);
+
 	return (
 		<form className={`${modal ? `modal` : ""} ${replyData ? "" : "composer"}`}>
 			{replyData && (
@@ -184,6 +191,7 @@ const Composer = (props) => {
 							onDrop={handleDrop}
 							onPaste={handlePaste}
 							placeholder="What's happening?"
+							ref={inputEl}
 							value={text}
 						/>
 						<div className="composer-input composer-mask">{blueText}</div>
