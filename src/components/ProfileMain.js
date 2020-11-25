@@ -32,14 +32,10 @@ const ProfileMain = (props) => {
 	const [followed, setFollowed] = useState(false);
 	const [imageLoaded, setImageLoaded] = useState(false);
 
-	useEffect(() => {
-		console.log(userProfile);
-	}, [userProfile]);
 	// set profile data
 	useEffect(() => {
 		setProfileData({ follows: [], followers: [] });
 
-		console.log("profileID:  " + profileID);
 		// if it's the current user's profile...
 		userProfile
 			? setProfileData({

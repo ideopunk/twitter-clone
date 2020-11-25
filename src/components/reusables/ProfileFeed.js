@@ -19,10 +19,6 @@ const ProfileFeed = (props) => {
 		}
 	}, [name, params.profile, route.url]);
 
-	useEffect(() => {
-		console.log(tweetDatas);
-	}, [tweetDatas]);
-
 	// listen to  tweetdata
 	useEffect(() => {
 		setTweetDatas("");
@@ -36,17 +32,17 @@ const ProfileFeed = (props) => {
 				const changes = snapshot.docChanges();
 				changes.forEach((change) => {
 					const doc = change.doc;
-					console.log(change.type)
+					console.log(change.type);
 					if (change.type === "removed") {
 						deletionArray.push(doc.id);
 					} else if (mediaOnly) {
 						if (doc.data().imageCount) {
-							tempArray.push({ ...doc.data(), id: doc.id });
+							tempArray.push({ ...doc.data(), id: doc.id, change: change.type });
 						}
 					} else if (repliesIncluded) {
-						tempArray.push({ ...doc.data(), id: doc.id });
+						tempArray.push({ ...doc.data(), id: doc.id, change: change.type });
 					} else if (!doc.data().replyTo) {
-						tempArray.push({ ...doc.data(), id: doc.id });
+						tempArray.push({ ...doc.data(), id: doc.id, change: change.type });
 					}
 				});
 				setTweetDatas((t) =>

@@ -8,7 +8,38 @@ const Feed = (props) => {
 	const [uniqueTweets, setUniqueTweets] = useState([]);
 
 	useEffect(() => {
-		const tweets = tweetDatas.map((tweet) => {
+		console.log("new Feed");
+		console.log(tweetDatas);
+	}, [tweetDatas]);
+
+	useEffect(() => {
+		console.log("new uniques");
+		console.log(uniqueTweets);
+	}, [uniqueTweets]);
+
+	useEffect(() => {
+		let IDs = [];
+		let tempUniqueTweets = [];
+
+		for (let tweet of tweetDatas) {
+			if (tweet.change === "modified") {
+				tempUniqueTweets.push(tweet);
+				IDs.push(tweet.id);
+			}
+		}
+
+		for (let tweet of tweetDatas) {
+			if (!IDs.includes(tweet.id)) {
+				tempUniqueTweets.push(tweet);
+				IDs.push(tweet.id);
+			}
+		}
+
+		const sortedTweets = tempUniqueTweets.sort(
+			(a, b) => (b.timeStamp.seconds = a.timeStamp.seconds)
+		);
+
+		const tweets = sortedTweets.map((tweet) => {
 			return (
 				<Tweet
 					key={tweet.id}
@@ -24,22 +55,13 @@ const Feed = (props) => {
 					getReplies={getReplies}
 					replies={tweet.replies}
 					imageCount={tweet.imageCount}
+					change={tweet.change}
 				/>
 			);
 		});
 
-		// filter out repeats (such as with self-retweets)
-		let IDs = [];
-		let tempUniqueTweets = [];
-		for (let tweet of tweets) {
-			if (!IDs.includes(tweet.props.tweetID)) {
-				tempUniqueTweets.push(tweet);
-				IDs.push(tweet.props.tweetID);
-			}
-		}
-
-		setUniqueTweets(tempUniqueTweets);
-		// }
+		setUniqueTweets(tweets);
+		
 	}, [tweetDatas, getReplies]);
 
 	return <div className="feed">{uniqueTweets}</div>;

@@ -13,10 +13,12 @@ const Explore = () => {
 
 	useEffect(() => {
 		setTweetDatas([]);
+
 		const unsub = db
 			.collection("tweets")
 			.orderBy("timeStamp", "desc")
 			.onSnapshot((snapshot) => {
+
 				let tempArray = [];
 				let deletionArray = [];
 				const changes = snapshot.docChanges();
@@ -27,14 +29,14 @@ const Explore = () => {
 
 					// don't include replies
 					if (!doc.data().replyTo && change.type !== "removed") {
-						tempArray.push({ ...doc.data(), id: doc.id });
+						tempArray.push({ ...doc.data(), id: doc.id, type: change.type });
 					} else if (change.type === "removed") {
 						deletionArray.push(doc.id);
 					}
 				});
+
 				setTweetDatas((t) =>
 					[...t, ...tempArray]
-						.sort((a, b) => b.timeStamp.seconds - a.timeStamp.seconds)
 						.filter((doc) => !deletionArray.includes(doc.id))
 				);
 			});
