@@ -31,25 +31,26 @@ const ProfileFeed = (props) => {
 				let deletionArray = [];
 				const changes = snapshot.docChanges();
 				changes.forEach((change) => {
-					console.log(change)
+					console.log(change);
 					const doc = change.doc;
 					console.log(change.type);
 					if (change.type === "removed") {
 						deletionArray.push(doc.id);
-					} else if (mediaOnly) {
-						if (doc.data().imageCount) {
-							tempArray.push({ ...doc.data(), id: doc.id, change: change.type });
-						}
-					} else if (repliesIncluded) {
-						tempArray.push({ ...doc.data(), id: doc.id, change: change.type });
-					} else if (!doc.data().replyTo) {
-						tempArray.push({ ...doc.data(), id: doc.id, change: change.type });
 					}
 				});
-				setTweetDatas((t) =>
-					// [...t, ...tempArray].filter((doc) => !deletionArray.includes(doc.id))
-					tempArray.filter((doc) => !deletionArray.includes(doc.id))
-				);
+
+				snapshot.forEach((doc) => {
+					if (mediaOnly) {
+						if (doc.data().imageCount) {
+							tempArray.push({ ...doc.data(), id: doc.id });
+						}
+					} else if (repliesIncluded) {
+						tempArray.push({ ...doc.data(), id: doc.id });
+					} else if (!doc.data().replyTo) {
+						tempArray.push({ ...doc.data(), id: doc.id });
+					}
+				});
+				setTweetDatas(tempArray.filter((doc) => !deletionArray.includes(doc.id)));
 			});
 
 		// listen to  retweets
@@ -67,14 +68,19 @@ const ProfileFeed = (props) => {
 					console.log(doc.data().timeStamp);
 					if (change.type === "removed") {
 						deletionArray.push(doc.id);
-					} else if (mediaOnly) {
-						if (doc.data().imageCount) {
-							tempArray.push({ ...doc.data(), id: doc.id, change: change.type });
-						}
-					} else {
-						tempArray.push({ ...doc.data(), id: doc.id, change: change.type });
 					}
 				});
+
+				snapshot.forEach((doc) => {
+					if (mediaOnly) {
+						if (doc.data().imageCount) {
+							tempArray.push({ ...doc.data(), id: doc.id });
+						}
+					} else {
+						tempArray.push({ ...doc.data(), id: doc.id });
+					}
+				});
+
 				setTweetDatas((t) =>
 					// sort function ensures they're still in the right order when retweets are added
 					[...t, ...tempArray].filter((doc) => !deletionArray.includes(doc.id))

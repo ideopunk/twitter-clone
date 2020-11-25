@@ -16,7 +16,6 @@ const Home = (props) => {
 	}, []);
 
 	useEffect(() => {
-		setTweetDatas([]);
 		const unsub = db
 			.collection("tweets")
 			.orderBy("timeStamp", "desc")
@@ -27,22 +26,21 @@ const Home = (props) => {
 
 				changes.forEach((change) => {
 					console.log(change.type);
-					const doc = change.doc;
+					if (change.type === "removed") {
+						deletionArray.push(change.doc.id);
+					}
+				});
+
+				snapshot.forEach((doc) => {
 					const data = doc.data();
 
 					// don't include replies. And only include follows
-					if (
-						!data.replyTo &&
-						change.type !== "removed" &&
-						userFollows.includes(data.userID)
-					) {
-						tempArray.push({ ...doc.data(), id: doc.id, type: change.type });
-					} else if (change.type === "removed") {
-						deletionArray.push(doc.id);
+					if (!data.replyTo && userFollows.includes(data.userID)) {
+						tempArray.push({ ...doc.data(), id: doc.id });
 					}
 				});
-				setTweetDatas((t) =>
-					[...t, ...tempArray]
+				setTweetDatas(
+					tempArray
 						.sort((a, b) => b.timeStamp.seconds - a.timeStamp.seconds)
 						.filter((doc) => !deletionArray.includes(doc.id))
 				);

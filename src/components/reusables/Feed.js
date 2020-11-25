@@ -8,33 +8,7 @@ const Feed = (props) => {
 	const [uniqueTweets, setUniqueTweets] = useState([]);
 
 	useEffect(() => {
-		let IDs = [];
-		let tempUniqueTweets = [];
-
-		for (let tweet of tweetDatas) {
-			if (tweet.change === "modified") {
-				console.log(tweet.change);
-				tempUniqueTweets.push(tweet);
-				IDs.push(tweet.id);
-			}
-		}
-
-		console.log("only modifieds");
-		console.log(tempUniqueTweets);
-		console.log(IDs);
-
-		for (let tweet of tweetDatas) {
-			if (!IDs.includes(tweet.id)) {
-				tempUniqueTweets.push(tweet);
-				IDs.push(tweet.id);
-			}
-		}
-
-		console.log("all");
-		console.log(tempUniqueTweets);
-		console.log(IDs);
-
-		const sortedTweets = tempUniqueTweets.sort(
+		const sortedTweets = tweetDatas.sort(
 			(a, b) => (b.timeStamp.seconds = a.timeStamp.seconds)
 		);
 
