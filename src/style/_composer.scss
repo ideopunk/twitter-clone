@@ -25,23 +25,38 @@
 }
 
 .composer-input {
-	font-size: $bigfont;
+	font-size: 19px;
 	width: 100%;
 	flex: 1;
 	border: 0;
+	overflow-wrap: break-word;
 	outline: none;
-	padding-bottom: 0.75rem;
+	letter-spacing: 0;
+	line-height: 1.2;
+	white-space: pre-wrap;
+}
+
+.composer-input-container * {
+	// border: 1px solid red;
+	box-sizing: border-box;
 }
 
 .composer-hide {
-	color: white;
+	color: transparent;
 	caret-color: black;
+
+}::-webkit-scrollbar {
+	background: transparent;
 }
 
 .composer-mask {
 	position: absolute;
-	top: 2px;
-	left: 2px;
+	top: 0;
+	left: 0;
+	padding-top: 2px;
+	padding-left: 2px;
+	width: 100%;
+
 	pointer-events: none;
 }
 

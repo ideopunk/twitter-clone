@@ -134,7 +134,6 @@ const Composer = (props) => {
 		}
 	}, [IMGs]);
 
-
 	useEffect(() => {
 		let timer = null;
 		if (toast) {
@@ -181,15 +180,17 @@ const Composer = (props) => {
 						onDragOver={handleDragOver}
 						onDragLeave={handleDragLeave}
 					>
-						<input
-							type="text"
+						<textarea
 							className={`composer-input composer-hide`}
+							// hack
+							rows={Math.round(text.length / 70) + 1}
 							onChange={handleChange}
 							onDrop={handleDrop}
 							onPaste={handlePaste}
 							placeholder="What's happening?"
 							ref={inputEl}
 							value={text}
+							style={{ resize: "none", overflow: "auto" }}
 						/>
 						<div className="composer-input composer-mask">{blueText}</div>
 						{previewIMGs.length > 1 ? (
@@ -201,7 +202,7 @@ const Composer = (props) => {
 									{previewIMGs.slice(Math.round(previewIMGs.length / 2))}
 								</div>
 							</div>
-						) : (
+						) : previewIMGs.length > 0 && (
 							<div className="preview-images">{previewIMGs}</div>
 						)}
 					</div>
