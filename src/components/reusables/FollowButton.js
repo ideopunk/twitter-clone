@@ -11,10 +11,13 @@ const FollowButton = (props) => {
 
 	// freeze if modal up
 	useEffect(() => {
+
+		const body = document.body;
+		const scroll = window.scrollY;
+
 		if (warning) {
 			document.body.style.position = "fixed";
-		} else {
-			document.body.style.position = "";
+			body.style.top = `-${scroll}px`;
 		}
 	}, [warning]);
 
@@ -31,6 +34,12 @@ const FollowButton = (props) => {
 	};
 
 	const toggleWarning = () => {
+		const body = document.body;
+
+		if (warning) {
+			document.body.style.position = "";
+			window.scrollTo(0, -parseInt(body.style.top));
+		}
 		setWarning(!warning);
 	};
 

@@ -15,15 +15,24 @@ const TweetDropdown = (props) => {
 	const ref = useRef(null);
 
 	const toggleWarning = () => {
+		const body = document.body;
+
+		if (warning) {
+			document.body.style.position = "";
+			window.scrollTo(0, -parseInt(body.style.top));
+		}
 		setWarning(!warning);
 	};
 
 	// freeze if modal up
 	useEffect(() => {
+		console.log("uh tweet dropdown");
+		const body = document.body;
+		const scroll = window.scrollY;
+
 		if (warning) {
 			document.body.style.position = "fixed";
-		} else {
-			document.body.style.position = "";
+			body.style.top = `-${scroll}px`;
 		}
 	}, [warning]);
 
@@ -48,7 +57,15 @@ const TweetDropdown = (props) => {
 	}, [props]);
 
 	return userTweet ? (
-		<div className="tweet-dropdown" value={tweetID} onClick={() => setWarning(true)} ref={ref}>
+		<div
+			className="tweet-dropdown"
+			value={tweetID}
+			onClick={(e) => {
+				e.stopPropagation();
+				setWarning(true);
+			}}
+			ref={ref}
+		>
 			<Garbage style={{ fill: "red" }} />
 			<span style={{ color: "red" }}>Delete this tweet</span>
 			{warning && (

@@ -120,11 +120,20 @@ const ProfileMain = (props) => {
 		}
 	}, [userProfile, userFollows, profileID, userID]);
 
+	// freeze if modal up
+
 	useEffect(() => {
+		console.log('profmain')
+		
+		const body = document.body;
+		const scroll = window.scrollY;
+
 		if (editor) {
 			document.body.style.position = "fixed";
+			body.style.top = `-${scroll}px`;
 		} else {
 			document.body.style.position = "";
+			window.scrollTo(0, -parseInt(body.style.top));
 		}
 	}, [editor]);
 

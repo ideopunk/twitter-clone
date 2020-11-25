@@ -69,10 +69,17 @@ const Menu = (props) => {
 
 	// freeze if modal up
 	useEffect(() => {
+		console.log('menu')
+
+		const body = document.body;
+		const scroll = window.scrollY;
+
 		if (dropdown || composer) {
-			document.body.style.position = "fixed";
+			body.style.position = "fixed";
+			body.style.top = `-${scroll}px`;
 		} else {
-			document.body.style.position = "";
+			body.style.position = "";
+			window.scrollTo(0, -parseInt(body.style.top));
 		}
 	}, [composer, dropdown]);
 

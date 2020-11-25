@@ -134,9 +134,6 @@ const Composer = (props) => {
 		}
 	}, [IMGs]);
 
-	useEffect(() => {
-		console.log(previewIMGs);
-	}, [previewIMGs]);
 
 	useEffect(() => {
 		let timer = null;

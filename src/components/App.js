@@ -22,7 +22,6 @@ const App = () => {
 					.doc(user.uid)
 					.onSnapshot((snapshot) => {
 						const data = snapshot.data();
-						console.log("new snap")
 						// set optional data if we have it.
 						setUserData((u) => ({
 							...u,

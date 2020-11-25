@@ -333,7 +333,7 @@ const Tweet = (props) => {
 								<span className="tweet-time hover-under grey">{timeSince}</span>
 							</Link>
 							<div style={{ marginLeft: "auto", position: "relative" }}>
-								<Dots className="dots" onClick={toggleDropdown} />
+								<Dots className="dots" onClick={e => toggleDropdown(e)} />
 								{dropdown && (
 									<Suspense fallback={<LoaderContainer absolute={true} />}>
 										<TweetDropdown
