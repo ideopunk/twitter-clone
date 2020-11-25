@@ -61,12 +61,11 @@ const Tweet = (props) => {
 	const [retweetedBy, setRetweetedBy] = useState("");
 
 	useEffect(() => {
-		console.log(time)
-		console.log(likes)
-		console.log(liked)
-	
-	}, [time, likes, liked])
-	
+		console.log(time);
+		console.log(likes);
+		console.log(liked);
+	}, [time, likes, liked]);
+
 	const location = useLocation();
 
 	const hashedText = reactStringReplace(text, /(#\w+)/g, (match, i) => (
@@ -117,15 +116,15 @@ const Tweet = (props) => {
 
 	// is this a retweet?
 	useEffect(() => {
-		if (retweets) {
-			if (retweets.includes(userID)) {
-				setRetweetedBy(userAt);
-			} else if (retweets.length > 0) {
-				db.collection("users")
-					.doc(retweets[retweets.length - 1])
-					.get()
-					.then((doc) => setRetweetedBy(doc.at));
-			}
+		if (retweets.includes(userID)) {
+			setRetweetedBy(userAt);
+		} else if (retweets.length > 0) {
+			db.collection("users")
+				.doc(retweets[retweets.length - 1])
+				.get()
+				.then((doc) => setRetweetedBy(doc.at));
+		} else {
+			setRetweetedBy("");
 		}
 	}, [retweets, userID, userAt]);
 
@@ -256,7 +255,7 @@ const Tweet = (props) => {
 	const redirect = (e) => {
 		// console.log(e)
 		// console.log(e.target)
-	}
+	};
 	return (
 		<div
 			className={`tweet ${imageLoaded ? "" : "hide"} ${big ? "" : "pad"} `}
