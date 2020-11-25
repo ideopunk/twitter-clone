@@ -21,7 +21,7 @@ const ProfileFeed = (props) => {
 
 	// listen to  tweetdata
 	useEffect(() => {
-		setTweetDatas("");
+		setTweetDatas([]);
 		const unsub = db
 			.collection("tweets")
 			.where("userID", "==", profileID)
@@ -31,6 +31,7 @@ const ProfileFeed = (props) => {
 				let deletionArray = [];
 				const changes = snapshot.docChanges();
 				changes.forEach((change) => {
+					console.log(change)
 					const doc = change.doc;
 					console.log(change.type);
 					if (change.type === "removed") {
@@ -46,9 +47,8 @@ const ProfileFeed = (props) => {
 					}
 				});
 				setTweetDatas((t) =>
-					[...t, ...tempArray]
-						.sort((a, b) => b.timeStamp.seconds - a.timeStamp.seconds)
-						.filter((doc) => !deletionArray.includes(doc.id))
+					// [...t, ...tempArray].filter((doc) => !deletionArray.includes(doc.id))
+					tempArray.filter((doc) => !deletionArray.includes(doc.id))
 				);
 			});
 
@@ -60,19 +60,24 @@ const ProfileFeed = (props) => {
 			.limit(50)
 			.onSnapshot((snapshot) => {
 				let tempArray = [];
-				snapshot.forEach((doc) => {
+				let deletionArray = [];
+				const changes = snapshot.docChanges();
+				changes.forEach((change) => {
+					const doc = change.doc;
 					console.log(doc.data().timeStamp);
-					if (mediaOnly) {
+					if (change.type === "removed") {
+						deletionArray.push(doc.id);
+					} else if (mediaOnly) {
 						if (doc.data().imageCount) {
-							tempArray.push({ ...doc.data(), id: doc.id });
+							tempArray.push({ ...doc.data(), id: doc.id, change: change.type });
 						}
 					} else {
-						tempArray.push({ ...doc.data(), id: doc.id });
+						tempArray.push({ ...doc.data(), id: doc.id, change: change.type });
 					}
 				});
 				setTweetDatas((t) =>
 					// sort function ensures they're still in the right order when retweets are added
-					[...t, ...tempArray].sort((a, b) => b.timeStamp.seconds - a.timeStamp.seconds)
+					[...t, ...tempArray].filter((doc) => !deletionArray.includes(doc.id))
 				);
 			});
 

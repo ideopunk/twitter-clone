@@ -18,7 +18,6 @@ const Explore = () => {
 			.collection("tweets")
 			.orderBy("timeStamp", "desc")
 			.onSnapshot((snapshot) => {
-
 				let tempArray = [];
 				let deletionArray = [];
 				const changes = snapshot.docChanges();
@@ -28,21 +27,53 @@ const Explore = () => {
 					const doc = change.doc;
 
 					// don't include replies
-					if (!doc.data().replyTo && change.type !== "removed") {
-						tempArray.push({ ...doc.data(), id: doc.id, type: change.type });
-					} else if (change.type === "removed") {
+					if (change.type === "removed") {
 						deletionArray.push(doc.id);
 					}
 				});
 
-				setTweetDatas((t) =>
-					[...t, ...tempArray]
-						.filter((doc) => !deletionArray.includes(doc.id))
-				);
+				snapshot.forEach((doc) => {
+					if (!doc.data().replyTo) {
+						tempArray.push({ ...doc.data(), id: doc.id});
+					}
+				});
+
+				setTweetDatas(tempArray.filter((doc) => !deletionArray.includes(doc.id)));
 			});
 
 		return () => unsub();
 	}, []);
+
+	// useEffect(() => {
+	// 	setTweetDatas([]);
+
+	// 	const unsub = db
+	// 		.collection("tweets")
+	// 		.orderBy("timeStamp", "desc")
+	// 		.onSnapshot((snapshot) => {
+	// 			let tempArray = [];
+	// 			let deletionArray = [];
+	// 			const changes = snapshot.docChanges();
+
+	// 			changes.forEach((change) => {
+	// 				console.log(change.type);
+	// 				const doc = change.doc;
+
+	// 				// don't include replies
+	// 				if (change.type === "removed") {
+	// 					deletionArray.push(doc.id);
+	// 				} else if (!doc.data().replyTo) {
+	// 					tempArray.push({ ...doc.data(), id: doc.id, type: change.type });
+	// 				}
+	// 			});
+
+	// 			setTweetDatas((t) =>
+	// 				[...t, ...tempArray].filter((doc) => !deletionArray.includes(doc.id))
+	// 			);
+	// 		});
+
+	// 	return () => unsub();
+	// }, []);
 
 	return (
 		<div className="explore center-feed">

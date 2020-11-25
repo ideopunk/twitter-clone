@@ -36,7 +36,7 @@ const Home = (props) => {
 						change.type !== "removed" &&
 						userFollows.includes(data.userID)
 					) {
-						tempArray.push({ ...doc.data(), id: doc.id });
+						tempArray.push({ ...doc.data(), id: doc.id, type: change.type });
 					} else if (change.type === "removed") {
 						deletionArray.push(doc.id);
 					}
