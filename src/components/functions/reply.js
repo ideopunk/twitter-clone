@@ -3,7 +3,7 @@ import notify from "./notify";
 
 const reply = (props) => {
 	console.log(props);
-	const { tweetID, userName, text, userAt, userID, userTweets, IMGs } = props;
+	const { tweetID, tweeterID, userName, text, userAt, userID, userTweets, IMGs } = props;
 
 	const imgAmount = IMGs.length || 0;
 
@@ -24,6 +24,7 @@ const reply = (props) => {
 			userTags: palFound || [],
 			timeStamp: new Date(),
 			replyTo: tweetID,  // to load original tweet
+			replyUserID: tweeterID, 
 			retweets: [],
 			likes: [],
 			replies: [],

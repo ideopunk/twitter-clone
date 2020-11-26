@@ -40,12 +40,17 @@ const ProfileFeed = (props) => {
 				});
 
 				snapshot.forEach((doc) => {
+					// is this the media page? Then only show media!
 					if (mediaOnly) {
 						if (doc.data().imageCount) {
 							tempArray.push({ ...doc.data(), id: doc.id });
 						}
+
+						// is this the replies page? Then include replies.
 					} else if (repliesIncluded) {
 						tempArray.push({ ...doc.data(), id: doc.id });
+
+						// Is this the main page? Then don't show replies.
 					} else if (!doc.data().replyTo) {
 						tempArray.push({ ...doc.data(), id: doc.id });
 					}

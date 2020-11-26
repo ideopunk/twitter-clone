@@ -55,7 +55,7 @@ const Feed = (props) => {
 			);
 		});
 
-		// remove the reply duplicates
+		
 		setUniqueTweets(tweets);
 	}, [tweetDatas, getReplies]);
 

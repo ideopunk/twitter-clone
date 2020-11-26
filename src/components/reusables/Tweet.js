@@ -49,6 +49,8 @@ const Tweet = (props) => {
 		big,
 		imageCount,
 		original,
+		checkReply,
+		deleteToast
 	} = props;
 
 	const { userID, userAt, userLikes, userFollows, userTweets, userRetweets } = useContext(
@@ -67,6 +69,7 @@ const Tweet = (props) => {
 
 	// if this is a reply, get the original tweet
 	useEffect(() => {
+
 		if (replyTo) {
 			db.collection("tweets")
 				.doc(replyTo)
@@ -77,7 +80,7 @@ const Tweet = (props) => {
 					console.log(doc.exists);
 					console.log(data);
 					if (doc.exists) {
-						props.checkReply(doc.id)
+						checkReply(doc.id)
 						setOriginalTweet(
 							<Tweet
 								key={doc.id}
@@ -94,7 +97,7 @@ const Tweet = (props) => {
 								replies={data.replies}
 								imageCount={data.imageCount}
 								// "change"? Hmmm.
-								deleteToast={props.deleteToast}
+								deleteToast={deleteToast}
 								original={true}
 							/>
 						);
@@ -103,7 +106,7 @@ const Tweet = (props) => {
 					}
 				});
 		}
-	}, [big, replyTo, props.deleteToast]);
+	}, [big, replyTo, deleteToast, checkReply]);
 
 	const hashedText = reactStringReplace(text, /(#\w+)/g, (match, i) => (
 		<Link

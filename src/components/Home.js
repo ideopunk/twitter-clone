@@ -34,8 +34,11 @@ const Home = (props) => {
 				snapshot.forEach((doc) => {
 					const data = doc.data();
 
-					// don't include replies. And only include follows
+					// include non-replies from follows
 					if (!data.replyTo && userFollows.includes(data.userID)) {
+						tempArray.push({ ...doc.data(), id: doc.id });
+						// include replies from follows if you also follow the original tweeter.
+					} else if (userFollows.includes(data.replyUserID)) {
 						tempArray.push({ ...doc.data(), id: doc.id });
 					}
 				});

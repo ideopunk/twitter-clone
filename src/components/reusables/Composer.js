@@ -43,9 +43,9 @@ const Composer = (props) => {
 		e.preventDefault();
 		if (text || IMGs) {
 			if (replyData) {
-				const { tweetID } = replyData;
+				const { tweetID, tweeterID } = replyData;
 				import("../functions/reply.js").then((reply) =>
-					reply.default({ tweetID, userName, userID, userAt, userTweets, text, IMGs })
+					reply.default({ tweetID, tweeterID, userName, userID, userAt, userTweets, text, IMGs })
 				);
 			} else {
 				import("../functions/simpleTweet.js").then((simpleTweet) =>
