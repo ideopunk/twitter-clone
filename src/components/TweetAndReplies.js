@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useState, useEffect } from "react";
 import Tweet from "./reusables/Tweet";
-import { Link, useParams, useHistory, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { ReactComponent as SideArrow } from "../assets/side-arrow-icon.svg";
 
 import { db } from "../config/fbConfig";
@@ -8,18 +8,12 @@ import LoaderContainer from "./reusables/LoaderContainer";
 const Feed = lazy(() => import("./reusables/Feed"));
 
 const TweetAndReplies = (props) => {
-	console.log(props)
 	const { tweetID } = useParams();
 	const [mainTweet, setMainTweet] = useState({});
 	const [tweetDatas, setTweetDatas] = useState([]);
 
-	const history = useHistory();
 	const location = useLocation();
 
-	console.log(history);
-	console.log(location);
-
-	console.log("tweet and replies");
 	useEffect(() => {
 		if (Object.keys(mainTweet).length > 0) {
 			document.title = `${mainTweet.name} on Fake Twitter`;
@@ -32,7 +26,6 @@ const TweetAndReplies = (props) => {
 			.doc(tweetID)
 			.get()
 			.then((doc) => {
-				console.log(doc.data());
 				setMainTweet({ ...doc.data(), id: doc.id });
 			});
 	}, [tweetID]);

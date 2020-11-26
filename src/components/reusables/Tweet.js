@@ -32,6 +32,7 @@ const Tweet = (props) => {
 	const [toast, setToast] = useState("");
 	const [pics, setPics] = useState([]);
 	const [retweetedBy, setRetweetedBy] = useState("");
+	const [originalTweet, setOriginalTweet] = useState(null);
 
 	const {
 		name,
@@ -40,7 +41,6 @@ const Tweet = (props) => {
 		text,
 		retweets,
 		likes,
-		replyAt,
 		replyTo,
 		replies,
 		tweetID,
@@ -48,7 +48,7 @@ const Tweet = (props) => {
 		big,
 		imageCount,
 	} = props;
-	
+
 	const { userID, userAt, userLikes, userFollows, userTweets, userRetweets } = useContext(
 		UserContext
 	);
@@ -61,7 +61,42 @@ const Tweet = (props) => {
 	const repliesAmount = replies ? replies.length : "";
 
 	const location = useLocation();
+	console.log("location");
+	console.log(location);
+	console.log("text");
+	console.log(text);
 	let history = useHistory();
+
+	// if this is a reply, get the original tweet
+	useEffect(() => {
+		if (big && replyTo) {
+			db.collection("tweets")
+				.doc(replyTo)
+				.get()
+				.then((doc) => {
+					const data = doc.data();
+					setOriginalTweet(
+						<Tweet
+							key={doc.id}
+							tweetID={doc.id}
+							tweeterID={data.userID}
+							name={data.name}
+							at={data.at}
+							time={data.timeStamp}
+							text={data.text}
+							retweets={data.retweets}
+							replyTo={data.replyTo}
+							likes={data.likes}
+							getReplies={false}
+							replies={data.replies}
+							imageCount={data.imageCount}
+							// "change"? Hmmm.
+							deleteToast={props.deleteToast}
+						/>
+					);
+				});
+		}
+	}, [big, replyTo, props.deleteToast]);
 
 	const hashedText = reactStringReplace(text, /(#\w+)/g, (match, i) => (
 		<Link
@@ -148,7 +183,6 @@ const Tweet = (props) => {
 	}, [tweeterID, time, big]);
 
 	const toggleDropdown = (e) => {
-		console.log("toggle dropdown");
 		e.stopPropagation();
 		if (userID) {
 			setDropdown(!dropdown);
@@ -252,91 +286,44 @@ const Tweet = (props) => {
 	};
 
 	return (
-		<div
-			className={`tweet ${imageLoaded ? "" : "hide"} ${big ? "" : "pad"} `}
-			onClick={redirect}
-		>
-			{retweetedBy && (
-				<PreviewLink to={`/${retweetedBy}`} className="hover-under">
-					<div className="retweeted-by">
-						<Retweet />
-						<p>Retweeted by {retweetedBy}</p>
-					</div>
-				</PreviewLink>
-			)}
-
-			<div className={`tweet-inside ${big ? "big-tweet-inside" : ""}`}>
-				{big ? (
-					<div className="tweet-top-data pad">
-						<PreviewLink to={`/${at}`}>
-							{/* // <Link to={`/${at}`} onMouseOver=> */}
-							{image ? (
-								<img
-									className={`profile-image`}
-									alt="user-profile"
-									src={image}
-									onLoad={imageLoad}
-								/>
-							) : (
-								<div className="profile-image" />
-							)}
-						</PreviewLink>
-						<PreviewLink to={`/${at}`} style={{ textDecoration: "none" }}>
-							<p className="tweeter-name">{name}</p>
-							<p className="tweeter-at">@{at}</p>
-						</PreviewLink>
-
-						<div style={{ marginLeft: "auto", position: "relative" }}>
-							<Dots className="dots grey" onClick={(e) => toggleDropdown(e)} />
-							{dropdown && (
-								<Suspense fallback={<LoaderContainer absolute={true} />}>
-									<TweetDropdown
-										deleteTweet={deleteTweet}
-										unfollow={unfollow}
-										follow={follow}
-										followed={followed}
-										tweetID={tweetID}
-										userID={userID}
-										tweeterID={tweeterID}
-										toggle={toggleDropdown}
-									/>
-								</Suspense>
-							)}
+		<>
+			{replyTo && big && originalTweet}
+			<div
+				className={`tweet ${imageLoaded ? "" : "hide"} ${big ? "" : "pad"} `}
+				onClick={redirect}
+			>
+				{retweetedBy && (
+					<PreviewLink to={`/${retweetedBy}`} className="hover-under">
+						<div className="retweeted-by">
+							<Retweet />
+							<p>Retweeted by {retweetedBy}</p>
 						</div>
-					</div>
-				) : image ? (
-					<PreviewLink to={`/${at}`}>
-						<img
-							className={`profile-image`}
-							alt="user-profile"
-							src={image}
-							onLoad={imageLoad}
-						/>
-					</PreviewLink>
-				) : (
-					<PreviewLink to={`/${at}`}>
-						<div className="profile-image" />
 					</PreviewLink>
 				)}
 
-				<div className="tweet-main">
-					{!big && (
-						<div className="tweet-top-data">
-							<PreviewLink to={`/${at}`} style={{ textDecoration: "none" }}>
-								<span className="tweeter-name hover-under">{name}</span>
-								<span className="tweeter-at hover-under">{`@${at}`}</span>
+				<div className={`tweet-inside ${big ? "big-tweet-inside" : ""}`}>
+					{big ? (
+						<div className="tweet-top-data pad">
+							<PreviewLink to={`/${at}`}>
+								{/* // <Link to={`/${at}`} onMouseOver=> */}
+								{image ? (
+									<img
+										className={`profile-image`}
+										alt="user-profile"
+										src={image}
+										onLoad={imageLoad}
+									/>
+								) : (
+									<div className="profile-image" />
+								)}
 							</PreviewLink>
-							<Link
-								to={{
-									pathname: `/tweet/${tweetID}`,
-									state: { prevPath: location.pathname },
-								}}
-								style={{ textDecoration: "none", color: "black" }}
-							>
-								<span className="tweet-time hover-under grey">{timeSince}</span>
-							</Link>
+							<PreviewLink to={`/${at}`} style={{ textDecoration: "none" }}>
+								<p className="tweeter-name">{name}</p>
+								<p className="tweeter-at">@{at}</p>
+							</PreviewLink>
+
 							<div style={{ marginLeft: "auto", position: "relative" }}>
-								<Dots className="dots" onClick={(e) => toggleDropdown(e)} />
+								<Dots className="dots grey" onClick={(e) => toggleDropdown(e)} />
 								{dropdown && (
 									<Suspense fallback={<LoaderContainer absolute={true} />}>
 										<TweetDropdown
@@ -348,124 +335,188 @@ const Tweet = (props) => {
 											userID={userID}
 											tweeterID={tweeterID}
 											toggle={toggleDropdown}
-										/>{" "}
+										/>
 									</Suspense>
 								)}
 							</div>
 						</div>
-					)}
-					{replyAt ? <p className="tweet-reply">Replying to @{replyAt}</p> : ""}
-					<p className={`tweet-text ${big ? "big-tweet-text" : ""}`}> {linkedText}</p>
-
-					{imageCount ? (
-						imageCount > 1 ? (
-							<div className="preview-images">
-								<div className="preview-images-half">
-									{pics.slice(0, Math.round(pics.length / 2))}
-								</div>
-								<div className="preview-images-half">
-									{pics.slice(Math.round(pics.length / 2))}
-								</div>
-							</div>
-						) : (
-							<div className="preview-images">{pics}</div>
-						)
+					) : image ? (
+						<PreviewLink to={`/${at}`}>
+							<img
+								className={`profile-image`}
+								alt="user-profile"
+								src={image}
+								onLoad={imageLoad}
+							/>
+						</PreviewLink>
 					) : (
-						""
-					)}
-					{big && <p className="pad grey">{timeSince}</p>}
-
-					{big && (
-						<div className={`big-tweet-data`}>
-							{retweetsAmount > 0 && (
-								<p onClick={() => setModal("retweets")} className="hover-under">
-									<span className="bold">{retweetsAmount}</span>{" "}
-									<span>retweet{retweetsAmount > 1 && "s"}</span>
-								</p>
-							)}
-							{likeAmount > 0 && (
-								<p onClick={() => setModal("likes")} className="hover-under">
-									<span className="bold">{likeAmount}</span>{" "}
-									<span>like{likeAmount > 1 && "s"}</span>
-								</p>
-							)}
-						</div>
+						<PreviewLink to={`/${at}`}>
+							<div className="profile-image" />
+						</PreviewLink>
 					)}
 
-					<div className={`tweet-responses ${big ? "big-tweet-responses" : ""}`}>
-						<div className="tweet-svg-div grey reply-div" onClick={toggleReply}>
-							<div className="tweet-svg-holder">
-								<Quote />
-							</div>
-							{!big && (repliesAmount || "")}
-						</div>
-						<div
-							className={`tweet-svg-div grey retweet-div ${
-								isRetweet ? "active-retweet" : ""
-							}`}
-							onClick={isRetweet ? unRetweet : retweet}
-						>
-							<div className="tweet-svg-holder">
-								<Retweet />
-							</div>
-							{!big && (retweetsAmount || "")}
-						</div>
-						<div
-							value={tweetID}
-							className={`tweet-svg-div grey like-div ${liked && "liked"}`}
-							onClick={liked ? unlike : like}
-						>
-							<div className="tweet-svg-holder">
-								{liked ? <LikeFilled value={tweetID} /> : <Like value={tweetID} />}
-							</div>
-							{!big && (likeAmount || "")}
-						</div>
-						<div className="tweet-svg-div grey copy-div">
-							<CopyToClipboard text={`/tweet/${tweetID}`}>
-								<div
-									className="tweet-svg-holder"
-									onClick={(e) => {
-										e.stopPropagation();
-										setToast(true);
+					<div className="tweet-main">
+						{!big && (
+							<div className="tweet-top-data">
+								<PreviewLink to={`/${at}`} style={{ textDecoration: "none" }}>
+									<span className="tweeter-name hover-under">{name}</span>
+									<span className="tweeter-at hover-under">{`@${at}`}</span>
+								</PreviewLink>
+								<Link
+									to={{
+										pathname: `/tweet/${tweetID}`,
+										state: { prevPath: location.pathname },
 									}}
+									style={{ textDecoration: "none", color: "black" }}
 								>
-									<Copy />
+									<span className="tweet-time hover-under grey">{timeSince}</span>
+								</Link>
+								<div style={{ marginLeft: "auto", position: "relative" }}>
+									<Dots className="dots" onClick={(e) => toggleDropdown(e)} />
+									{dropdown && (
+										<Suspense fallback={<LoaderContainer absolute={true} />}>
+											<TweetDropdown
+												deleteTweet={deleteTweet}
+												unfollow={unfollow}
+												follow={follow}
+												followed={followed}
+												tweetID={tweetID}
+												userID={userID}
+												tweeterID={tweeterID}
+												toggle={toggleDropdown}
+											/>{" "}
+										</Suspense>
+									)}
 								</div>
-							</CopyToClipboard>
+							</div>
+						)}
+						{originalTweet ? (
+							<p className="grey replying-to ">
+								Replying to{" "}
+								<PreviewLink to={`/${originalTweet.props.at}`} className="hover-under begotten-link">
+									@{originalTweet.props.at}
+								</PreviewLink>
+							</p>
+						) : (
+							""
+						)}
+						<p className={`tweet-text ${big ? "big-tweet-text" : ""}`}> {linkedText}</p>
+
+						{imageCount ? (
+							imageCount > 1 ? (
+								<div className="preview-images">
+									<div className="preview-images-half">
+										{pics.slice(0, Math.round(pics.length / 2))}
+									</div>
+									<div className="preview-images-half">
+										{pics.slice(Math.round(pics.length / 2))}
+									</div>
+								</div>
+							) : (
+								<div className="preview-images">{pics}</div>
+							)
+						) : (
+							""
+						)}
+						{big && <p className="pad grey">{timeSince}</p>}
+
+						{/* If this is a main tweet and you have any retweets or likes, show this div */}
+						{big && (retweetsAmount > 0 || likeAmount > 0) && (
+							<div className={`big-tweet-data`}>
+								{retweetsAmount > 0 && (
+									<p onClick={() => setModal("retweets")} className="hover-under">
+										<span className="bold">{retweetsAmount}</span>{" "}
+										<span>retweet{retweetsAmount > 1 && "s"}</span>
+									</p>
+								)}
+								{likeAmount > 0 && (
+									<p onClick={() => setModal("likes")} className="hover-under">
+										<span className="bold">{likeAmount}</span>{" "}
+										<span>like{likeAmount > 1 && "s"}</span>
+									</p>
+								)}
+							</div>
+						)}
+
+						<div className={`tweet-responses ${big ? "big-tweet-responses" : ""}`}>
+							<div className="tweet-svg-div grey reply-div" onClick={toggleReply}>
+								<div className="tweet-svg-holder">
+									<Quote />
+								</div>
+								{!big && (repliesAmount || "")}
+							</div>
+							<div
+								className={`tweet-svg-div grey retweet-div ${
+									isRetweet ? "active-retweet" : ""
+								}`}
+								onClick={isRetweet ? unRetweet : retweet}
+							>
+								<div className="tweet-svg-holder">
+									<Retweet />
+								</div>
+								{!big && (retweetsAmount || "")}
+							</div>
+							<div
+								value={tweetID}
+								className={`tweet-svg-div grey like-div ${liked && "liked"}`}
+								onClick={liked ? unlike : like}
+							>
+								<div className="tweet-svg-holder">
+									{liked ? (
+										<LikeFilled value={tweetID} />
+									) : (
+										<Like value={tweetID} />
+									)}
+								</div>
+								{!big && (likeAmount || "")}
+							</div>
+							<div className="tweet-svg-div grey copy-div">
+								<CopyToClipboard text={`/tweet/${tweetID}`}>
+									<div
+										className="tweet-svg-holder"
+										onClick={(e) => {
+											e.stopPropagation();
+											setToast(true);
+										}}
+									>
+										<Copy />
+									</div>
+								</CopyToClipboard>
+							</div>
 						</div>
 					</div>
+					{reply && (
+						<Suspense fallback={<LoaderContainer />}>
+							<Cover toggle={toggleReply}>
+								<Composer
+									modal={true}
+									replyData={props}
+									replyImage={image}
+									replyTimeSince={timeSince}
+									toggle={toggleReply}
+								/>
+							</Cover>
+						</Suspense>
+					)}
 				</div>
-				{reply && (
+				{modal ? (
 					<Suspense fallback={<LoaderContainer />}>
-						<Cover toggle={toggleReply}>
-							<Composer
-								modal={true}
-								replyData={props}
-								replyImage={image}
-								replyTimeSince={timeSince}
-								toggle={toggleReply}
-							/>
+						<Cover toggle={() => setModal("")}>
+							<UsersList type={modal} tweetID={tweetID} clear={() => setModal("")} />{" "}
 						</Cover>
 					</Suspense>
+				) : (
+					""
+				)}
+				{toast ? (
+					<Suspense fallback={<LoaderContainer />}>
+						<Toast message="Tweet copied" />
+					</Suspense>
+				) : (
+					""
 				)}
 			</div>
-			{modal ? (
-				<Suspense fallback={<LoaderContainer />}>
-					<Cover toggle={() => setModal("")}>
-						<UsersList type={modal} tweetID={tweetID} clear={() => setModal("")} />{" "}
-					</Cover>
-				</Suspense>
-			) : (
-				""
-			)}
-			{toast ? (
-				<Suspense fallback={<LoaderContainer />}>
-					<Toast message="Tweet copied" />
-				</Suspense>
-			) : (
-				""
-			)}
-		</div>
+		</>
 	);
 };
 

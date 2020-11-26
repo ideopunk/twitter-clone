@@ -23,7 +23,7 @@ const reply = (props) => {
 			hashtags: hashFound || [],
 			userTags: palFound || [],
 			timeStamp: new Date(),
-			replyTo: tweetID,
+			replyTo: tweetID,  // to load original tweet
 			retweets: [],
 			likes: [],
 			replies: [],

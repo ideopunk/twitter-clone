@@ -164,8 +164,7 @@ const Composer = (props) => {
 			{replyData && (
 				<div className="composer" style={{ border: "0" }}>
 					<div className="profile-image grey-line">
-					<img src={replyImage} alt="user-profile" className="profile-image" />
-
+						<img src={replyImage} alt="user-profile" className="profile-image" />
 					</div>
 					<div className="tweet-main">
 						<div className="tweet-top-data">
@@ -175,12 +174,18 @@ const Composer = (props) => {
 						</div>
 						<p className="tweet-text">{replyData.text}</p>
 						<p className="grey">
-							Replying to <Link to={`/${replyData.at}`} className="begotten-link">{replyData.at}</Link>
+							Replying to{" "}
+							<Link to={`/${replyData.at}`} className="begotten-link">
+								{replyData.at}
+							</Link>
 						</p>
 					</div>
 				</div>
 			)}
-			<div className={replyData ? "composer" : "flex"} style={{paddingTop: replyData? "3px" : "1rem"}}>
+			<div
+				className={replyData ? "composer" : "flex"}
+				style={{ paddingTop: replyData ? "3px" : "1rem" }}
+			>
 				<Link to={`/${userAt}`} className={`profile-image`}>
 					<img src={userImage} alt="user-profile" className="profile-image" />
 				</Link>
@@ -197,7 +202,7 @@ const Composer = (props) => {
 							onChange={handleChange}
 							onDrop={handleDrop}
 							onPaste={handlePaste}
-							placeholder="What's happening?"
+							placeholder={replyData ? "Tweet your reply" : "What's happening?"}
 							ref={inputEl}
 							value={text}
 							style={{ resize: "none", overflow: "auto" }}
