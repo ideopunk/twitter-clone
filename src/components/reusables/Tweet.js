@@ -5,6 +5,7 @@ import { db, storage } from "../../config/fbConfig";
 import UserContext from "../context/context.js";
 import Leaf from "../../assets/leaf-outline.svg";
 import LoaderContainer from "./LoaderContainer";
+import DeadTweet from "./DeadTweet";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import PreviewLink from "./Preview";
 
@@ -62,40 +63,43 @@ const Tweet = (props) => {
 	const repliesAmount = replies ? replies.length : "";
 
 	const location = useLocation();
-	console.log("location");
-	console.log(location);
-	console.log("text");
-	console.log(text);
 	let history = useHistory();
 
 	// if this is a reply, get the original tweet
 	useEffect(() => {
-		if (big && replyTo) {
+		if (replyTo) {
 			db.collection("tweets")
 				.doc(replyTo)
 				.get()
 				.then((doc) => {
 					const data = doc.data();
-					setOriginalTweet(
-						<Tweet
-							key={doc.id}
-							tweetID={doc.id}
-							tweeterID={data.userID}
-							name={data.name}
-							at={data.at}
-							time={data.timeStamp}
-							text={data.text}
-							retweets={data.retweets}
-							replyTo={data.replyTo}
-							likes={data.likes}
-							getReplies={false}
-							replies={data.replies}
-							imageCount={data.imageCount}
-							// "change"? Hmmm.
-							deleteToast={props.deleteToast}
-							original={true}
-						/>
-					);
+					console.log(doc);
+					console.log(doc.exists);
+					console.log(data);
+					if (doc.exists) {
+						setOriginalTweet(
+							<Tweet
+								key={doc.id}
+								tweetID={doc.id}
+								tweeterID={data.userID}
+								name={data.name}
+								at={data.at}
+								time={data.timeStamp}
+								text={data.text}
+								retweets={data.retweets}
+								replyTo={data.replyTo}
+								likes={data.likes}
+								getReplies={false}
+								replies={data.replies}
+								imageCount={data.imageCount}
+								// "change"? Hmmm.
+								deleteToast={props.deleteToast}
+								original={true}
+							/>
+						);
+					} else {
+						setOriginalTweet(<DeadTweet/>)
+					}
 				});
 		}
 	}, [big, replyTo, props.deleteToast]);
@@ -289,9 +293,11 @@ const Tweet = (props) => {
 
 	return (
 		<>
-			{replyTo && big && originalTweet}
+			{replyTo && originalTweet}
 			<div
-				className={`tweet ${imageLoaded ? "" : "hide"} ${big ? "big" : "pad"} ${original? "original" : ""}`}
+				className={`tweet ${imageLoaded ? "" : "hide"} ${big ? "big" : "pad"} ${
+					original ? "original" : ""
+				}`}
 				onClick={redirect}
 			>
 				{retweetedBy && (
@@ -343,10 +349,12 @@ const Tweet = (props) => {
 							</div>
 						</div>
 					) : image ? (
-						<PreviewLink to={`/${at}`} className={`profile-image ${original ? "grey-line" : ""}`}>
+						<PreviewLink
+							to={`/${at}`}
+							className={`profile-image ${original ? "grey-line" : ""}`}
+						>
 							<img
 								className={`profile-image `}
-
 								alt="user-profile"
 								src={image}
 								onLoad={imageLoad}
@@ -393,7 +401,7 @@ const Tweet = (props) => {
 								</div>
 							</div>
 						)}
-						{originalTweet ? (
+						{originalTweet && big ? (
 							<p className="grey replying-to ">
 								Replying to{" "}
 								<PreviewLink

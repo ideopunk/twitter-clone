@@ -20,6 +20,11 @@ const Composer = (props) => {
 	const [IMGs, setIMGs] = useState([]);
 	const [previewIMGs, setPreviewIMGs] = useState([]);
 	const [toast, setToast] = useState(false);
+	const [line, setLine] = useState(false)
+
+	useEffect(() => {if (modal) {
+		setLine(true)
+	}}, [modal])
 
 	const redText = (
 		<p key="red">
@@ -184,7 +189,7 @@ const Composer = (props) => {
 			)}
 			<div
 				className={replyData ? "composer" : "flex"}
-				style={{ paddingTop: replyData ? "3px" : "1rem" }}
+				style={{ paddingTop: replyData ? "3px" : "0rem" }}
 			>
 				<Link to={`/${userAt}`} className={`profile-image`}>
 					<img src={userImage} alt="user-profile" className="profile-image" />
@@ -192,6 +197,7 @@ const Composer = (props) => {
 				<div className="composer-right">
 					<div
 						className={`composer-input-container ${dragOver ? "drag-over" : ""}`}
+						style={{borderBottom: line? "" : 0}}
 						onDragOver={handleDragOver}
 						onDragLeave={handleDragLeave}
 					>
@@ -199,6 +205,7 @@ const Composer = (props) => {
 							className={`composer-input composer-hide`}
 							// hack
 							rows={Math.round(text.length / 70) + 1}
+							onClick={() => setLine(true)}
 							onChange={handleChange}
 							onDrop={handleDrop}
 							onPaste={handlePaste}
