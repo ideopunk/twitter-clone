@@ -7,6 +7,7 @@
 	box-sizing: border-box;
 	// max-height: 400px;
 	// height: fit-content;
+	overflow: hidden;
 }
 
 .composer > * {
@@ -37,15 +38,15 @@
 }
 
 .composer-input-container * {
-	// border: 1px solid red;
+	border: 1px solid transparent;
 	box-sizing: border-box;
 }
 
 .composer-hide {
 	color: transparent;
 	caret-color: black;
-
-}::-webkit-scrollbar {
+}
+::-webkit-scrollbar {
 	background: transparent;
 }
 
@@ -193,4 +194,8 @@ circle {
 	width: 1.5em;
 	height: 1.5 em;
 	fill: white;
+}
+
+.too-long {
+	background-color: rgb(253, 162, 182);
 }

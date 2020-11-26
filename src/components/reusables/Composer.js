@@ -21,7 +21,14 @@ const Composer = (props) => {
 	const [previewIMGs, setPreviewIMGs] = useState([]);
 	const [toast, setToast] = useState(false);
 
-	const blueText = reactStringReplace(text, /([#@]\w*)/g, (match, i) => (
+	const redText = (
+		<p key="red">
+			{text.slice(0, 280)}
+			{text.length > 279 && <span className="too-long">{text.slice(280)}</span>}
+		</p>
+	);
+
+	const blueText = reactStringReplace(redText, /([#@]\w*)/g, (match, i) => (
 		<span key={i + match} className="hover-under begotten-link">
 			{match}
 		</span>
@@ -87,8 +94,8 @@ const Composer = (props) => {
 	};
 
 	const handlePaste = (e) => {
-		e.stopPropagation();
-		e.preventDefault();
+		// e.stopPropagation();
+		// e.preventDefault();
 		console.log(e.target);
 		console.log(e.dataTransfer);
 	};
@@ -156,7 +163,10 @@ const Composer = (props) => {
 		<form className={`${modal ? `modal` : ""} ${replyData ? "" : "composer"}`}>
 			{replyData && (
 				<div className="composer" style={{ border: "0" }}>
+					<div className="profile-image grey-line">
 					<img src={replyImage} alt="user-profile" className="profile-image" />
+
+					</div>
 					<div className="tweet-main">
 						<div className="tweet-top-data">
 							<span className="tweeter-name">{replyData.name}</span>
@@ -164,14 +174,14 @@ const Composer = (props) => {
 							<span className="tweet-time grey">{replyData.timeSince}</span>
 						</div>
 						<p className="tweet-text">{replyData.text}</p>
-						<p>
-							Replying to <Link to={`/${replyData.at}`}>{replyData.at}</Link>
+						<p className="grey">
+							Replying to <Link to={`/${replyData.at}`} className="begotten-link">{replyData.at}</Link>
 						</p>
 					</div>
 				</div>
 			)}
-			<div className={replyData ? "composer" : "flex"}>
-				<Link to={`/${userAt}`}>
+			<div className={replyData ? "composer" : "flex"} style={{paddingTop: replyData? "3px" : "1rem"}}>
+				<Link to={`/${userAt}`} className={`profile-image`}>
 					<img src={userImage} alt="user-profile" className="profile-image" />
 				</Link>
 				<div className="composer-right">
@@ -202,8 +212,10 @@ const Composer = (props) => {
 									{previewIMGs.slice(Math.round(previewIMGs.length / 2))}
 								</div>
 							</div>
-						) : previewIMGs.length > 0 && (
-							<div className="preview-images">{previewIMGs}</div>
+						) : (
+							previewIMGs.length > 0 && (
+								<div className="preview-images">{previewIMGs}</div>
+							)
 						)}
 					</div>
 

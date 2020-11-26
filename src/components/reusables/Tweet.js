@@ -31,6 +31,7 @@ const Tweet = (props) => {
 	const [modal, setModal] = useState("");
 	const [toast, setToast] = useState("");
 	const [pics, setPics] = useState([]);
+	const [retweetedBy, setRetweetedBy] = useState("");
 
 	const {
 		name,
@@ -47,6 +48,7 @@ const Tweet = (props) => {
 		big,
 		imageCount,
 	} = props;
+	
 	const { userID, userAt, userLikes, userFollows, userTweets, userRetweets } = useContext(
 		UserContext
 	);
@@ -57,7 +59,6 @@ const Tweet = (props) => {
 	const likeAmount = likes ? likes.length : "";
 	const retweetsAmount = retweets ? retweets.length : "";
 	const repliesAmount = replies ? replies.length : "";
-	const [retweetedBy, setRetweetedBy] = useState("");
 
 	const location = useLocation();
 	let history = useHistory();
@@ -155,7 +156,9 @@ const Tweet = (props) => {
 	};
 
 	const toggleReply = (e) => {
-		e.stopPropagation();
+		if (e) {
+			e.stopPropagation();
+		}
 		if (userID) {
 			setReply(!reply);
 		}
@@ -333,7 +336,7 @@ const Tweet = (props) => {
 								<span className="tweet-time hover-under grey">{timeSince}</span>
 							</Link>
 							<div style={{ marginLeft: "auto", position: "relative" }}>
-								<Dots className="dots" onClick={e => toggleDropdown(e)} />
+								<Dots className="dots" onClick={(e) => toggleDropdown(e)} />
 								{dropdown && (
 									<Suspense fallback={<LoaderContainer absolute={true} />}>
 										<TweetDropdown

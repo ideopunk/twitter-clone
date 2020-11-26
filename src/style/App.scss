@@ -18,7 +18,9 @@ $sitegrey: #657786;
 	}
 }
 
-body, input, textarea {
+body,
+input,
+textarea {
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu,
 		"Helvetica Neue", sans-serif;
 	font-size: 15px;
@@ -265,7 +267,7 @@ h3 {
 }
 
 .follows-you {
-	background-color: #EBEEF0;
+	background-color: #ebeef0;
 	font-size: 13px;
 	padding: 0.1675rem;
 	margin-left: 0.25rem;
@@ -274,4 +276,22 @@ h3 {
 
 .no-hov {
 	pointer-events: none;
+}
+
+.grey-line {
+	position: relative;
+}
+
+.grey-line::after {
+	content: "";
+	background: rgb(196, 207, 214);
+	width: 3px;
+	height: 200px;
+	position: absolute;
+	top: 105%;
+	left: 0;
+	right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	z-index: -1;
 }
