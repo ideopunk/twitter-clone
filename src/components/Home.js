@@ -6,9 +6,9 @@ import LoaderContainer from "./reusables/LoaderContainer";
 import Composer from "./reusables/Composer";
 import Feed from "./reusables/Feed";
 
-const Home = (props) => {
+const Home = () => {
 	const { userFollows } = useContext(UserContext);
-
+	console.log(userFollows);
 	const [tweetDatas, setTweetDatas] = useState([]);
 
 	useEffect(() => {
@@ -16,21 +16,24 @@ const Home = (props) => {
 	}, []);
 
 	useEffect(() => {
+		console.log("home use effect");
+		console.log("userfollowS: " + userFollows);
+		console.log("we're ago");
 		const unsub = db
 			.collection("tweets")
 			.orderBy("timeStamp", "desc")
 			.onSnapshot((snapshot) => {
+				console.log("snapshot");
 				let tempArray = [];
 				let deletionArray = [];
 				const changes = snapshot.docChanges();
 
 				changes.forEach((change) => {
-					console.log(change.type);
 					if (change.type === "removed") {
 						deletionArray.push(change.doc.id);
 					}
 				});
-
+				console.log("uh");
 				snapshot.forEach((doc) => {
 					const data = doc.data();
 
@@ -48,7 +51,6 @@ const Home = (props) => {
 						.filter((doc) => !deletionArray.includes(doc.id))
 				);
 			});
-
 		return () => unsub();
 	}, [userFollows]);
 

@@ -50,7 +50,7 @@ const Tweet = (props) => {
 		imageCount,
 		original,
 		checkReply,
-		deleteToast
+		deleteToast,
 	} = props;
 
 	const { userID, userAt, userLikes, userFollows, userTweets, userRetweets } = useContext(
@@ -69,6 +69,7 @@ const Tweet = (props) => {
 
 	// if this is a reply, get the original tweet
 	useEffect(() => {
+		let mounted = true;
 
 		if (replyTo) {
 			db.collection("tweets")
@@ -76,36 +77,44 @@ const Tweet = (props) => {
 				.get()
 				.then((doc) => {
 					const data = doc.data();
-					console.log(doc);
-					console.log(doc.exists);
-					console.log(data);
 					if (doc.exists) {
-						checkReply(doc.id)
-						setOriginalTweet(
-							<Tweet
-								key={doc.id}
-								tweetID={doc.id}
-								tweeterID={data.userID}
-								name={data.name}
-								at={data.at}
-								time={data.timeStamp}
-								text={data.text}
-								retweets={data.retweets}
-								replyTo={data.replyTo}
-								likes={data.likes}
-								getReplies={false}
-								replies={data.replies}
-								imageCount={data.imageCount}
-								// "change"? Hmmm.
-								deleteToast={deleteToast}
-								original={true}
-							/>
-						);
+						if (checkReply && mounted) {
+							console.log("check reply");
+							checkReply(doc.id);
+						}
+						console.log("live original tweet");
+						if (mounted) {
+							console.log("mounted live og tweet")
+							setOriginalTweet(
+								<Tweet
+									key={doc.id}
+									tweetID={doc.id}
+									tweeterID={data.userID}
+									name={data.name}
+									at={data.at}
+									time={data.timeStamp}
+									text={data.text}
+									retweets={data.retweets}
+									replyTo={data.replyTo}
+									likes={data.likes}
+									getReplies={false}
+									replies={data.replies}
+									imageCount={data.imageCount}
+									// "change"? Hmmm.
+									deleteToast={deleteToast}
+									original={true}
+								/>
+							);
+						}
 					} else {
-						setOriginalTweet(<DeadTweet/>)
+						console.log("dead tweet");
+						if (mounted) {
+							setOriginalTweet(<DeadTweet />);
+						}
 					}
 				});
 		}
+		return () => (mounted = false);
 	}, [big, replyTo, deleteToast, checkReply]);
 
 	const hashedText = reactStringReplace(text, /(#\w+)/g, (match, i) => (
@@ -129,7 +138,11 @@ const Tweet = (props) => {
 
 	// do we have pictures?
 	useEffect(() => {
+		"pics use effect"
+
+		let mounted = true;
 		if (imageCount) {
+			let tempArray = [];
 			for (let i = 0; i < imageCount; i++) {
 				storage
 					.ref("tweet_pictures/" + tweetID + "/" + i + ".png")
@@ -144,52 +157,69 @@ const Tweet = (props) => {
 								/>
 							</div>
 						);
-						setPics((p) => [...p, jsx]);
+						tempArray.push(jsx);
 					})
 					.catch((err) => {
 						console.log(err);
-						setTimeout(() => {}, 1000);
 					});
 			}
+			if (mounted) {
+				setPics(tempArray);
+			}
 		}
+		return () => (mounted = false);
 	}, [imageCount, tweetID]);
 
 	// is this a retweet?
 	useEffect(() => {
-		if (retweets && retweets.includes(userID)) {
-			setRetweetedBy(userAt);
-		} else if (retweets && retweets.length > 0) {
-			db.collection("users")
-				// get the latest person to retweet
-				.doc(retweets[retweets.length - 1])
-				.get()
-				.then((doc) => setRetweetedBy(doc.at));
-		} else {
-			setRetweetedBy("");
+		"retweet use effect"
+
+		let mounted = true;
+		if (mounted) {
+			if (retweets && retweets.includes(userID)) {
+				setRetweetedBy(userAt);
+			} else if (retweets && retweets.length > 0) {
+				db.collection("users")
+					// get the latest person to retweet
+					.doc(retweets[retweets.length - 1])
+					.get()
+					.then((doc) => setRetweetedBy(doc.at));
+			} else {
+				setRetweetedBy("");
+			}
 		}
+
+		return () => (mounted = false);
 	}, [retweets, userID, userAt]);
 
 	// get picture for tweet, set to Leaf if no picture found.
 	useEffect(() => {
-		storage
-			.ref("profile_pictures/" + tweeterID + ".png")
-			.getDownloadURL()
-			.then((url) => {
-				setImage(url);
-			})
-			.catch((err) => {
-				console.log(err);
-				setImage(Leaf);
-			});
+		"picture use effect"
+		let mounted = true;
 
-		//set how long ago the tweet was
-		if (time && !big) {
-			import("../functions/elapser.js").then((elapser) =>
-				setTimeSince(elapser.default(time))
-			);
-		} else if (time && big) {
-			setTimeSince(new Date(time.seconds * 1000).toDateString());
+		if (mounted) {
+			storage
+				.ref("profile_pictures/" + tweeterID + ".png")
+				.getDownloadURL()
+				.then((url) => {
+					setImage(url);
+				})
+				.catch((err) => {
+					console.log(err);
+					setImage(Leaf);
+				});
+
+			//set how long ago the tweet was
+			if (time && !big) {
+				import("../functions/elapser.js").then((elapser) =>
+					setTimeSince(elapser.default(time))
+				);
+			} else if (time && big) {
+				setTimeSince(new Date(time.seconds * 1000).toDateString());
+			}
 		}
+
+		return () => (mounted = false);
 	}, [tweeterID, time, big]);
 
 	const toggleDropdown = (e) => {

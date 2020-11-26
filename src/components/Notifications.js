@@ -15,7 +15,11 @@ const Notifications = () => {
 	useEffect(() => {
 		const userRef = db.collection("users").doc(userID);
 
-		const unsub = userRef.onSnapshot((doc) => setNotifications(doc.data().notifications));
+		const unsub = userRef.onSnapshot((doc) => {
+			if (doc.data().notifications) {
+				setNotifications(doc.data().notifications);
+			}
+		});
 
 		return () => unsub();
 	}, [userID]);

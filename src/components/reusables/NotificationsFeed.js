@@ -15,21 +15,24 @@ const NotificationsFeed = ({ notifications }) => {
 
 	const [notificationsMapped, setNotificationsMapped] = useState([]);
 
-	// the notifications have been observed.
+	// the notifications have been observed. Update that so that the menu stops alerting us to new notifications.
 	useEffect(() => {
 		const userRef = db.collection("users").doc(userID);
 
 		userRef.get().then((doc) => {
 			const data = doc.data();
-			const seenNotes = data.notifications.map((notification) => {
-				let newNotification = notification;
-				newNotification.seen = true;
-				return newNotification;
-			});
+			const seenNotes = data.notifications
+				? data.notifications.map((notification) => {
+						let newNotification = notification;
+						newNotification.seen = true;
+						return newNotification;
+				  })
+				: [];
 			userRef.update({ notifications: seenNotes });
 		});
 	}, [userID]);
 
+	// display the notifications.
 	useEffect(() => {
 		setNotificationsMapped([]);
 		notifications.forEach((notification) => {
@@ -83,53 +86,57 @@ const NotificationsFeed = ({ notifications }) => {
 						.get()
 						.then((doc) => {
 							const data = doc.data();
-							db.collection("users")
-								.doc(subject)
-								.get()
-								.then((liker) => {
-									const likerData = liker.data();
-									storage
-										.ref("profile_pictures/" + subject + ".png")
-										.getDownloadURL()
-										.then((url) => {
-											throw url;
-										})
+							if (doc.exists) {
+								db.collection("users")
+									.doc(subject)
+									.get()
+									.then((liker) => {
+										const likerData = liker.data();
+										storage
+											.ref("profile_pictures/" + subject + ".png")
+											.getDownloadURL()
+											.then((url) => {
+												throw url;
+											})
 
-										.catch((err) => {
-											let image;
-											if (err["code"]) {
-												image = Leaf;
-											} else {
-												image = err;
-											}
-											setNotificationsMapped((n) => [
-												...n,
-												<div className="account-card" key={doc.id}>
-													<Retweet
-														className="menu-icon"
-														style={{ fill: "blue" }}
-													/>
-													<div>
-														<img
-															src={image}
-															alt="headshot"
-															className="profile-image small-profile-image"
+											.catch((err) => {
+												let image;
+												if (err["code"]) {
+													image = Leaf;
+												} else {
+													image = err;
+												}
+												setNotificationsMapped((n) => [
+													...n,
+													<div className="account-card" key={doc.id}>
+														<Retweet
+															className="menu-icon"
+															style={{ fill: "blue" }}
 														/>
-														<p style={{ marginTop: "0.5rem" }}>
-															{likerData.at} Retweeted your{" "}
-															{"replyTo" in data ? "reply" : "tweet"}{" "}
-														</p>
-														<p
-															className="grey"
-															style={{ marginTop: "0.5rem" }}
-														>
-															{data.text}
-														</p>
-													</div>
-												</div>,
-											]);
-										});
-								});
+														<div>
+															<img
+																src={image}
+																alt="headshot"
+																className="profile-image small-profile-image"
+															/>
+															<p style={{ marginTop: "0.5rem" }}>
+																{likerData.at} Retweeted your{" "}
+																{"replyTo" in data
+																	? "reply"
+																	: "tweet"}{" "}
+															</p>
+															<p
+																className="grey"
+																style={{ marginTop: "0.5rem" }}
+															>
+																{data.text}
+															</p>
+														</div>
+													</div>,
+												]);
+											});
+									});
+							}
 						});
 
 					break;
@@ -165,58 +172,62 @@ const NotificationsFeed = ({ notifications }) => {
 						.doc(object)
 						.get()
 						.then((doc) => {
-							const data = doc.data();
-							db.collection("users")
-								.doc(subject)
-								.get()
-								.then((liker) => {
-									const likerData = liker.data();
-									storage
-										.ref("profile_pictures/" + subject + ".png")
-										.getDownloadURL()
-										.then((url) => {
-											throw url;
-										})
+							if (doc.exists) {
+								const data = doc.data();
+								db.collection("users")
+									.doc(subject)
+									.get()
+									.then((liker) => {
+										const likerData = liker.data();
+										storage
+											.ref("profile_pictures/" + subject + ".png")
+											.getDownloadURL()
+											.then((url) => {
+												throw url;
+											})
 
-										.catch((err) => {
-											let image;
-											if (err["code"]) {
-												image = Leaf;
-											} else {
-												image = err;
-											}
-											setNotificationsMapped((n) => [
-												...n,
-												<div
-													className="account-card"
-													key={doc.id}
-													style={{ alignItems: "flex-start" }}
-												>
-													<LikeFilled
-														className="menu-icon"
-														style={{ fill: "red" }}
-													/>
-													<div>
-														<img
-															src={image}
-															alt="headshot"
-															className="profile-image small-profile-image"
+											.catch((err) => {
+												let image;
+												if (err["code"]) {
+													image = Leaf;
+												} else {
+													image = err;
+												}
+												setNotificationsMapped((n) => [
+													...n,
+													<div
+														className="account-card"
+														key={doc.id}
+														style={{ alignItems: "flex-start" }}
+													>
+														<LikeFilled
+															className="menu-icon"
+															style={{ fill: "red" }}
 														/>
-														<p style={{ marginTop: "0.5rem" }}>
-															{likerData.at} liked your{" "}
-															{"replyTo" in data ? "reply" : "tweet"}{" "}
-														</p>
-														<p
-															className="grey"
-															style={{ marginTop: "0.5rem" }}
-														>
-															{data.text}
-														</p>
-													</div>
-												</div>,
-											]);
-										});
-								});
+														<div>
+															<img
+																src={image}
+																alt="headshot"
+																className="profile-image small-profile-image"
+															/>
+															<p style={{ marginTop: "0.5rem" }}>
+																{likerData.at} liked your{" "}
+																{"replyTo" in data
+																	? "reply"
+																	: "tweet"}{" "}
+															</p>
+															<p
+																className="grey"
+																style={{ marginTop: "0.5rem" }}
+															>
+																{data.text}
+															</p>
+														</div>
+													</div>,
+												]);
+											});
+									});
+							}
 						});
 
 					break;

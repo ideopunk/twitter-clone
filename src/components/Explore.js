@@ -12,6 +12,8 @@ const Explore = () => {
 	}, []);
 
 	useEffect(() => {
+		console.log("explore use effect")
+
 		setTweetDatas([]);
 
 		const unsub = db
@@ -26,15 +28,15 @@ const Explore = () => {
 					console.log(change.type);
 					const doc = change.doc;
 
-					// don't include replies
 					if (change.type === "removed") {
 						deletionArray.push(doc.id);
 					}
 				});
 
+				// don't include replies
 				snapshot.forEach((doc) => {
 					if (!doc.data().replyTo) {
-						tempArray.push({ ...doc.data(), id: doc.id});
+						tempArray.push({ ...doc.data(), id: doc.id });
 					}
 				});
 
@@ -43,37 +45,6 @@ const Explore = () => {
 
 		return () => unsub();
 	}, []);
-
-	// useEffect(() => {
-	// 	setTweetDatas([]);
-
-	// 	const unsub = db
-	// 		.collection("tweets")
-	// 		.orderBy("timeStamp", "desc")
-	// 		.onSnapshot((snapshot) => {
-	// 			let tempArray = [];
-	// 			let deletionArray = [];
-	// 			const changes = snapshot.docChanges();
-
-	// 			changes.forEach((change) => {
-	// 				console.log(change.type);
-	// 				const doc = change.doc;
-
-	// 				// don't include replies
-	// 				if (change.type === "removed") {
-	// 					deletionArray.push(doc.id);
-	// 				} else if (!doc.data().replyTo) {
-	// 					tempArray.push({ ...doc.data(), id: doc.id, type: change.type });
-	// 				}
-	// 			});
-
-	// 			setTweetDatas((t) =>
-	// 				[...t, ...tempArray].filter((doc) => !deletionArray.includes(doc.id))
-	// 			);
-	// 		});
-
-	// 	return () => unsub();
-	// }, []);
 
 	return (
 		<div className="explore center-feed">
