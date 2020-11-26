@@ -51,11 +51,13 @@ const TweetAndReplies = (props) => {
 	return (
 		<div className="home center-feed">
 			<Link
-				to={location.state.prevPath}
+				to={location.state ? location.state.prevPath : "/"}
 				className="profile-home-link"
 				style={{ textDecoration: "none", color: "black" }}
 			>
-				<SideArrow />
+				<div className="tweet-svg-holder">
+					<SideArrow />
+				</div>
 				<div className="profile-home-link-text">
 					<h3 className="no-dec">Tweet</h3>
 				</div>

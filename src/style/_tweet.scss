@@ -61,6 +61,10 @@
 	transition: $lighttransition;
 }
 
+.tweet-svg-holder:hover {
+	background-color: lighten($sitecolor, 35%);
+}
+
 .reply-div > .tweet-svg-holder:hover {
 	background-color: lighten($sitecolor, 35%);
 }
@@ -186,6 +190,10 @@
 	z-index: -1;
 }
 
+.big:hover {
+	background-color: white;
+}
+
 .big-tweet-responses {
 	border-top: $siteborder;
 	height: 3rem;
@@ -244,4 +252,8 @@
 
 .replying-to {
 	padding: 0 0.75rem 0.5rem;
+}
+
+.original {
+	border-bottom: 0;
 }

@@ -47,6 +47,7 @@ const Tweet = (props) => {
 		tweeterID,
 		big,
 		imageCount,
+		original,
 	} = props;
 
 	const { userID, userAt, userLikes, userFollows, userTweets, userRetweets } = useContext(
@@ -92,6 +93,7 @@ const Tweet = (props) => {
 							imageCount={data.imageCount}
 							// "change"? Hmmm.
 							deleteToast={props.deleteToast}
+							original={true}
 						/>
 					);
 				});
@@ -289,7 +291,7 @@ const Tweet = (props) => {
 		<>
 			{replyTo && big && originalTweet}
 			<div
-				className={`tweet ${imageLoaded ? "" : "hide"} ${big ? "" : "pad"} `}
+				className={`tweet ${imageLoaded ? "" : "hide"} ${big ? "big" : "pad"} ${original? "original" : ""}`}
 				onClick={redirect}
 			>
 				{retweetedBy && (
@@ -341,9 +343,10 @@ const Tweet = (props) => {
 							</div>
 						</div>
 					) : image ? (
-						<PreviewLink to={`/${at}`}>
+						<PreviewLink to={`/${at}`} className={`profile-image ${original ? "grey-line" : ""}`}>
 							<img
-								className={`profile-image`}
+								className={`profile-image `}
+
 								alt="user-profile"
 								src={image}
 								onLoad={imageLoad}
@@ -393,7 +396,10 @@ const Tweet = (props) => {
 						{originalTweet ? (
 							<p className="grey replying-to ">
 								Replying to{" "}
-								<PreviewLink to={`/${originalTweet.props.at}`} className="hover-under begotten-link">
+								<PreviewLink
+									to={`/${originalTweet.props.at}`}
+									className="hover-under begotten-link"
+								>
 									@{originalTweet.props.at}
 								</PreviewLink>
 							</p>
