@@ -77,6 +77,7 @@ const Tweet = (props) => {
 					console.log(doc.exists);
 					console.log(data);
 					if (doc.exists) {
+						props.checkReply(doc.id)
 						setOriginalTweet(
 							<Tweet
 								key={doc.id}

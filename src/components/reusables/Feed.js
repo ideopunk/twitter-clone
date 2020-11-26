@@ -9,6 +9,7 @@ const Feed = (props) => {
 
 	const [uniqueTweets, setUniqueTweets] = useState([]);
 	const [deleteToast, setDeleteToast] = useState(false);
+	const [doomedTweets, setDoomedTweets] = useState([]);
 
 	// toasts last one second.
 	useEffect(() => {
@@ -22,8 +23,14 @@ const Feed = (props) => {
 		return () => clearTimeout(timer);
 	}, [deleteToast]);
 
+	const checkReply = (id) => {
+		setDoomedTweets((doom) => [...doom, id]);
+	};
+
 	useEffect(() => {
 		const sortedTweets = tweetDatas.sort((a, b) => (b.timeStamp.seconds = a.timeStamp.seconds));
+
+		//tweet has been replied to. Don't let it come through again.
 
 		const tweets = sortedTweets.map((tweet) => {
 			return (
@@ -43,12 +50,19 @@ const Feed = (props) => {
 					imageCount={tweet.imageCount}
 					change={tweet.change}
 					deleteToast={setDeleteToast}
+					checkReply={checkReply}
 				/>
 			);
 		});
 
+		// remove the reply duplicates
 		setUniqueTweets(tweets);
 	}, [tweetDatas, getReplies]);
+
+	// remove the reply duplicates
+	useEffect(() => {
+		setUniqueTweets((t) => t.filter((tweet) => !doomedTweets.includes(tweet.props.tweetID)));
+	}, [doomedTweets]);
 
 	return (
 		<div className="feed">
