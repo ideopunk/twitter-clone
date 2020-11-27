@@ -48,7 +48,7 @@ const Explore = () => {
 
 	return (
 		<div className="explore center-feed">
-			<div className="pad side-box-title">
+			<div className="pad top-link">
 				<Search className="pad" />
 			</div>
 			{tweetDatas.length ? <Feed tweetDatas={tweetDatas} /> : <LoaderContainer />}

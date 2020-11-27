@@ -26,7 +26,7 @@ const Notifications = () => {
 
 	return (
 		<div className="home center-feed">
-			<h3 className="home-title">Notifications</h3>
+			<h3 className="top-link">Notifications</h3>
 			<NotificationsFeed notifications={notifications} />
 		</div>
 	);

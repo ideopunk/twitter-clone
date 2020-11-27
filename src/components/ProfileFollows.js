@@ -29,41 +29,40 @@ const ProfileFollows = (props) => {
 	}, [profileID, userAt, userName, userProfile]);
 
 	return (
-        <>
-		<div className="profile-header">
-			{" "}
-			<Link
-				to={`/${params.profile}`}
-				className="profile-home-link"
-				style={{ textDecoration: "none", color: "black" }}
-			>
-				<SideArrow />
-				<div className="profile-home-link-text">
-					<h3 className="no-dec">{stuff.name}</h3>
-					<p className="grey">@{stuff.at}</p>
+		<>
+			<div className="profile-header">
+				{" "}
+				<Link
+					to={`/${params.profile}`}
+					className="top-link"
+					style={{ textDecoration: "none", color: "black" }}
+				>
+					<SideArrow />
+					<div className="top-link-text">
+						<h3 className="no-dec">{stuff.name}</h3>
+						<p className="grey">@{stuff.at}</p>
+					</div>
+				</Link>
+				<div style={{ height: "3.5rem" }}></div>
+				<div className="profile-feed-selector-container">
+					<NavLink
+						to={`/${params.profile}/followers`}
+						className="profile-feed-selector"
+						activeClassName="p-f-s-active"
+					>
+						Followers
+					</NavLink>
+					<NavLink
+						to={`/${params.profile}/following`}
+						className="profile-feed-selector"
+						activeClassName="p-f-s-active"
+					>
+						Following
+					</NavLink>
 				</div>
-			</Link>
-			<div style={{ height: "3.5rem" }}></div>
-
-			<div className="profile-feed-selector-container">
-				<NavLink
-					to={`/${params.profile}/followers`}
-					className="profile-feed-selector"
-					activeClassName="p-f-s-active"
-				>
-					Followers
-				</NavLink>
-				<NavLink
-					to={`/${params.profile}/following`}
-					className="profile-feed-selector"
-					activeClassName="p-f-s-active"
-				>
-					Following
-				</NavLink>
 			</div>
-		</div>
-        <AccountList profileID={profileID} name={stuff.name}/>
-        </>
+			<AccountList profileID={profileID} name={stuff.name} />
+		</>
 	);
 };
 

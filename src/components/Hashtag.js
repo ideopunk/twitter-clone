@@ -32,11 +32,11 @@ const Hashtag = () => {
 
 	return (
 		<div className="home center-feed">
-			<div className="profile-home-link">
+			<div className="top-link">
 				<Link to="/" style={{ textDecoration: "none", color: "black" }}>
 					<SideArrow />
 				</Link>
-				<div className="profile-home-link-text">
+				<div className="top-link-text">
 					<Search defaultValue={"#" + tag} />
 				</div>
 			</div>

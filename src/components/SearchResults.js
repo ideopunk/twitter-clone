@@ -58,7 +58,7 @@ const SearchResults = () => {
 	return (
 		<div className="home center-feed">
 			{" "}
-			<div className="profile-home-link">
+			<div className="top-link">
 				<Link to="/" style={{ textDecoration: "none", color: "black" }}>
 					<SideArrow />
 				</Link>

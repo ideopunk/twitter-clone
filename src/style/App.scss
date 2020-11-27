@@ -36,6 +36,10 @@ textarea {
 	width: 100%;
 }
 
+.feed {
+    width: 100%;
+}
+
 h3 {
 	font-size: 19px;
 	font-weight: bold;
@@ -199,13 +203,11 @@ h3 {
 	margin: 0.75rem;
 }
 
-@import "./feed";
 @import "./loginpage";
 @import "./loginprompt";
 @import "./logincard";
 @import "./menu";
 @import "./main";
-@import "./home";
 
 @import "./tos";
 @import "./composer";

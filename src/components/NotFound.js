@@ -12,17 +12,17 @@ const NotFound = (props) => {
 			<div className="profile-header">
 				<Link
 					to="/"
-					className="profile-home-link"
+					className="top-link"
 					style={{ textDecoration: "none", color: "black" }}
 				>
 					<SideArrow />
-					<div className="profile-home-link-text">
+					<div className="top-link-text">
 						<h3 className="no-dec">Profile</h3>
 					</div>
 				</Link>
 				<div className="profile-header-image" />
-				<div className="profile-card" style={{paddingTop: "5rem"}}>
-					<div className="fake-image"/>
+				<div className="profile-card" style={{ paddingTop: "5rem" }}>
+					<div className="fake-image" />
 
 					<h3>{at}</h3>
 				</div>

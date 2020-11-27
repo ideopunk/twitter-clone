@@ -123,8 +123,8 @@ const ProfileMain = (props) => {
 	// freeze if modal up
 
 	useEffect(() => {
-		console.log('profmain')
-		
+		console.log("profmain");
+
 		const body = document.body;
 		const scroll = window.scrollY;
 
@@ -147,19 +147,15 @@ const ProfileMain = (props) => {
 
 	return (
 		<>
+			<Link to="/" className="top-link" style={{ textDecoration: "none", color: "black" }}>
+				<SideArrow />
+				<div className="top-link-text">
+					<h3 className="no-dec">{profileData.name}</h3>
+					<p className="grey">{profileData.tweetAmount} tweets</p>
+				</div>
+			</Link>
 			<div className={`profile-header ${!imageLoaded ? "hide" : ""}`}>
-				<Link
-					to="/"
-					className="profile-home-link"
-					style={{ textDecoration: "none", color: "black" }}
-				>
-					<SideArrow />
-					<div className="profile-home-link-text">
-						<h3 className="no-dec">{profileData.name}</h3>
-						<p className="grey">{profileData.tweetAmount} tweets</p>
-					</div>
-				</Link>
-				<div style={{ height: "3.5rem" }}></div>
+				{/* <div style={{ height: "3.5rem" }}></div> */}
 
 				<img
 					className="profile-header-image"
@@ -254,7 +250,6 @@ const ProfileMain = (props) => {
 					</NavLink>
 				</div>
 			</div>
-
 			<Switch>
 				<Route exact path={`${path}/with_replies`}>
 					<ProfileFeed

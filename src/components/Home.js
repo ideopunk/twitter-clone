@@ -56,7 +56,7 @@ const Home = () => {
 
 	return (
 		<div className="home center-feed">
-			<h3 className="home-title">Home</h3>
+			<h3 className="top-link">Home</h3>
 			<Composer />
 			{tweetDatas.length ? <Feed tweetDatas={tweetDatas} /> : <LoaderContainer />}
 		</div>
