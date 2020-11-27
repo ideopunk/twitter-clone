@@ -63,18 +63,12 @@ const App = () => {
 		const handleResize = () => {
 			const width = window.innerWidth;
 			console.log("width is", width);
-			switch (width) {
-				case width > 767 && width < 992:
-					setWidth("tablet");
-					break;
-				case width < 767:
-					setWidth("mobile");
-					break;
-				case width > 991:
-					setWidth("comp");
-					break;
-				default:
-					setWidth("tablet");
+			if (width > 991) {
+				setWidth("comp");
+			} else if (width > 767) {
+				setWidth("tablet");
+			} else {
+				setWidth("mobile");
 			}
 		};
 
@@ -88,36 +82,38 @@ const App = () => {
 		<BrowserRouter>
 			<div className="App">
 				{/* If the user is logged in, wait to render until the context is set */}
-				<UserContext.Provider
-					value={{
-						userID: userID,
-						userImage: userData.image,
-						userAt: userData.at,
-						userName: userData.name,
-						userFollows: userData.follows,
-						userFollowers: userData.followers,
-						userTweets: userData.tweets,
-						userLikes: userData.likes,
-						userRetweets: userData.retweets,
-						userBio: userData.bio,
-						userJoinDate: userData.joinDate,
-					}}
-				>
-					<Switch>
-						<Route exact path="/login">
-							{userID ? <Redirect to="/" /> : <LoginPage />}
-						</Route>
-						<Route exact path="/signup">
-							{userID ? <Redirect to="/" /> : <SignupPage />}
-						</Route>
-						<Route path="/">
-							{/* This is bad for unlogged-in users */}
-							<Suspense fallback={<LoaderContainer />}>
-								<Main />
-							</Suspense>
-						</Route>
-					</Switch>
-				</UserContext.Provider>
+				<DeviceContext.Provider value={{ device: width }}>
+					<UserContext.Provider
+						value={{
+							userID: userID,
+							userImage: userData.image,
+							userAt: userData.at,
+							userName: userData.name,
+							userFollows: userData.follows,
+							userFollowers: userData.followers,
+							userTweets: userData.tweets,
+							userLikes: userData.likes,
+							userRetweets: userData.retweets,
+							userBio: userData.bio,
+							userJoinDate: userData.joinDate,
+						}}
+					>
+						<Switch>
+							<Route exact path="/login">
+								{userID ? <Redirect to="/" /> : <LoginPage />}
+							</Route>
+							<Route exact path="/signup">
+								{userID ? <Redirect to="/" /> : <SignupPage />}
+							</Route>
+							<Route path="/">
+								{/* This is bad for unlogged-in users */}
+								<Suspense fallback={<LoaderContainer />}>
+									<Main />
+								</Suspense>
+							</Route>
+						</Switch>
+					</UserContext.Provider>
+				</DeviceContext.Provider>
 				{/* )} */}
 			</div>
 		</BrowserRouter>

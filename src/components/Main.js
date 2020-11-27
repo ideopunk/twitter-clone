@@ -20,6 +20,8 @@ const Hashtag = lazy(() => import("./Hashtag"));
 
 const Main = (props) => {
 	const { userID } = useContext(UserContext);
+	const { device } = useContext(DeviceContext);
+	console.log(device);
 	const location = useLocation();
 
 	return (
@@ -80,13 +82,14 @@ const Main = (props) => {
 					</Switch>
 				</Suspense>
 			)}
-
-			<div className="sidebar">
-				{location.pathname !== "/explore" && <Search />}
-				{!userID && <LoginCard />}
-				<FollowSuggests />
-				<TOS />
-			</div>
+			{device === "comp" && (
+				<div className="sidebar">
+					{location.pathname !== "/explore" && <Search />}
+					{!userID && <LoginCard />}
+					<FollowSuggests />
+					<TOS />
+				</div>
+			)}
 		</div>
 	);
 };

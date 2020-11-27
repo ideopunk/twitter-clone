@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { db } from "../config/fbConfig";
 import UserContext from "./context/userContext.js";
+import DeviceContext from "./context/deviceContext.js";
 import LoaderContainer from "./reusables/LoaderContainer";
 
 import Composer from "./reusables/Composer";
@@ -8,6 +9,7 @@ import Feed from "./reusables/Feed";
 
 const Home = () => {
 	const { userFollows } = useContext(UserContext);
+	const { device } = useContext(DeviceContext);
 	console.log(userFollows);
 	const [tweetDatas, setTweetDatas] = useState([]);
 
@@ -57,7 +59,7 @@ const Home = () => {
 	return (
 		<div className="home center-feed">
 			<h3 className="top-link">Home</h3>
-			<Composer />
+			{device === "comp" && <Composer />}
 			{tweetDatas.length ? <Feed tweetDatas={tweetDatas} /> : <LoaderContainer />}
 		</div>
 	);
