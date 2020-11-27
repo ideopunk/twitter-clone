@@ -6,6 +6,8 @@ import { ReactComponent as Close } from "../../assets/close.svg";
 import UserContext from "../context/context.js";
 import ComposerCircle from "./ComposerCircle";
 import LoaderContainer from "./LoaderContainer";
+import { ReactComponent as CloseIcon } from "../../assets/close.svg";
+
 const reactStringReplace = require("react-string-replace");
 
 const Toast = lazy(() => import("./Toast"));
@@ -20,11 +22,13 @@ const Composer = (props) => {
 	const [IMGs, setIMGs] = useState([]);
 	const [previewIMGs, setPreviewIMGs] = useState([]);
 	const [toast, setToast] = useState(false);
-	const [line, setLine] = useState(false)
+	const [line, setLine] = useState(false);
 
-	useEffect(() => {if (modal) {
-		setLine(true)
-	}}, [modal])
+	useEffect(() => {
+		if (modal) {
+			setLine(true);
+		}
+	}, [modal]);
 
 	const redText = (
 		<p key="red">
@@ -45,7 +49,16 @@ const Composer = (props) => {
 			if (replyData) {
 				const { tweetID, tweeterID } = replyData;
 				import("../functions/reply.js").then((reply) =>
-					reply.default({ tweetID, tweeterID, userName, userID, userAt, userTweets, text, IMGs })
+					reply.default({
+						tweetID,
+						tweeterID,
+						userName,
+						userID,
+						userAt,
+						userTweets,
+						text,
+						IMGs,
+					})
 				);
 			} else {
 				import("../functions/simpleTweet.js").then((simpleTweet) =>
@@ -165,7 +178,13 @@ const Composer = (props) => {
 	}, [modal]);
 
 	return (
-		<form className={`${modal ? `modal` : ""} ${replyData ? "" : "composer"}`}>
+		// <form className={`${modal ? `modal` : ""} ${replyData ? "" : "composer"}`}>
+		<form className={`${modal ? `modal` : "composer"}`}>
+			{modal && (
+				<div className="modal-header">
+					<CloseIcon onClick={() => toggle()} />
+				</div>
+			)}
 			{replyData && (
 				<div className="composer" style={{ border: "0" }}>
 					<div className="profile-image grey-line">
@@ -174,21 +193,21 @@ const Composer = (props) => {
 					<div className="tweet-main">
 						<div className="tweet-top-data">
 							<span className="tweeter-name">{replyData.name}</span>
-							<span className="tweeter-at">{replyData.at}</span>
+							<span className="tweeter-at">@{replyData.at}</span>
 							<span className="tweet-time grey">{replyData.timeSince}</span>
 						</div>
 						<p className="tweet-text">{replyData.text}</p>
 						<p className="grey">
 							Replying to{" "}
 							<Link to={`/${replyData.at}`} className="begotten-link">
-								{replyData.at}
+								@{replyData.at}
 							</Link>
 						</p>
 					</div>
 				</div>
 			)}
 			<div
-				className={replyData ? "composer" : "flex"}
+				className={modal ? "composer" : "flex"}
 				style={{ paddingTop: replyData ? "3px" : "0rem" }}
 			>
 				<Link to={`/${userAt}`} className={`profile-image`}>
@@ -197,7 +216,7 @@ const Composer = (props) => {
 				<div className="composer-right">
 					<div
 						className={`composer-input-container ${dragOver ? "drag-over" : ""}`}
-						style={{borderBottom: line? "" : 0}}
+						style={{ borderBottom: line ? "" : 0 }}
 						onDragOver={handleDragOver}
 						onDragLeave={handleDragLeave}
 					>

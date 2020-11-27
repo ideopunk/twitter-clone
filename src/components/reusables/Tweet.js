@@ -84,7 +84,7 @@ const Tweet = (props) => {
 						}
 						console.log("live original tweet");
 						if (mounted) {
-							console.log("mounted live og tweet")
+							console.log("mounted live og tweet");
 							setOriginalTweet(
 								<Tweet
 									key={doc.id}
@@ -138,7 +138,7 @@ const Tweet = (props) => {
 
 	// do we have pictures?
 	useEffect(() => {
-		"pics use effect"
+		"pics use effect";
 
 		let mounted = true;
 		if (imageCount) {
@@ -149,13 +149,22 @@ const Tweet = (props) => {
 					.getDownloadURL()
 					.then((url) => {
 						const jsx = (
-							<div className="image-container" key={url}>
+							<a
+								href={url}
+								target="_blank"
+								rel="noreferrer"
+								className="image-container"
+								onClick={(e) => {
+									e.stopPropagation();
+								}}
+								key={url}
+							>
 								<img
 									src={url}
 									alt="user-submitted-pic"
 									className="composer-preview-image"
 								/>
-							</div>
+							</a>
 						);
 						tempArray.push(jsx);
 					})
@@ -172,7 +181,7 @@ const Tweet = (props) => {
 
 	// is this a retweet?
 	useEffect(() => {
-		"retweet use effect"
+		"retweet use effect";
 
 		let mounted = true;
 		if (mounted) {
@@ -194,7 +203,7 @@ const Tweet = (props) => {
 
 	// get picture for tweet, set to Leaf if no picture found.
 	useEffect(() => {
-		"picture use effect"
+		"picture use effect";
 		let mounted = true;
 
 		if (mounted) {

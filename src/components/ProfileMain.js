@@ -147,7 +147,7 @@ const ProfileMain = (props) => {
 
 	return (
 		<>
-			<div className={`profile-header ${!imageLoaded && "hide"}`}>
+			<div className={`profile-header ${!imageLoaded ? "hide" : ""}`}>
 				<Link
 					to="/"
 					className="profile-home-link"

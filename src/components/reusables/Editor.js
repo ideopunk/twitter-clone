@@ -1,9 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
 import UserContext from "../context/context.js";
-import { auth, db, storage } from "../../config/fbConfig";
+import { db, storage } from "../../config/fbConfig";
 
 import { ReactComponent as CloseIcon } from "../../assets/close.svg";
 import { ReactComponent as CameraIcon } from "../../assets/camera-icon.svg";
+
 const Editor = (props) => {
 	const { header, bio, website, toggle } = props;
 	const { userImage, userName, userID } = useContext(UserContext);
@@ -64,7 +65,7 @@ const Editor = (props) => {
 						"state_changed",
 
 						// how it's going
-						(snapshot) => {},
+						() => {},
 
 						// how it goofed it
 						(error) => {
