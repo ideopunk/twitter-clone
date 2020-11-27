@@ -1,4 +1,4 @@
-import React, { useContext, Suspense, lazy, useEffect } from "react";
+import React, { useContext, Suspense, lazy } from "react";
 import { Switch, Route, useLocation } from "react-router-dom";
 import LoginPrompt from "./LoginPrompt";
 import LoaderContainer from "./reusables/LoaderContainer";

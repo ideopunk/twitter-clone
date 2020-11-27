@@ -33,8 +33,6 @@ const Feed = (props) => {
 		//tweet has been replied to. Don't let it come through again.
 
 		const tweets = sortedTweets.map((tweet) => {
-			console.log(tweet.text)
-			console.log(tweet.timeStamp.toDate())
 			return (
 				<Tweet
 					key={tweet.id}

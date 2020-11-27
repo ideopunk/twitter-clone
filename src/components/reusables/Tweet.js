@@ -203,7 +203,6 @@ const Tweet = (props) => {
 
 	// get picture for tweet, set to Leaf if no picture found.
 	useEffect(() => {
-		console.log("picture use effect");
 		let mounted = true;
 
 		if (mounted) {
@@ -217,9 +216,6 @@ const Tweet = (props) => {
 					console.log(err);
 					setImage(Leaf);
 				});
-			console.log(time + text);
-			console.log(time.toDate())
-			console.log(new Date(time.seconds * 1000));
 
 			//set how long ago the tweet was
 			if (time && !big) {

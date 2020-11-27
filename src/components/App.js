@@ -14,7 +14,7 @@ const Main = lazy(() => import("./Main"));
 const App = () => {
 	const [userID, setUserID] = useState(null);
 	const [userData, setUserData] = useState({});
-	const [width, setWidth] = useState(767)
+	const [width, setWidth] = useState(767);
 
 	// listen for auth status changes
 	useEffect(() => {
@@ -57,6 +57,31 @@ const App = () => {
 		});
 
 		return () => unsubscribe();
+	}, []);
+
+	useEffect(() => {
+		const handleResize = () => {
+			const width = window.innerWidth;
+			console.log("width is", width);
+			switch (width) {
+				case width > 767 && width < 992:
+					setWidth("tablet");
+					break;
+				case width < 767:
+					setWidth("mobile");
+					break;
+				case width > 991:
+					setWidth("comp");
+					break;
+				default:
+					setWidth("tablet");
+			}
+		};
+
+		handleResize();
+
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener("reize", handleResize);
 	}, []);
 
 	return (
