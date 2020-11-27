@@ -3,7 +3,7 @@ import { Link, Switch, Route, useRouteMatch, NavLink } from "react-router-dom";
 import ProfileFeed from "./reusables/ProfileFeed";
 import LikeFeed from "./reusables/LikeFeed";
 import { db, storage } from "../config/fbConfig";
-import UserContext from "./context/context.js";
+import UserContext from "./context/userContext.js";
 import { ReactComponent as SideArrow } from "../assets/side-arrow-icon.svg";
 import Cover from "./reusables/Cover";
 import Editor from "./reusables/Editor";

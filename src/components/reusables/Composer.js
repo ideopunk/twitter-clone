@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { ReactComponent as Picture } from "../../assets/picture-icon.svg";
 import { ReactComponent as Close } from "../../assets/close.svg";
-import UserContext from "../context/context.js";
+import UserContext from "../context/userContext.js";
 import ComposerCircle from "./ComposerCircle";
 import LoaderContainer from "./LoaderContainer";
 import { ReactComponent as CloseIcon } from "../../assets/close.svg";

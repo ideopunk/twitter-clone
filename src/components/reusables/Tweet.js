@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, lazy, Suspense } from "react";
 import { Link, useLocation, useHistory } from "react-router-dom";
 
 import { db, storage } from "../../config/fbConfig";
-import UserContext from "../context/context.js";
+import UserContext from "../context/userContext.js";
 import Leaf from "../../assets/leaf-outline.svg";
 import LoaderContainer from "./LoaderContainer";
 import DeadTweet from "./DeadTweet";

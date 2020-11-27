@@ -3,7 +3,7 @@ import { NavLink, useHistory, useLocation, useParams, useRouteMatch } from "reac
 import { db, auth } from "../config/fbConfig";
 import Composer from "./reusables/Composer";
 import Cover from "./reusables/Cover";
-import UserContext from "./context/context.js";
+import UserContext from "./context/userContext.js";
 
 import fish from "../assets/fish-outline.svg";
 import { ReactComponent as HomeOutlineIcon } from "../assets/home-outline.svg";
@@ -69,7 +69,7 @@ const Menu = (props) => {
 
 	// freeze if modal up
 	useEffect(() => {
-		console.log('menu')
+		console.log("menu");
 
 		const body = document.body;
 		const scroll = window.scrollY;

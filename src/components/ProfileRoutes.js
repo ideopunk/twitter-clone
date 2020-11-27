@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, Switch, Route, useRouteMatch, NavLink } from "react-router-dom";
 import { db } from "../config/fbConfig";
-import UserContext from "./context/context.js";
+import UserContext from "./context/userContext.js";
 import LoaderContainer from "./reusables/LoaderContainer";
 import ProfileMain from "./ProfileMain";
 import ProfileFollows from "./ProfileFollows";
@@ -16,13 +16,13 @@ const ProfileRoutes = () => {
 	const [userProfile, setUserProfile] = useState(null);
 	const [profileID, setProfileID] = useState(null);
 
-	// figure out if this is a real user. If not, 404 them. 
+	// figure out if this is a real user. If not, 404 them.
 	useEffect(() => {
 		if (userAt === urlAt) {
 			setProfileID(userID);
 			setUserProfile(true);
 		} else {
-			setUserProfile(false)
+			setUserProfile(false);
 			db.collection("users")
 				.where("at", "==", urlAt)
 				.get()

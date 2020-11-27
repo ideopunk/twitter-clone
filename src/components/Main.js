@@ -8,7 +8,8 @@ import SearchResults from "./SearchResults";
 import LoginCard from "./reusables/LoginCard";
 import FollowSuggests from "./reusables/FollowSuggests";
 import TOS from "./reusables/TOS";
-import UserContext from "./context/context.js";
+import UserContext from "./context/userContext.js";
+import DeviceContext from "./context/deviceContext.js";
 
 const Home = lazy(() => import("./Home"));
 const ProfileRoutes = lazy(() => import("./ProfileRoutes"));

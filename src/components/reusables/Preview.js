@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext, Suspense } from "react";
 import { db, storage } from "../../config/fbConfig";
 import { Link, useHistory } from "react-router-dom";
-import UserContext from "../context/context.js";
+import UserContext from "../context/userContext.js";
 import FollowButton from "./FollowButton";
 import Leaf from "../../assets/leaf-outline.svg";
 

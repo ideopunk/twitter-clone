@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import UserContext from "../context/context.js";
+import UserContext from "../context/userContext.js";
 import { db, storage } from "../../config/fbConfig";
 
 import { ReactComponent as CloseIcon } from "../../assets/close.svg";
@@ -108,7 +108,7 @@ const Editor = (props) => {
 	};
 
 	return (
-		<form className="modal" onSubmit={handleSubmit} style={{top: "2rem"}}>
+		<form className="modal" onSubmit={handleSubmit} style={{ top: "2rem" }}>
 			<div className="modal-header">
 				<CloseIcon onClick={() => toggle()} />
 				<h3>Edit profile</h3>

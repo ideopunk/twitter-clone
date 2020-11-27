@@ -4,7 +4,7 @@ import { storage } from "../../config/fbConfig";
 import Leaf from "../../assets/leaf-outline.svg";
 import PreviewLink from "./Preview";
 import FollowButton from "./FollowButton";
-import UserContext from "../context/context.js";
+import UserContext from "../context/userContext.js";
 
 const AccountCard = (props) => {
 	const { bio, id, name, at } = props;

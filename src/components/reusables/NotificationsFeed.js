@@ -6,7 +6,7 @@ import { ReactComponent as LikeFilled } from "../../assets/like-icon-filled.svg"
 import { ReactComponent as ProfileFilled } from "../../assets/profile-filled.svg";
 import { ReactComponent as Retweet } from "../../assets/retweet-icon.svg";
 
-import UserContext from "../context/context.js";
+import UserContext from "../context/userContext.js";
 import LoaderContainer from "../reusables/LoaderContainer";
 import Tweet from "./Tweet";
 

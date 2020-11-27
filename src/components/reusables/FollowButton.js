@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, lazy, Suspense } from "react";
-import UserContext from "../context/context.js";
+import UserContext from "../context/userContext.js";
 import LoaderContainer from "./LoaderContainer.js";
 const Cover = lazy(() => import("./Cover"));
 const Warning = lazy(() => import("./Warning"));

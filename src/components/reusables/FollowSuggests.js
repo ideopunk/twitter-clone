@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import UserContext from "../context/context.js";
+import UserContext from "../context/userContext.js";
 import { db } from "../../config/fbConfig";
 import AccountCard from "./AccountCard";
 
@@ -37,7 +37,7 @@ const FollowSuggest = () => {
 	}, [userFollows, userID]);
 
 	return (
-		<div className={`follow-suggest side-box ${!array.length > 0? "hide" : ""}`}>
+		<div className={`follow-suggest side-box ${!array.length > 0 ? "hide" : ""}`}>
 			<h3 className="side-box-title">Who to follow</h3>
 			{array}
 		</div>

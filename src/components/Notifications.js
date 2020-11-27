@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { db } from "../config/fbConfig";
-import UserContext from "./context/context.js";
+import UserContext from "./context/userContext.js";
 import NotificationsFeed from "./reusables/NotificationsFeed";
 
 const Notifications = () => {
