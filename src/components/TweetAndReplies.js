@@ -62,7 +62,6 @@ const TweetAndReplies = (props) => {
 					<h3 className="no-dec">Tweet</h3>
 				</div>
 			</Link>
-			<div style={{ height: "3.5rem" }}></div>
 			<Tweet
 				key={mainTweet.id}
 				tweetID={mainTweet.id}

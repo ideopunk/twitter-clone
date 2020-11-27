@@ -203,7 +203,7 @@ const Tweet = (props) => {
 
 	// get picture for tweet, set to Leaf if no picture found.
 	useEffect(() => {
-		"picture use effect";
+		console.log("picture use effect");
 		let mounted = true;
 
 		if (mounted) {
@@ -217,19 +217,22 @@ const Tweet = (props) => {
 					console.log(err);
 					setImage(Leaf);
 				});
+			console.log(time + text);
+			console.log(time.toDate())
+			console.log(new Date(time.seconds * 1000));
 
 			//set how long ago the tweet was
 			if (time && !big) {
 				import("../functions/elapser.js").then((elapser) =>
 					setTimeSince(elapser.default(time))
 				);
-			} else if (time && big) {
+			} else if (time) {
 				setTimeSince(new Date(time.seconds * 1000).toDateString());
 			}
 		}
 
 		return () => (mounted = false);
-	}, [tweeterID, time, big]);
+	}, [tweeterID, time, text, big]);
 
 	const toggleDropdown = (e) => {
 		e.stopPropagation();

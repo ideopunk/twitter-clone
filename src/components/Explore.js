@@ -36,6 +36,8 @@ const Explore = () => {
 				// don't include replies
 				snapshot.forEach((doc) => {
 					if (!doc.data().replyTo) {
+						console.log(doc.data().text)
+						console.log(doc.data().timeStamp.toDate())
 						tempArray.push({ ...doc.data(), id: doc.id });
 					}
 				});
