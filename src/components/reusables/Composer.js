@@ -208,7 +208,7 @@ const Composer = (props) => {
 			)}
 			<div
 				className={modal ? "composer" : "flex"}
-				style={{ paddingTop: replyData ? "3px" : "0rem" }}
+				style={{ paddingTop: replyData ? "3px" : "0rem", border: modal? "0" : "" }}
 			>
 				<Link to={`/${userAt}`} className={`profile-image`}>
 					<img src={userImage} alt="user-profile" className="profile-image" />

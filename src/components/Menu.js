@@ -6,7 +6,7 @@ import Cover from "./reusables/Cover";
 import UserContext from "./context/userContext.js";
 import DeviceContext from "./context/deviceContext.js";
 
-import fish from "../assets/fish-outline.svg";
+import { ReactComponent as Fish } from "../assets/fish.svg";
 import { ReactComponent as HomeOutlineIcon } from "../assets/home-outline.svg";
 import { ReactComponent as HomeFilled } from "../assets/home-filled.svg";
 import { ReactComponent as ExploreIcon } from "../assets/explore-outline.svg";
@@ -116,7 +116,7 @@ const Menu = () => {
 							style={{ width: "3.25rem" }}
 						>
 							<span className="menu-icon" style={{ margin: "0" }}>
-								<img className="menu-logo" src={fish} alt="fish" />
+								<Fish />
 							</span>
 						</NavLink>
 					</li>
@@ -200,15 +200,21 @@ const Menu = () => {
 					)}
 				</li>
 				{userID && (
-					<li style={{ marginTop: device !== "mobile" ? "auto" : ""}}>
+					<li style={{ marginTop: device !== "mobile" ? "auto" : "" }}>
 						<button className="menu-profile-button" onClick={signOut}>
-							{device !== "mobile" && <>
-							<img src={userImage} alt="user-profile" className="profile-image" />
-							<div className="menu-profile-button-text">
-								<p>{userName}</p>
-								<p className="grey">@{userAt}</p>
-							</div>
-							</>}
+							{device !== "mobile" && (
+								<>
+									<img
+										src={userImage}
+										alt="user-profile"
+										className="profile-image"
+									/>
+									<div className="menu-profile-button-text">
+										<p>{userName}</p>
+										<p className="grey">@{userAt}</p>
+									</div>
+								</>
+							)}
 							<PowerIcon className="menu-icon power-button" />
 						</button>
 					</li>

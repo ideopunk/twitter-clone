@@ -6,12 +6,13 @@
 	padding: 1rem 2rem 1rem 8rem;
 	width: 400px;
 	height: 100vh;
+	position: fixed;
+
 }
 
 @media (max-width: 767px) {
 	.menu {
 		border-top: $siteborder;
-		position: fixed;
 		top: 92vh;
 		height: 8vh;
 		flex-direction: row;
@@ -27,6 +28,7 @@
 
 .menu-logo {
 	fill: $sitecolor;
+	color: $sitecolor;
 }
 
 .menu-item {
