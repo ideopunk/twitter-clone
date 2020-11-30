@@ -73,8 +73,6 @@ const Menu = () => {
 
 	// freeze if modal up
 	useEffect(() => {
-		console.log("menu");
-
 		const body = document.body;
 		const scroll = window.scrollY;
 

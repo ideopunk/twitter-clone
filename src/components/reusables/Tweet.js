@@ -54,6 +54,10 @@ const Tweet = (props) => {
 		noOriginal,
 	} = props;
 
+	useEffect(() => {
+		console.log(text);
+	}, [text]);
+
 	const { userID, userAt, userLikes, userFollows, userTweets, userRetweets } = useContext(
 		UserContext
 	);
@@ -108,8 +112,8 @@ const Tweet = (props) => {
 							);
 						}
 					} else {
-						console.log("dead tweet");
 						if (mounted) {
+							console.log("dead tweet");
 							setOriginalTweet(<DeadTweet />);
 						}
 					}
@@ -352,7 +356,11 @@ const Tweet = (props) => {
 					</PreviewLink>
 				)}
 
-				<div className={`tweet-inside ${big ? "big-tweet-inside" : ""} ${original ? "grey-line" : ""}`}>
+				<div
+					className={`tweet-inside ${big ? "big-tweet-inside" : ""} ${
+						original ? "grey-line" : ""
+					}`}
+				>
 					{big ? (
 						<div className="tweet-top-data pad">
 							<PreviewLink to={`/${at}`}>
@@ -398,10 +406,7 @@ const Tweet = (props) => {
 							</div>
 						</div>
 					) : image ? (
-						<PreviewLink
-							to={`/${at}`}
-							className={`profile-image `}
-						>
+						<PreviewLink to={`/${at}`} className={`profile-image `}>
 							<img
 								className={`profile-image `}
 								alt="user-profile"

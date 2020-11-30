@@ -21,7 +21,6 @@ const Hashtag = lazy(() => import("./Hashtag"));
 const Main = () => {
 	const { userID } = useContext(UserContext);
 	const { device } = useContext(DeviceContext);
-	console.log(device);
 	const location = useLocation();
 
 	return (

@@ -20,7 +20,6 @@ const Explore = () => {
 	}, []);
 
 	useEffect(() => {
-		console.log("explore use effect")
 
 		setTweetDatas([]);
 
@@ -33,7 +32,6 @@ const Explore = () => {
 				const changes = snapshot.docChanges();
 
 				changes.forEach((change) => {
-					console.log(change.type);
 					const doc = change.doc;
 
 					if (change.type === "removed") {
@@ -44,8 +42,6 @@ const Explore = () => {
 				// don't include replies
 				snapshot.forEach((doc) => {
 					if (!doc.data().replyTo) {
-						console.log(doc.data().text)
-						console.log(doc.data().timeStamp.toDate())
 						tempArray.push({ ...doc.data(), id: doc.id });
 					}
 				});

@@ -62,7 +62,6 @@ const App = () => {
 	useEffect(() => {
 		const handleResize = () => {
 			const width = window.innerWidth;
-			console.log("width is", width);
 			if (width > 991) {
 				setWidth("comp");
 			} else if (width > 767) {

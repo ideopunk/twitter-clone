@@ -38,10 +38,6 @@ const ProfileRoutes = () => {
 		}
 	}, [urlAt, userID, userAt]);
 
-	useEffect(() => {
-		console.log(profileID);
-	}, [profileID]);
-
 	return (
 		<div className="profile center-feed">
 			{profileID ? (

@@ -31,9 +31,7 @@ const ProfileFeed = (props) => {
 				let deletionArray = [];
 				const changes = snapshot.docChanges();
 				changes.forEach((change) => {
-					console.log(change);
 					const doc = change.doc;
-					console.log(change.type);
 					if (change.type === "removed") {
 						deletionArray.push(doc.id);
 					}
@@ -70,7 +68,6 @@ const ProfileFeed = (props) => {
 				const changes = snapshot.docChanges();
 				changes.forEach((change) => {
 					const doc = change.doc;
-					console.log(doc.data().timeStamp);
 					if (change.type === "removed") {
 						deletionArray.push(doc.id);
 					}
@@ -89,13 +86,9 @@ const ProfileFeed = (props) => {
 				// get rid of duplicates??
 				setTweetDatas((t) => {
 					const IDs = tempArray.map((doc) => doc.id);
-					console.log(IDs);
-					console.log(t.length);
 					const newT = t.filter((doc) => {
-						console.log(doc.id);
 						return !IDs.includes(doc.id);
 					});
-					console.log(newT.length);
 					return [...newT, ...tempArray].filter(
 						(doc) => !deletionArray.includes(doc.id) // for sure don't include deleted tweets!
 					);

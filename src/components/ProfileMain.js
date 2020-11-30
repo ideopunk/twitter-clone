@@ -122,8 +122,6 @@ const ProfileMain = (props) => {
 	// freeze if modal up
 
 	useEffect(() => {
-		console.log("profmain");
-
 		const body = document.body;
 		const scroll = window.scrollY;
 
