@@ -126,6 +126,12 @@
 	justify-content: flex-end;
 }
 
+@media (max-width: 767px) {
+	.form-length {
+		margin-bottom: 0.25rem;
+	}
+}
+
 .form-length > * {
 	padding: 0.5rem;
 }
@@ -146,9 +152,10 @@
 	margin-right: auto;
 	margin-bottom: auto;
 	margin-top: auto;
-	width: 18%;
+	width: fit-content;
 	height: 20%;
-	justify-content: space-around;
+	justify-content: center;
+	text-align: center;
 	align-items: center;
 	fill: white;
 	background-color: grey;

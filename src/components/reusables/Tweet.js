@@ -473,7 +473,7 @@ const Tweet = (props) => {
 
 						{imageCount ? (
 							imageCount > 1 ? (
-								<div className="preview-images">
+								<div className={`preview-images ${big ? "pad" : ""}`}>
 									<div className="preview-images-half">
 										{pics.slice(0, Math.round(pics.length / 2))}
 									</div>
@@ -482,7 +482,7 @@ const Tweet = (props) => {
 									</div>
 								</div>
 							) : (
-								<div className="preview-images">{pics}</div>
+								<div className={`preview-images ${big ? "pad" : ""}`}>{pics}</div>
 							)
 						) : (
 							""
@@ -571,7 +571,12 @@ const Tweet = (props) => {
 				{modal ? (
 					<Suspense fallback={<LoaderContainer />}>
 						<Cover toggle={() => setModal("")}>
-							<UsersList type={modal} tweetID={tweetID} clear={() => setModal("")} />{" "}
+							<UsersList
+								type={modal}
+								tweetID={tweetID}
+								noBio={true}
+								clear={() => setModal("")}
+							/>{" "}
 						</Cover>
 					</Suspense>
 				) : (

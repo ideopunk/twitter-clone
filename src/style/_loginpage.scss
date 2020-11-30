@@ -1,3 +1,8 @@
+.login-container * {
+    -webkit-appearance: none;
+    border-radius: 0;
+}
+
 .login-container {
     width: 100%;
     display: flex;
@@ -13,8 +18,16 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    row-gap: 1rem;
+}
 
+.login-page > * {
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 767px) {
+    .login-page {
+        width: 80%;
+    }
 }
 
 .login-form {
@@ -23,5 +36,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    row-gap: 1rem;
+}
+
+.login-form > * {
+    margin-bottom: 1rem;
+}
+
+.file-input {
+    display: flex;
+    align-items: center;
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import fish from "../assets/fish-outline.svg";
+import fish from "../assets/fish.svg";
 import { auth } from "../config/fbConfig";
 
 const LoginPage = () => {
@@ -27,7 +27,7 @@ const LoginPage = () => {
 				setPassword("");
 			})
 			.catch((err) => {
-				console.log(err);	
+				console.log(err);
 				if (err.code === "auth/wrong-password") {
 					setError("I think you got your password wrong!!");
 				} else if (err.code === "auth/user-not-found") {
@@ -41,10 +41,10 @@ const LoginPage = () => {
 	return (
 		<div className="login-container">
 			<div className="login-page">
-				<span className="menu-icon">
+				<span className="menu-icon" style={{textAlign: "center"}}>
 					<img
 						className="menu-logo"
-						style={{ marginBottom: "2rem" }}
+						style={{ marginBottom: "2rem"}}
 						src={fish}
 						alt="fish"
 					/>
@@ -61,6 +61,7 @@ const LoginPage = () => {
 						<span className="form-name">Email</span>
 						<input
 							className="form-input"
+							type="email"
 							maxLength={50}
 							required
 							onChange={(e) => handleEmailChange(e)}
@@ -87,7 +88,9 @@ const LoginPage = () => {
 						value="Log in"
 					/>
 					<div>
-						<Link to="signup">Sign up for Fake Twitter</Link>
+						<Link to="signup" className="hover-under">
+							Sign up for Fake Twitter
+						</Link>
 					</div>
 				</form>
 			</div>

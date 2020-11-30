@@ -85,6 +85,12 @@
 		margin: 0;
 		fill: $sitegrey;
 	}
+
+	.modal .menu-icon {
+		width: 1.6rem;
+		fill: $sitecolor;
+		margin-right: 1.5rem;
+	}
 }
 
 .menu-profile-button {
@@ -185,6 +191,8 @@
 	}
 
 	.home-notice {
+		top: -15%;
+		left: 60%;
 	}
 }
 

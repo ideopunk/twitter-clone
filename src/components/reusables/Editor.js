@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import UserContext from "../context/userContext.js";
+import DeviceContext from "../context/deviceContext.js";
 import { db, storage } from "../../config/fbConfig";
 
 import { ReactComponent as CloseIcon } from "../../assets/close.svg";
@@ -8,26 +9,27 @@ import { ReactComponent as CameraIcon } from "../../assets/camera-icon.svg";
 const Editor = (props) => {
 	const { header, bio, website, toggle } = props;
 	const { userImage, userName, userID } = useContext(UserContext);
+	const { device } = useContext(DeviceContext);
 
 	const [name, setName] = useState(userName);
 	const [newBio, setNewBio] = useState(bio);
 	const [newWebsite, setNewWebsite] = useState(website);
 	const [newProPic, setNewProPic] = useState(userImage);
 	const [newHeader, setNewHeader] = useState(header);
-	const [previewProPic, setPreviewProPic] = useState(userImage)
-	const [previewHeader, setPreviewHeader] = useState(header)
+	const [previewProPic, setPreviewProPic] = useState(userImage);
+	const [previewHeader, setPreviewHeader] = useState(header);
 
 	useEffect(() => {
 		if (newProPic !== userImage) {
-			setPreviewProPic(URL.createObjectURL(newProPic))
+			setPreviewProPic(URL.createObjectURL(newProPic));
 		}
-	}, [newProPic, userImage])
+	}, [newProPic, userImage]);
 
 	useEffect(() => {
 		if (newHeader !== header) {
-			setPreviewHeader(URL.createObjectURL(newHeader))
+			setPreviewHeader(URL.createObjectURL(newHeader));
 		}
-	}, [newHeader, header])
+	}, [newHeader, header]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -109,7 +111,11 @@ const Editor = (props) => {
 	};
 
 	return (
-		<form className="modal" onSubmit={handleSubmit} style={{ top: "2rem" }}>
+		<form
+			className="modal"
+			onSubmit={handleSubmit}
+			style={{ top: device === "mobile" ? "0" : "2rem" }}
+		>
 			<div className="modal-header">
 				<CloseIcon onClick={() => toggle()} />
 				<h3>Edit profile</h3>
@@ -126,25 +132,17 @@ const Editor = (props) => {
 				/>
 			</div>
 			<div className="header-container">
-				<img
-					src={previewHeader}
-					className="profile-header-image"
-					alt="header"
-				/>
+				<img src={previewHeader} className="profile-header-image" alt="header" />
 				<div className="header-icons">
 					<label htmlFor="header-input">
-						<CameraIcon />
+						<CameraIcon style={{margin: "0.5rem"}}/>
 					</label>
 					<input id="header-input" type="file" onChange={handleHeaderPicChange} />
 				</div>
 			</div>
 			<div className="edit-form-text">
 				<div>
-					<img
-						src={previewProPic}
-						className="main-image"
-						alt="profile"
-					/>
+					<img src={previewProPic} className="main-image" alt="profile" />
 					<label htmlFor="profile-pic-input">
 						<CameraIcon className="main-image main-image-camera" />
 					</label>

@@ -125,7 +125,7 @@ const SignupPage = () => {
 				<form className="login-form" onSubmit={(e) => handleSubmit(e)}>
 					<label className="form-label">
 						<span className="form-name">Profile picture</span>
-						<input className="form-input" type="file" onChange={handleFileChange} />
+						<input className="form-input file-input" type="file" onChange={handleFileChange} />
 					</label>
 					<label className="form-label">
 						<span className="form-name">At</span>

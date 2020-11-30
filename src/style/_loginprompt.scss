@@ -10,6 +10,14 @@
 	z-index: 1;
 }
 
+
+@media (max-width: 767px) {
+	.login-prompt {
+		padding: 0.5rem;
+		box-sizing: border-box;
+	}
+}
+
 .login-prompt-text {
 	height: 100%;
 	display: flex;
@@ -21,6 +29,14 @@
 	display: flex;
 	width: 12rem;
 	justify-content: space-between;
+}
+
+@media (max-width: 767px) {
+	.login-prompt-buttons {
+		width: 300px;
+		padding-left: 1rem;
+		box-sizing: border-box;
+	}
 }
 
 .lg-btn {

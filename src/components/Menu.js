@@ -178,7 +178,7 @@ const Menu = () => {
 						</NavLink>
 					</li>
 				)}
-				{device !== "mobile" && userID && (
+				{device !== "mobile" && (
 					<li>
 						<div className="menu-item" onClick={toggleDropdown}>
 							<MoreIcon />
@@ -196,7 +196,13 @@ const Menu = () => {
 							Tweet
 						</button>
 					) : (
-						<ComposerIcon style={{ margin: "0", fill: "white" }} />
+						<ComposerIcon
+							style={{
+								margin: "0",
+								fill: "white",
+							}}
+							onClick={toggleComposer}
+						/>
 					)}
 				</li>
 				{userID && (

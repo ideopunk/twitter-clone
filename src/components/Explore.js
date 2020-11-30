@@ -1,12 +1,16 @@
 import React, { useEffect, useState, useContext } from "react";
 import { db } from "../config/fbConfig";
 import DeviceContext from "./context/deviceContext.js";
+import UserContext from "./context/userContext.js";
+
 import Feed from "./reusables/Feed";
 import LoaderContainer from "./reusables/LoaderContainer";
 import Search from "./reusables/Search";
 import MobileProfileLink from "./reusables/MobileProfileLink";
 
 const Explore = () => {
+	const { userID } = useContext(UserContext);
+
 	const { device } = useContext(DeviceContext);
 
 	const [tweetDatas, setTweetDatas] = useState([]);
@@ -54,7 +58,7 @@ const Explore = () => {
 
 	return (
 		<div className="center-feed">
-			<div className="pad top-link">{device === "mobile" && <MobileProfileLink />}
+			<div className="pad top-link">{device === "mobile" && userID && <MobileProfileLink />}
 				<Search className="pad" />
 			</div>
 			{tweetDatas.length ? <Feed tweetDatas={tweetDatas} /> : <LoaderContainer />}

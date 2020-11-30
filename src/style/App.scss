@@ -37,6 +37,11 @@ textarea {
 	box-sizing: border-box;
 }
 
+@media (max-width: 767px) {
+	.App {
+		padding-bottom: 8vh;
+	}
+}
 .main {
 	display: flex;
 	width: 100%;
@@ -59,8 +64,13 @@ h3 {
 	color: white;
 	background-color: $sitecolor;
 	border: 1px solid transparent;
-	border-radius: 9999px;
 	transition: $lighttransition;
+	border-radius: 9999px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    -webkit-appearance: none;
+
 }
 
 .btn:hover {
@@ -123,6 +133,14 @@ h3 {
 	z-index: 20;
 	animation: $fastanimation;
 	// overflow: hidden;
+}
+
+@media (max-width: 767px) {
+	* > .modal {
+		width: 90%;
+		top: 0;
+		overflow: scroll;
+	}
 }
 
 .modal-header {

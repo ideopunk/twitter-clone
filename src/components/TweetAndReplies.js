@@ -24,8 +24,7 @@ const TweetAndReplies = (props) => {
 	useEffect(() => {
 		db.collection("tweets")
 			.doc(tweetID)
-			.get()
-			.then((doc) => {
+			.onSnapshot((doc) => {
 				setMainTweet({ ...doc.data(), id: doc.id });
 			});
 	}, [tweetID]);
@@ -34,16 +33,13 @@ const TweetAndReplies = (props) => {
 	useEffect(() => {
 		db.collection("tweets")
 			.where("replyTo", "==", tweetID)
-			.get()
-			.then((snapshot) => {
+			.onSnapshot((snapshot) => {
 				let tempArray = [];
 				snapshot.forEach((doc) => {
 					// don't include replies
 					tempArray.push({ ...doc.data(), id: doc.id });
 				});
-				return tempArray;
-			})
-			.then((tempArray) => {
+
 				setTweetDatas(tempArray);
 			});
 	}, [tweetID]);
@@ -80,7 +76,7 @@ const TweetAndReplies = (props) => {
 			/>
 			{mainTweet.replies && (
 				<Suspense fallback={<LoaderContainer />}>
-					<Feed tweetDatas={tweetDatas} noOriginal={true}/>
+					<Feed tweetDatas={tweetDatas} noOriginal={true} />
 				</Suspense>
 			)}
 		</div>

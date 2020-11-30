@@ -10,6 +10,19 @@
 	overflow: hidden;
 }
 
+@media (max-width: 767px) {
+	.composer {
+		overflow: scroll
+	}
+	
+	.modal {
+		top: 0;
+		width: 100vw;
+		height: 100vh;
+		border-radius: 0;
+	}
+}
+
 .composer > * {
 	width: 100%;
 }
@@ -48,7 +61,6 @@
 	caret-color: black;
 }
 
-
 .composer-mask {
 	position: absolute;
 	top: 0;
@@ -61,7 +73,7 @@
 }
 
 .composer-options {
-	padding: 0.5rem 0 0 0 ;
+	padding: 0.5rem 0 0 0;
 	display: flex;
 	width: 100%;
 	// justify-content: flex-start;
@@ -142,13 +154,26 @@ circle {
 	flex-basis: auto;
 	flex-shrink: 0;
 	flex-direction: row;
-	gap: 0.5rem;
 	align-items: stretch;
+	gap: 0.5rem;
 	min-height: fit-content;
 	max-height: 284px;
-	padding: 0.75rem;
+	// padding: 0.75rem;
 }
 
+@media (max-width: 767px) {
+	.preview-images {
+		gap: 0;
+		max-height: 142px;
+	}
+
+	.preview-images > * {
+		margin: 0.5rem;
+	}
+	.preview-images-half {
+		max-height: 142px;
+	}
+}
 .preview-images-half {
 	flex: 1;
 	height: 284px;
