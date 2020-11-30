@@ -149,7 +149,7 @@ const ProfileMain = (props) => {
 		<>
 			<Link to="/" className="top-link" style={{ textDecoration: "none", color: "black" }}>
 				<SideArrow />
-				<div className="top-link-text">
+				<div className="top-link-text" style={{paddingLeft: "2rem"}}>
 					<h3 className="no-dec">{profileData.name}</h3>
 					<p className="grey">{profileData.tweetAmount} tweets</p>
 				</div>
@@ -185,7 +185,7 @@ const ProfileMain = (props) => {
 							/>
 						)
 					)}
-					<div style={{ height: "3.5rem" }}></div>
+					<div style={{ height: "3.5rem", margin: 0 }}></div>
 
 					<h3>{profileData.name}</h3>
 					<p className="grey">

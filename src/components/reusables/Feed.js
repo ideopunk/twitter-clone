@@ -5,7 +5,7 @@ import Tweet from "./Tweet";
 const Toast = lazy(() => import("./Toast"));
 
 const Feed = (props) => {
-	const { tweetDatas, getReplies } = props;
+	const { tweetDatas, getReplies, noOriginal } = props;
 
 	const [uniqueTweets, setUniqueTweets] = useState([]);
 	const [deleteToast, setDeleteToast] = useState(false);
@@ -51,13 +51,14 @@ const Feed = (props) => {
 					change={tweet.change}
 					deleteToast={setDeleteToast}
 					checkReply={checkReply}
+					noOriginal={noOriginal}
 				/>
 			);
 		});
 
 		
 		setUniqueTweets(tweets);
-	}, [tweetDatas, getReplies]);
+	}, [tweetDatas, getReplies, noOriginal]);
 
 	// remove the reply duplicates
 	useEffect(() => {

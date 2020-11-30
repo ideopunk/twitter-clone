@@ -1,9 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
+import DeviceContext from "./context/deviceContext.js";
 import { db } from "../config/fbConfig";
 import UserContext from "./context/userContext.js";
 import NotificationsFeed from "./reusables/NotificationsFeed";
+import MobileProfileLink from "./reusables/MobileProfileLink";
 
 const Notifications = () => {
+	const { device } = useContext(DeviceContext);
 	const { userID } = useContext(UserContext);
 
 	const [notifications, setNotifications] = useState([]);
@@ -26,7 +29,7 @@ const Notifications = () => {
 
 	return (
 		<div className="home center-feed">
-			<h3 className="top-link">Notifications</h3>
+			<h3 className="top-link">{device === "mobile" && <MobileProfileLink />}Notifications</h3>
 			<NotificationsFeed notifications={notifications} />
 		</div>
 	);

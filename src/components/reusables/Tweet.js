@@ -51,6 +51,7 @@ const Tweet = (props) => {
 		original,
 		checkReply,
 		deleteToast,
+		noOriginal,
 	} = props;
 
 	const { userID, userAt, userLikes, userFollows, userTweets, userRetweets } = useContext(
@@ -71,7 +72,7 @@ const Tweet = (props) => {
 	useEffect(() => {
 		let mounted = true;
 
-		if (replyTo) {
+		if (replyTo && !noOriginal) {
 			db.collection("tweets")
 				.doc(replyTo)
 				.get()
@@ -115,7 +116,7 @@ const Tweet = (props) => {
 				});
 		}
 		return () => (mounted = false);
-	}, [big, replyTo, deleteToast, checkReply]);
+	}, [big, replyTo, deleteToast, checkReply, noOriginal]);
 
 	const hashedText = reactStringReplace(text, /(#\w+)/g, (match, i) => (
 		<Link
@@ -344,7 +345,7 @@ const Tweet = (props) => {
 			>
 				{retweetedBy && (
 					<PreviewLink to={`/${retweetedBy}`} className="hover-under">
-						<div className="retweeted-by">
+						<div className={`retweeted-by ${big ? "big-retweeted-by" : ""}`}>
 							<Retweet />
 							<p>Retweeted by {retweetedBy}</p>
 						</div>
@@ -372,7 +373,13 @@ const Tweet = (props) => {
 								<p className="tweeter-at">@{at}</p>
 							</PreviewLink>
 
-							<div style={{ marginLeft: "auto", position: "relative" }}>
+							<div
+								style={{
+									marginLeft: "auto",
+									position: "relative",
+									alignSelf: "flex-start",
+								}}
+							>
 								<Dots className="dots grey" onClick={(e) => toggleDropdown(e)} />
 								{dropdown && (
 									<Suspense fallback={<LoaderContainer absolute={true} />}>
@@ -424,7 +431,13 @@ const Tweet = (props) => {
 								>
 									<span className="tweet-time hover-under grey">{timeSince}</span>
 								</Link>
-								<div style={{ marginLeft: "auto", position: "relative" }}>
+								<div
+									style={{
+										marginLeft: "auto",
+										position: "relative",
+										alignSelf: "flex-start",
+									}}
+								>
 									<Dots className="dots" onClick={(e) => toggleDropdown(e)} />
 									{dropdown && (
 										<Suspense fallback={<LoaderContainer absolute={true} />}>

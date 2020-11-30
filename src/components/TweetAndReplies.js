@@ -80,7 +80,7 @@ const TweetAndReplies = (props) => {
 			/>
 			{mainTweet.replies && (
 				<Suspense fallback={<LoaderContainer />}>
-					<Feed tweetDatas={tweetDatas} />
+					<Feed tweetDatas={tweetDatas} noOriginal={true}/>
 				</Suspense>
 			)}
 		</div>

@@ -49,7 +49,7 @@ const Explore = () => {
 	}, []);
 
 	return (
-		<div className="explore center-feed">
+		<div className="center-feed">
 			<div className="pad top-link">
 				<Search className="pad" />
 			</div>

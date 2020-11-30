@@ -156,7 +156,8 @@
 }
 
 .retweeted-by {
-	padding-left: 1.25rem;
+	padding-top: 0.3rem;
+	padding-left: 1.2rem;
 	font-weight: bold;
 	font-size: $smallfont;
 	color: rgb(101, 119, 134);
@@ -164,8 +165,16 @@
 	text-decoration: none;
 	display: flex;
 	align-items: center;
-	column-gap: 1rem;
 	transition: $lighttransition;
+}
+
+.big-retweeted-by {
+	padding-bottom: 0.2rem;
+	padding-left: 2rem;
+}
+
+.retweeted-by > * {
+	margin-right: 1rem;
 }
 
 .reply-tweet::before {
@@ -213,9 +222,13 @@
 	display: flex;
 	align-items: center;
 	padding-left: 1rem;
-	column-gap: 1.5rem;
+	gap: 1.5rem;
 	border-top: $siteborder;
 	height: 3.5rem;
+}
+
+.big-tweet-data > * {
+	margin-right: 1rem;
 }
 
 .hover-under {

@@ -5,6 +5,7 @@
 
 .top-link {
 	display: flex;
+	align-items: center;
 	position: sticky;
 	top: 0vh;
 	z-index: 1;
@@ -20,6 +21,7 @@
 	.top-link {
 		border-right: 0;
 		width: 100%;
+		padding: 0.7rem;
 	}
 }
 
@@ -186,6 +188,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	text-align: center;
 	font-weight: bold;
 	color: $sitegrey;
 	transition: $lighttransition;

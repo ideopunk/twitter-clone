@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { db } from "../config/fbConfig";
+
 import UserContext from "./context/userContext.js";
 import DeviceContext from "./context/deviceContext.js";
 import LoaderContainer from "./reusables/LoaderContainer";
 
 import Composer from "./reusables/Composer";
 import Feed from "./reusables/Feed";
+import MobileProfileLink from "./reusables/MobileProfileLink";
 
 const Home = () => {
 	const { userFollows } = useContext(UserContext);
@@ -58,7 +60,10 @@ const Home = () => {
 
 	return (
 		<div className="home center-feed">
-			<h3 className="top-link">Home</h3>
+			<h3 className="top-link">
+				{device === "mobile" && <MobileProfileLink />}
+				Home
+			</h3>
 			{device === "comp" && <Composer />}
 			{tweetDatas.length ? <Feed tweetDatas={tweetDatas} /> : <LoaderContainer />}
 		</div>

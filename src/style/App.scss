@@ -25,6 +25,9 @@ textarea {
 		"Helvetica Neue", sans-serif;
 	font-size: 15px;
 }
+::-webkit-scrollbar {
+	display: none;
+}
 
 .App {
 	display: flex;
@@ -37,7 +40,7 @@ textarea {
 }
 
 .feed {
-    width: 100%;
+	width: 100%;
 }
 
 h3 {
@@ -171,7 +174,6 @@ h3 {
 	line-height: 2rem;
 }
 
-
 @import "./utilities";
 @import "./loginpage";
 @import "./loginprompt";
@@ -188,16 +190,16 @@ h3 {
 @import "./preview";
 
 .center-feed {
-    width: 600px;
-    border-right: $siteborder;
-    box-sizing: border-box;
-    position: relative;
+	width: 600px;
+	border-right: $siteborder;
+	box-sizing: border-box;
+	position: relative;
 }
 
 @media (max-width: 767px) {
 	.center-feed {
 		border: 0;
-		width: 100%;
+		width: 100vw;
 	}
 }
 
@@ -207,8 +209,6 @@ h3 {
 	box-sizing: border-box;
 	background-color: inherit;
 }
-
-
 
 .toast {
 	position: fixed;
@@ -238,8 +238,6 @@ h3 {
 	box-sizing: border-box;
 }
 
-
-
 .grey-line {
 	position: relative;
 }
@@ -267,7 +265,6 @@ h3 {
 	box-sizing: border-box;
 	animation: $lightanimation;
 	position: relative;
-
 }
 
 .dead-tweet::after {
@@ -281,8 +278,6 @@ h3 {
 	z-index: -1;
 }
 
-
-
 .notification-icon {
 	width: 1.6rem;
 	margin-right: 1rem;
@@ -292,4 +287,11 @@ h3 {
 	.notification-icon {
 		margin: 0;
 	}
+}
+
+.mobile-profile-image {
+	border-radius: 50%;
+	width: 1.65rem;
+	height: 1.65rem;
+	margin-right: 1.85rem;
 }
