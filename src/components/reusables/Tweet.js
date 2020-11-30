@@ -352,7 +352,7 @@ const Tweet = (props) => {
 					</PreviewLink>
 				)}
 
-				<div className={`tweet-inside ${big ? "big-tweet-inside" : ""}`}>
+				<div className={`tweet-inside ${big ? "big-tweet-inside" : ""} ${original ? "grey-line" : ""}`}>
 					{big ? (
 						<div className="tweet-top-data pad">
 							<PreviewLink to={`/${at}`}>
@@ -400,7 +400,7 @@ const Tweet = (props) => {
 					) : image ? (
 						<PreviewLink
 							to={`/${at}`}
-							className={`profile-image ${original ? "grey-line" : ""}`}
+							className={`profile-image `}
 						>
 							<img
 								className={`profile-image `}
