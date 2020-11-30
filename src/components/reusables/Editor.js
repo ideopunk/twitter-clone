@@ -75,6 +75,7 @@ const Editor = (props) => {
 						// how it succeeded
 						() => {
 							console.log("success");
+							toggle()
 						}
 					);
 				}

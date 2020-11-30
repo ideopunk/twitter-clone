@@ -9,7 +9,7 @@ const LoaderContainer = (props) => {
 				color="rgb(29, 242, 161)"
 				height={100}
 				width={100}
-				timeout={30000} //3 secs
+				timeout={3000} //3 secs
 			/>
 		</div>
 	);

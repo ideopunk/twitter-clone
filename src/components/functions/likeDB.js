@@ -13,22 +13,21 @@ const likeDB = (tweet, userID, userLikes) => {
 				notify("like", userID, snapshot.data().userID, tweet);
 			}
 
-			return snapshot.data().likes;
-		})
-		.then((likes) => {
-			return [...(likes || []), userID];
-		})
-		.then((newLikes) => db.collection("tweets").doc(tweet).update({ likes: newLikes }))
-		.then(() => {
-			console.log(`added to tweet's likes`);
-		})
-		.then(() =>
-			db
-				.collection("users")
+			const likes = snapshot.data().likes;
+			const newLikes = [...(likes || []), userID];
+			db.collection("tweets")
+				.doc(tweet)
+				.update({ likes: newLikes })
+				.then(() => {
+					console.log(`added to tweet's likes`);
+				});
+
+			db.collection("users")
 				.doc(userID)
 				.update({ likes: newList })
-				.then(() => console.log("added to user's likes"))
-		);
+				.then(() => console.log("added to user's likes"));
+		})
+		.catch((err) => console.log(err));
 };
 
 export default likeDB;

@@ -10,7 +10,6 @@ import Editor from "./reusables/Editor";
 import FollowButton from "./reusables/FollowButton";
 import EllipsisFilled from "../assets/ellipsis-horizontal.svg";
 import Leaf from "../assets/leaf-outline.svg";
-import LoaderContainer from "./reusables/LoaderContainer";
 
 const ProfileMain = (props) => {
 	const {

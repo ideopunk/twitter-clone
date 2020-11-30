@@ -5,19 +5,22 @@ const unlike = (doomedTweet, userID, userLikes) => {
 		.doc(doomedTweet)
 		.get()
 		.then((snapshot) => {
-			return snapshot.data().likes;
+			const likes = snapshot.data().likes;
+			const newLikes = likes.filter((aLike) => aLike !== userID);
+			db.collection("tweets")
+				.doc(doomedTweet)
+				.update({ likes: newLikes })
+				.then(() => console.log("tweet loses a like"))
+				.catch((err) => console.log(err));
 		})
-		.then((likes) => {
-			return likes.filter((aLike) => aLike !== userID);
-		})
-		.then((newLikes) => db.collection("tweets").doc(doomedTweet).update({ likes: newLikes }))
-		.then(() => console.log("tweet loses a like"));
+		.catch((err) => console.log(err));
 
 	const newList = userLikes.filter((likedTweet) => likedTweet !== doomedTweet);
 	db.collection("users")
 		.doc(userID)
 		.update({ likes: newList })
-		.then(() => console.log("user loses a like"));
+		.then(() => console.log("user loses a like"))
+		.catch((err) => console.log(err));
 };
 
 export default unlike;
