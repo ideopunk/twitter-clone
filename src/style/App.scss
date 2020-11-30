@@ -165,49 +165,18 @@ h3 {
 	border-bottom: 2px solid $sitecolor;
 }
 
-.active {
-	color: $sitecolor;
-	fill: $sitecolor;
-}
-
-.center {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	height: 100%;
-}
-
-.grey {
-	color: $sitegrey;
-	fill: $sitegrey;
-}
-
-.site-color {
-	color: $sitecolor;
-	fill: $sitecolor;
-}
-
 .warning {
 	text-align: center;
 	margin-bottom: 2rem;
 	line-height: 2rem;
 }
 
-.pad {
-	padding: 0.75rem;
-	box-sizing: border-box;
-}
 
-.mrg {
-	margin: 0.75rem;
-}
-
+@import "./utilities";
 @import "./loginpage";
 @import "./loginprompt";
 @import "./logincard";
 @import "./menu";
-@import "./main";
 
 @import "./tos";
 @import "./composer";
@@ -218,11 +187,18 @@ h3 {
 @import "./account";
 @import "./preview";
 
-.no-dec:visited,
-.no-dec:link,
-.no-dec,
-.no-dec:active {
-	text-decoration: none;
+.center-feed {
+    width: 600px;
+    border-right: $siteborder;
+    box-sizing: border-box;
+    position: relative;
+}
+
+@media (max-width: 767px) {
+	.center-feed {
+		border: 0;
+		width: 100%;
+	}
 }
 
 .follow-btn {
@@ -232,21 +208,7 @@ h3 {
 	background-color: inherit;
 }
 
-.hide {
-	display: none;
-}
 
-.transparent {
-	opacity: 0;
-}
-
-.bold {
-	font-weight: bold;
-}
-
-.flex {
-	display: flex;
-}
 
 .toast {
 	position: fixed;
@@ -276,9 +238,7 @@ h3 {
 	box-sizing: border-box;
 }
 
-.no-hov {
-	pointer-events: none;
-}
+
 
 .grey-line {
 	position: relative;
@@ -299,8 +259,6 @@ h3 {
 }
 
 .dead-tweet {
-
-
 	border: $siteborder;
 	background-color: lighten($sitegrey, 50%);
 	border-radius: 10px;
@@ -321,4 +279,17 @@ h3 {
 	top: 100%;
 	left: 1.1rem;
 	z-index: -1;
+}
+
+
+
+.notification-icon {
+	width: 1.6rem;
+	margin-right: 1rem;
+}
+
+@media (max-width: 767px) {
+	.notification-icon {
+		margin: 0;
+	}
 }

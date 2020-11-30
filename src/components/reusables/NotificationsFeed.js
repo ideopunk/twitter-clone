@@ -110,7 +110,7 @@ const NotificationsFeed = ({ notifications }) => {
 													...n,
 													<div className="account-card" key={doc.id}>
 														<Retweet
-															className="menu-icon"
+															className="notification-icon"
 															style={{ fill: "blue" }}
 														/>
 														<div>
@@ -201,7 +201,7 @@ const NotificationsFeed = ({ notifications }) => {
 														style={{ alignItems: "flex-start" }}
 													>
 														<LikeFilled
-															className="menu-icon"
+															className="notification-icon"
 															style={{ fill: "red" }}
 														/>
 														<div>

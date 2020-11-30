@@ -16,6 +16,13 @@
 	padding: 1rem;
 }
 
+@media (max-width: 767px) {
+	.top-link {
+		border-right: 0;
+		width: 100%;
+	}
+}
+
 .side-arrow {
 	fill: $sitecolor;
 	width: 1.5rem;

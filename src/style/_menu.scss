@@ -8,6 +8,23 @@
 	height: 100vh;
 }
 
+@media (max-width: 767px) {
+	.menu {
+		border-top: $siteborder;
+		position: fixed;
+		top: 92vh;
+		height: 8vh;
+		flex-direction: row;
+		background-color: white;
+		z-index: 1;
+		width: 100vw;
+		left: 0;
+		justify-content: space-around;
+		align-items: center;
+		padding: 0.75rem;
+	}
+}
+
 .menu-logo {
 	fill: $sitecolor;
 }
@@ -31,6 +48,15 @@
 	transition: $lighttransition;
 }
 
+@media (max-width: 767px) {
+	.menu-item {
+		width: 1.8rem;
+		padding: 0;
+		margin: 0;
+		color: $sitegrey;
+	}
+}
+
 .menu-item:visited {
 	color: black;
 }
@@ -51,7 +77,13 @@
 	margin-right: 1rem;
 }
 
-
+@media (max-width: 767px) {
+	.menu-icon {
+		width: 90%;
+		margin: 0;
+		fill: $sitegrey;
+	}
+}
 
 .menu-profile-button {
 	background-color: white;
@@ -60,6 +92,16 @@
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
+}
+
+@media (max-width: 767px) {
+	.menu-profile-button {
+		width: 1.8rem;
+		padding: 0;
+		margin: 0;
+		color: $sitegrey;
+		fill: $sitegrey;
+	}
 }
 
 .menu-profile-button:hover {
@@ -82,13 +124,17 @@
 	padding-left: 3.5rem;
 }
 
+@media (max-width: 767px) {
+	.power-button {
+		padding: 0;
+		width: 90%;
+		fill: $sitegrey;
+	}
+}
+
 @media (max-width: 1280px) {
 	.menu-logo {
 		width: 2rem;
-	}
-
-	.menu-item {
-		width: 3rem;
 	}
 
 	.menu-item-text {
@@ -101,20 +147,20 @@
 }
 
 .pseudo {
-    background-color: $sitecolor;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    width: 2.25ch;
-    height: 2.25ch;
-    font-size: 0.75rem;
-    font-weight: bold;
-    color: black;
-    font-family: sans-serif;
-    position: absolute;
-    left: 15%;
-    top: 10%;
+	background-color: $sitecolor;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	width: 2.25ch;
+	height: 2.25ch;
+	font-size: 0.75rem;
+	font-weight: bold;
+	color: black;
+	font-family: sans-serif;
+	position: absolute;
+	left: 15%;
+	top: 10%;
 }
 
 .home-notice {
@@ -125,4 +171,46 @@
 	top: 0.5rem;
 	left: 1.8rem;
 	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+@media (max-width: 767px) {
+	.pseudo {
+		left: 60%;
+		top: -15%;
+	}
+
+	.home-notice {
+	}
+}
+
+@media (max-width: 991px) {
+	.tweet-li {
+		background-color: $sitecolor;
+		width: 2rem;
+		height: 2rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 0.5rem;
+		box-sizing: border-box;
+	}
+}
+
+@media (max-width: 767px) {
+	.tweet-li {
+		border-radius: 50%;
+		width: 3rem;
+		height: 3rem;
+		position: fixed;
+		bottom: 4.5rem;
+		right: 1.5rem;
+	}
+
+	.tweet-li * {
+		margin: 0;
+		padding: 0;
+	}
 }

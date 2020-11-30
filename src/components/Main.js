@@ -18,7 +18,7 @@ const Notifications = lazy(() => import("./Notifications"));
 const TweetAndReplies = lazy(() => import("./TweetAndReplies"));
 const Hashtag = lazy(() => import("./Hashtag"));
 
-const Main = (props) => {
+const Main = () => {
 	const { userID } = useContext(UserContext);
 	const { device } = useContext(DeviceContext);
 	console.log(device);
@@ -84,6 +84,7 @@ const Main = (props) => {
 			)}
 			{device === "comp" && (
 				<div className="sidebar">
+					{/* mimic mobile twitter behavior */}
 					{location.pathname !== "/explore" && <Search />}
 					{!userID && <LoginCard />}
 					<FollowSuggests />

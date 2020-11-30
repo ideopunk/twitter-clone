@@ -1,9 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
-import { NavLink, useHistory, useLocation, useParams, useRouteMatch } from "react-router-dom";
+import { NavLink, useHistory, useLocation } from "react-router-dom";
 import { db, auth } from "../config/fbConfig";
 import Composer from "./reusables/Composer";
 import Cover from "./reusables/Cover";
 import UserContext from "./context/userContext.js";
+import DeviceContext from "./context/deviceContext.js";
 
 import fish from "../assets/fish-outline.svg";
 import { ReactComponent as HomeOutlineIcon } from "../assets/home-outline.svg";
@@ -15,9 +16,12 @@ import { ReactComponent as ProfileIcon } from "../assets/profile-outline.svg";
 import { ReactComponent as ProfileFilled } from "../assets/profile-filled.svg";
 import { ReactComponent as MoreIcon } from "../assets/more-outline.svg";
 import { ReactComponent as PowerIcon } from "../assets/power-outline.svg";
+import { ReactComponent as ComposerIcon } from "../assets/composer-icon.svg";
 
-const Menu = (props) => {
+const Menu = () => {
 	const { userName, userAt, userID, userImage } = useContext(UserContext);
+	const { device } = useContext(DeviceContext);
+
 	const [homeNotice, setHomeNotice] = useState(0);
 	const [unseenNotes, setUnseenNotes] = useState(0);
 
@@ -102,19 +106,21 @@ const Menu = (props) => {
 	return (
 		<>
 			<ul className="menu">
-				<li onClick={() => setHomeNotice(1)}>
-					<NavLink
-						activeClassName="menu-item-active"
-						to="/"
-						exact={true}
-						className="menu-item"
-						style={{ width: "3.25rem" }}
-					>
-						<span className="menu-icon" style={{ margin: "0" }}>
-							<img className="menu-logo" src={fish} alt="fish" />
-						</span>
-					</NavLink>
-				</li>
+				{device !== "mobile" && (
+					<li onClick={() => setHomeNotice(1)}>
+						<NavLink
+							activeClassName="menu-item-active"
+							to="/"
+							exact={true}
+							className="menu-item"
+							style={{ width: "3.25rem" }}
+						>
+							<span className="menu-icon" style={{ margin: "0" }}>
+								<img className="menu-logo" src={fish} alt="fish" />
+							</span>
+						</NavLink>
+					</li>
+				)}
 				{userID && (
 					<li onClick={() => setHomeNotice(1)}>
 						<NavLink
@@ -153,7 +159,7 @@ const Menu = (props) => {
 						</NavLink>
 					</li>
 				)}
-				{userID && (
+				{device !== "mobile" && userID && (
 					<li>
 						<NavLink
 							activeClassName="menu-item-active"
@@ -172,7 +178,7 @@ const Menu = (props) => {
 						</NavLink>
 					</li>
 				)}
-				{userID && (
+				{device !== "mobile" && userID && (
 					<li>
 						<div className="menu-item" onClick={toggleDropdown}>
 							<MoreIcon />
@@ -180,23 +186,29 @@ const Menu = (props) => {
 						</div>
 					</li>
 				)}
-				<li>
-					<button
-						className="btn"
-						onClick={toggleComposer}
-						style={{ marginBottom: "0.75rem" }}
-					>
-						Tweet
-					</button>
+				<li className="tweet-li">
+					{device === "comp" ? (
+						<button
+							className="btn"
+							onClick={toggleComposer}
+							style={{ marginBottom: "0.75rem" }}
+						>
+							Tweet
+						</button>
+					) : (
+						<ComposerIcon style={{ margin: "0", fill: "white" }} />
+					)}
 				</li>
 				{userID && (
-					<li style={{ marginTop: "auto" }}>
+					<li style={{ marginTop: device !== "mobile" ? "auto" : ""}}>
 						<button className="menu-profile-button" onClick={signOut}>
+							{device !== "mobile" && <>
 							<img src={userImage} alt="user-profile" className="profile-image" />
 							<div className="menu-profile-button-text">
 								<p>{userName}</p>
 								<p className="grey">@{userAt}</p>
 							</div>
+							</>}
 							<PowerIcon className="menu-icon power-button" />
 						</button>
 					</li>
