@@ -14,15 +14,20 @@ const Editor = (props) => {
 	const [newWebsite, setNewWebsite] = useState(website);
 	const [newProPic, setNewProPic] = useState(userImage);
 	const [newHeader, setNewHeader] = useState(header);
-
-	const [picChanged, setPicChanged] = useState(false);
-	const [headerChanged, setHeaderChanged] = useState(false);
+	const [previewProPic, setPreviewProPic] = useState(userImage)
+	const [previewHeader, setPreviewHeader] = useState(header)
 
 	useEffect(() => {
-		console.log(name);
-		console.log(newBio);
-		console.log(newWebsite);
-	}, [name, newBio, newWebsite]);
+		if (newProPic !== userImage) {
+			setPreviewProPic(URL.createObjectURL(newProPic))
+		}
+	}, [newProPic, userImage])
+
+	useEffect(() => {
+		if (newHeader !== header) {
+			setPreviewHeader(URL.createObjectURL(newHeader))
+		}
+	}, [newHeader, header])
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -34,52 +39,49 @@ const Editor = (props) => {
 				import("../functions/updateName.js").then((updateName) =>
 					updateName.default(userID, name)
 				)
-			)
-			.then(() => {
-				if (picChanged) {
-					const profileRef = storage.ref("profile_pictures/" + userID + ".png");
-					const uploadTask = profileRef.put(newProPic);
-					uploadTask.on(
-						"state_changed",
+			);
 
-						// how it's going
-						(snapshot) => {},
+		if (newProPic !== userImage) {
+			const profileRef = storage.ref("profile_pictures/" + userID + ".png");
+			const uploadTask = profileRef.put(newProPic);
+			uploadTask.on(
+				"state_changed",
 
-						// how it goofed it
-						(error) => {
-							console.log(error);
-						},
+				// how it's going
+				(snapshot) => {},
 
-						// how it succeeded
-						() => {
-							console.log("success");
-						}
-					);
+				// how it goofed it
+				(error) => {
+					console.log(error);
+				},
+
+				// how it succeeded
+				() => {
+					console.log("success");
 				}
-			})
-			.then(() => {
-				if (headerChanged) {
-					const headerRef = storage.ref("header_pictures/" + userID + ".png");
-					const uploadTask = headerRef.put(newHeader);
-					uploadTask.on(
-						"state_changed",
+			);
+		}
+		if (newHeader !== header) {
+			const headerRef = storage.ref("header_pictures/" + userID + ".png");
+			const uploadTask = headerRef.put(newHeader);
+			uploadTask.on(
+				"state_changed",
 
-						// how it's going
-						() => {},
+				// how it's going
+				() => {},
 
-						// how it goofed it
-						(error) => {
-							console.log(error);
-						},
+				// how it goofed it
+				(error) => {
+					console.log(error);
+				},
 
-						// how it succeeded
-						() => {
-							console.log("success");
-							toggle()
-						}
-					);
+				// how it succeeded
+				() => {
+					console.log("success");
+					toggle();
 				}
-			});
+			);
+		}
 
 		// stuff for images
 	};
@@ -100,12 +102,10 @@ const Editor = (props) => {
 	const handleHeaderPicChange = (e) => {
 		console.log(e.target.files[0]);
 		e.target.files[0] ? setNewHeader(e.target.files[0]) : console.log("naw");
-		setHeaderChanged(true);
 	};
 
 	const handleProfilePicChange = (e) => {
 		e.target.files[0] ? setNewProPic(e.target.files[0]) : console.log("naw");
-		setPicChanged(true);
 	};
 
 	return (
@@ -126,7 +126,11 @@ const Editor = (props) => {
 				/>
 			</div>
 			<div className="header-container">
-				<img src={newHeader} className="profile-header-image" alt="header" />
+				<img
+					src={previewHeader}
+					className="profile-header-image"
+					alt="header"
+				/>
 				<div className="header-icons">
 					<label htmlFor="header-input">
 						<CameraIcon />
@@ -136,7 +140,11 @@ const Editor = (props) => {
 			</div>
 			<div className="edit-form-text">
 				<div>
-					<img src={newProPic} className="main-image" alt="profile" />
+					<img
+						src={previewProPic}
+						className="main-image"
+						alt="profile"
+					/>
 					<label htmlFor="profile-pic-input">
 						<CameraIcon className="main-image main-image-camera" />
 					</label>
