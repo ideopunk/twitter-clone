@@ -108,7 +108,11 @@ const NotificationsFeed = ({ notifications }) => {
 												}
 												setNotificationsMapped((n) => [
 													...n,
-													<div className="account-card" key={doc.id}>
+													<div
+														className="account-card"
+														key={doc.id}
+														style={{ alignItems: "flex-start" }}
+													>
 														<Retweet
 															className="notification-icon"
 															style={{ fill: "blue" }}
