@@ -17,10 +17,14 @@ const Notifications = () => {
 
 	useEffect(() => {
 		const userRef = db.collection("users").doc(userID);
-
+		setNotifications([]);
 		const unsub = userRef.onSnapshot((doc) => {
 			if (doc.data().notifications) {
-				setNotifications(doc.data().notifications);
+				setNotifications(
+					doc
+						.data()
+						.notifications
+				);
 			}
 		});
 
@@ -29,7 +33,9 @@ const Notifications = () => {
 
 	return (
 		<div className="home center-feed">
-			<h3 className="top-link">{device === "mobile" && <MobileProfileLink />}Notifications</h3>
+			<h3 className="top-link">
+				{device === "mobile" && <MobileProfileLink />}Notifications
+			</h3>
 			<NotificationsFeed notifications={notifications} />
 		</div>
 	);

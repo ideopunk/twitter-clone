@@ -58,3 +58,7 @@
 .transparent {
 	opacity: 0;
 }
+
+.appear {
+	animation: $lightanimation;
+}

@@ -34,7 +34,7 @@ const Menu = () => {
 
 	useEffect(() => {
 		if (location.pathname === "/" && window.scrollY === 0 && homeNotice === true) {
-			setHomeNotice(false)
+			setHomeNotice(false);
 		}
 	}, [location, homeNotice]);
 
@@ -198,7 +198,7 @@ const Menu = () => {
 						</NavLink>
 					</li>
 				)}
-				{device !== "mobile" && (
+				{userID && device !== "mobile" && (
 					<li>
 						<div className="menu-item" onClick={toggleDropdown}>
 							<MoreIcon />
