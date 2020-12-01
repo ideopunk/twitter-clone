@@ -52,7 +52,7 @@ const App = () => {
 						setUserData((u) => ({ ...u, image: Leaf }));
 					});
 			} else {
-				// don't start removing things until we're sure we don't have a user. 
+				// don't start removing things until we're sure we don't have a user.
 				setUserID(-1);
 				setUserData({});
 			}
@@ -101,10 +101,10 @@ const App = () => {
 					>
 						<Switch>
 							<Route exact path="/login">
-								{userID ? <Redirect to="/" /> : <LoginPage />}
+								{userID && userID !== -1 ? <Redirect to="/" /> : <LoginPage />}
 							</Route>
 							<Route exact path="/signup">
-								{userID ? <Redirect to="/" /> : <SignupPage />}
+								{userID && userID !== -1 ? <Redirect to="/" /> : <SignupPage />}
 							</Route>
 							<Route path="/">
 								{/* This is bad for unlogged-in users */}

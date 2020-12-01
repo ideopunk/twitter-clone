@@ -29,7 +29,7 @@ const Main = () => {
 
 			{userID === -1 && <LoginPrompt />}
 
-			{userID ? (
+			{userID && userID !== -1 ? (
 				<Suspense fallback={<LoaderContainer />}>
 					<Switch>
 						<Route exact path="/explore">
@@ -71,6 +71,9 @@ const Main = () => {
 						</Route>
 						<Route path="/tweet/:tweetID">
 							<TweetAndReplies />
+						</Route>
+						<Route path="/notifications">
+							<Explore />
 						</Route>
 						<Route path="/:profile">
 							<ProfileRoutes />

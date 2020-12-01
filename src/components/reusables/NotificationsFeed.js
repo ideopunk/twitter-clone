@@ -43,10 +43,8 @@ const NotificationsFeed = ({ notifications }) => {
 		let tempArray = [];
 		notifications.forEach((notification) => {
 			const { type, subject, object, timeStamp } = notification;
-			console.log(notification.id);
 			if (!tempArray.includes(timeStamp.seconds)) {
 				tempArray.push(timeStamp.seconds);
-				console.log(notification);
 				switch (type) {
 					case "follow":
 						db.collection("users")
@@ -73,7 +71,7 @@ const NotificationsFeed = ({ notifications }) => {
 												className="account-card appear"
 												key={doc.id + "follow"}
 												style={{ alignItems: "flex-start" }}
-												data-timeStamp={timeStamp.seconds}
+												data-timestamp={timeStamp.seconds}
 												onClick={() =>
 													history.push({
 														pathname: `/${doc.id}`,
@@ -137,7 +135,7 @@ const NotificationsFeed = ({ notifications }) => {
 															className="account-card appear"
 															key={doc.id + "retweet"}
 															style={{ alignItems: "flex-start" }}
-															data-timeStamp={timeStamp.seconds}
+															data-timestamp={timeStamp.seconds}
 															onClick={() =>
 																history.push({
 																	pathname: `/tweet/${doc.id}`,
@@ -203,7 +201,7 @@ const NotificationsFeed = ({ notifications }) => {
 										getReplies={false}
 										replies={data.replies}
 										imageCount={data.imageCount}
-										data-timeStamp={timeStamp.seconds}
+										data-timestamp={timeStamp.seconds}
 									/>,
 								]);
 							});
@@ -239,7 +237,7 @@ const NotificationsFeed = ({ notifications }) => {
 														...n,
 														<div
 															className="account-card appear"
-															data-timeStamp={timeStamp.seconds}
+															data-timestamp={timeStamp.seconds}
 															key={doc.id + "like"}
 															style={{ alignItems: "flex-start" }}
 															onClick={() =>
@@ -293,11 +291,17 @@ const NotificationsFeed = ({ notifications }) => {
 	}, [notifications, history, location.pathname]);
 
 	useEffect(() => {
-		if (notificationsMapped.length === notifications.length && !sorted) {
+		console.log(notifications.length)
+		console.log(notificationsMapped.length)
+		if (notificationsMapped.length === notifications.length && notifications.length > 1 && !sorted) {
+			console.log("lengths equivalent")
 			setNotificationsMapped(
-				notificationsMapped.sort(
-					(a, b) => b.props["data-timeStamp"] - a.props["data-timeStamp"]
-				)
+				notificationsMapped
+					.sort((a, b) => {
+						console.log(a)
+						return b.props["data-timestamp"] - a.props["data-timestamp"];
+					})
+					.reverse()
 			);
 			setSorted(true);
 		}

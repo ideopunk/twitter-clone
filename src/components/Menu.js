@@ -67,7 +67,7 @@ const Menu = () => {
 	useEffect(() => {
 		const unsub = db
 			.collection("users")
-			.doc(userID || "fake")
+			.doc(String(userID) || "fake")
 			.onSnapshot((doc) => {
 				const data = doc.data();
 
@@ -198,7 +198,7 @@ const Menu = () => {
 						</NavLink>
 					</li>
 				)}
-				{userID !== -1  && device !== "mobile" && (
+				{userID !== -1 && device !== "mobile" && (
 					<li>
 						<div className="menu-item" onClick={toggleDropdown}>
 							<MoreIcon />
@@ -233,7 +233,9 @@ const Menu = () => {
 									<img
 										src={userImage || ""}
 										alt="user-profile"
-										className={`profile-image ${userImage? "" : "transparent"}`}
+										className={`profile-image ${
+											userImage ? "" : "transparent"
+										}`}
 									/>
 									<div className="menu-profile-button-text">
 										<p>{userName}</p>

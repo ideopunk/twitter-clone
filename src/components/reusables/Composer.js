@@ -212,7 +212,11 @@ const Composer = (props) => {
 				style={{ paddingTop: replyData ? "3px" : "1rem", border: modal ? "0" : "" }}
 			>
 				<Link to={`/${userAt}`} className={`profile-image`}>
-					<img src={userImage} alt="user-profile" className="profile-image" />
+					<img
+						src={userImage}
+						alt="user-profile"
+						className={`profile-image ${userImage ? "" : "transparent"}`}
+					/>
 				</Link>
 				<div className="composer-right">
 					<div
