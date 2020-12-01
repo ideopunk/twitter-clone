@@ -3,12 +3,25 @@
 	flex-direction: column;
 	border-right: $siteborder;
 	box-sizing: border-box;
-	padding: 1rem 2rem 1rem 8rem;
-	width: 400px;
+	padding: 1rem 2rem 1rem 0;
+	width: 250px;
 	top: 0;
 	height: 100vh;
 	position: fixed;
+}
 
+@media (max-width: 1000px) {
+	.menu {
+		align-items: center;
+
+		width: 4rem;
+		padding: 1rem;
+	}
+
+	.menu > li {
+		display: flex;
+		justify-content: center;
+	}
 }
 
 @media (max-width: 767px) {
@@ -51,6 +64,14 @@
 	transition: $lighttransition;
 }
 
+@media (max-width: 1000px) {
+	.menu-item {
+		justify-content: center;
+		padding: 0.75rem 0;
+		width: 3rem;
+	}
+}
+
 @media (max-width: 767px) {
 	.menu-item {
 		width: 1.8rem;
@@ -80,6 +101,11 @@
 	margin-right: 1rem;
 }
 
+@media (max-width: 1000px) {
+	.menu-icon {
+		margin: 0;
+	}
+}
 @media (max-width: 767px) {
 	.menu-icon {
 		width: 90%;
@@ -133,15 +159,21 @@
 	padding-left: 3.5rem;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1000px) {
 	.power-button {
 		padding: 0;
+		width: 2rem;
+	}
+}
+
+@media (max-width: 767px) {
+	.power-button {
 		width: 90%;
 		fill: $sitegrey;
 	}
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1000px) {
 	.menu-logo {
 		width: 2rem;
 	}
@@ -210,11 +242,21 @@
 	}
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1000px) {
 	.tweet-li {
 		border-radius: 50%;
 		width: 3rem;
 		height: 3rem;
+	}
+
+	.tweet-li * {
+		margin: 0;
+		padding: 0;
+	}
+}
+
+@media (max-width: 767px) {
+	.tweet-li {
 		position: fixed;
 		bottom: 4.5rem;
 		right: 1.5rem;

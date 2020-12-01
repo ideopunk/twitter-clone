@@ -63,7 +63,7 @@ const App = () => {
 	useEffect(() => {
 		const handleResize = () => {
 			const width = window.innerWidth;
-			if (width > 991) {
+			if (width > 1000) {
 				setWidth("comp");
 			} else if (width > 767) {
 				setWidth("tablet");

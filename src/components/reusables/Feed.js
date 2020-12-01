@@ -70,7 +70,7 @@ const Feed = (props) => {
 
 	return (
 		<div className="feed">
-			{uniqueTweets}
+			{uniqueTweets.length > 0 ? uniqueTweets : <LoaderContainer />}
 			{deleteToast ? (
 				<Suspense fallback={<LoaderContainer />}>
 					<Toast message="Your Tweet was deleted wahh" />

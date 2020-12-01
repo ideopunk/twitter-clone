@@ -35,10 +35,18 @@ textarea {
 .App {
 	display: flex;
 	box-sizing: border-box;
+	padding-left: 5vw;
+}
+
+@media (max-width: 1000px) {
+	.App {
+		padding-left: 10vw;
+	}
 }
 
 @media (max-width: 767px) {
 	.App {
+		padding-left: 0;
 		padding-bottom: 8vh;
 	}
 }
@@ -69,8 +77,7 @@ h3 {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-    -webkit-appearance: none;
-
+	-webkit-appearance: none;
 }
 
 .btn:hover {
@@ -214,10 +221,16 @@ h3 {
 
 .center-feed {
 	width: 600px;
-	margin-left: 400px;
+	margin-left: 250px;
 	border-right: $siteborder;
 	box-sizing: border-box;
 	position: relative;
+}
+
+@media (max-width: 1000px) {
+	.center-feed {
+		margin-left: 4rem;
+	}
 }
 
 @media (max-width: 767px) {
@@ -284,10 +297,7 @@ h3 {
 	top: 2.5rem;
 	left: 2.4rem;
 	z-index: 0;
-
 }
-
-
 
 .dead-tweet {
 	border: $siteborder;
@@ -315,7 +325,6 @@ h3 {
 	width: 1.6rem;
 	margin-right: 1rem;
 }
-
 
 .mobile-profile-image {
 	border-radius: 50%;

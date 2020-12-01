@@ -228,7 +228,7 @@ const Menu = () => {
 				{userID && (
 					<li style={{ marginTop: device !== "mobile" ? "auto" : "" }}>
 						<button className="menu-profile-button" onClick={signOut}>
-							{device !== "mobile" && (
+							{device === "comp" && (
 								<>
 									<img
 										src={userImage}
