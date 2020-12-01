@@ -19,7 +19,7 @@ const arraysMatch = (arr1, arr2) => {
 
 	// Otherwise, return true
 	return true;
-}
+};
 
 const Home = () => {
 	const { userFollows } = useContext(UserContext);
@@ -31,12 +31,10 @@ const Home = () => {
 		document.title = "Home / Fake Twitter";
 	}, []);
 
+	// only refresh if there are new follows
 	useEffect(() => {
-		console.log(stopperUserFollows)
-		console.log(userFollows)
-
-		if (userFollows && (!arraysMatch(stopperUserFollows, userFollows))) {
-			console.log("setting stopperuserfollows")
+		if (userFollows && !arraysMatch(stopperUserFollows, userFollows)) {
+			console.log("setting stopperuserfollows");
 			setStopperUserFollows(userFollows);
 		}
 	}, [userFollows, stopperUserFollows]);

@@ -35,7 +35,9 @@ const NotificationsFeed = ({ notifications }) => {
 	// display the notifications.
 	useEffect(() => {
 		setNotificationsMapped([]);
-		const sortedNotifications = notifications.sort((a, b) => (b.timeStamp.seconds - a.timeStamp.seconds));
+		const sortedNotifications = notifications.sort(
+			(a, b) => b.timeStamp.seconds - a.timeStamp.seconds
+		);
 
 		sortedNotifications.forEach((notification) => {
 			const { type, subject, object } = notification;
@@ -64,7 +66,7 @@ const NotificationsFeed = ({ notifications }) => {
 										...n,
 										<div
 											className="account-card"
-											key={doc.id}
+											key={doc.id + "follow"}
 											style={{ alignItems: "flex-start" }}
 										>
 											<ProfileFilled
@@ -119,7 +121,7 @@ const NotificationsFeed = ({ notifications }) => {
 													...n,
 													<div
 														className="account-card"
-														key={doc.id}
+														key={doc.id + "retweet"}
 														style={{ alignItems: "flex-start" }}
 													>
 														<Retweet
@@ -162,7 +164,7 @@ const NotificationsFeed = ({ notifications }) => {
 							setNotificationsMapped((n) => [
 								...n,
 								<Tweet
-									key={doc.id}
+									key={doc.id + "reply"}
 									tweetID={doc.id}
 									tweeterID={data.userID}
 									name={data.name}
@@ -210,7 +212,7 @@ const NotificationsFeed = ({ notifications }) => {
 													...n,
 													<div
 														className="account-card"
-														key={doc.id}
+														key={doc.id + "like"}
 														style={{ alignItems: "flex-start" }}
 													>
 														<LikeFilled

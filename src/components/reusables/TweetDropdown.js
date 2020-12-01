@@ -21,7 +21,7 @@ const TweetDropdown = (props) => {
 			);
 		}
 		props.deleteToast(true);
-		setWarning(false);
+		toggleWarning(false);
 	};
 
 	const toggleWarning = () => {
