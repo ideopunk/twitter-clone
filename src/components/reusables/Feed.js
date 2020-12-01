@@ -28,7 +28,7 @@ const Feed = (props) => {
 	};
 
 	useEffect(() => {
-		const sortedTweets = tweetDatas.sort((a, b) => (b.timeStamp.seconds - a.timeStamp.seconds));
+		const sortedTweets = tweetDatas.sort((a, b) => b.timeStamp.seconds - a.timeStamp.seconds);
 
 		//tweet has been replied to. Don't let it come through again.
 
@@ -56,13 +56,16 @@ const Feed = (props) => {
 			);
 		});
 
-		
 		setUniqueTweets(tweets);
 	}, [tweetDatas, getReplies, noOriginal]);
 
 	// remove the reply duplicates
 	useEffect(() => {
-		setUniqueTweets((t) => t.filter((tweet) => !doomedTweets.includes(tweet.props.tweetID)));
+		setUniqueTweets((t) =>
+			t
+				.filter((tweet) => !doomedTweets.includes(tweet.props.tweetID))
+				.sort((a, b) => b.props.time.seconds - a.props.time.seconds)
+		);
 	}, [doomedTweets]);
 
 	return (
