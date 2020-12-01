@@ -54,10 +54,6 @@ const Tweet = (props) => {
 		noOriginal,
 	} = props;
 
-	useEffect(() => {
-		console.log(text);
-	}, [text]);
-
 	const { userID, userAt, userLikes, userFollows, userTweets, userRetweets } = useContext(
 		UserContext
 	);
@@ -76,46 +72,45 @@ const Tweet = (props) => {
 	useEffect(() => {
 		let mounted = true;
 
-		if (replyTo && !noOriginal) {
+		if (mounted && replyTo && !noOriginal) {
 			db.collection("tweets")
 				.doc(replyTo)
 				.get()
 				.then((doc) => {
+					console.log(doc.id);
 					const data = doc.data();
 					if (doc.exists) {
-						if (checkReply && mounted) {
+						if (checkReply) {
 							console.log("check reply");
 							checkReply(doc.id);
 						}
-						console.log("live original tweet");
-						if (mounted) {
-							console.log("mounted live og tweet");
-							setOriginalTweet(
-								<Tweet
-									key={doc.id}
-									tweetID={doc.id}
-									tweeterID={data.userID}
-									name={data.name}
-									at={data.at}
-									time={data.timeStamp}
-									text={data.text}
-									retweets={data.retweets}
-									replyTo={data.replyTo}
-									likes={data.likes}
-									getReplies={false}
-									replies={data.replies}
-									imageCount={data.imageCount}
-									// "change"? Hmmm.
-									deleteToast={deleteToast}
-									original={true}
-								/>
-							);
-						}
+						console.log("mounted live og tweet");
+						setOriginalTweet(
+							<Tweet
+								key={doc.id}
+								tweetID={doc.id}
+								tweeterID={data.userID}
+								name={data.name}
+								at={data.at}
+								time={data.timeStamp}
+								text={data.text}
+								retweets={data.retweets}
+								replyTo={data.replyTo}
+								likes={data.likes}
+								getReplies={false}
+								replies={data.replies}
+								imageCount={data.imageCount}
+								// "change"? Hmmm.
+								deleteToast={deleteToast}
+								original={true}
+								replyImageLoad={setImageLoaded}
+							/>
+						);
+						// }
+						// fine
 					} else {
-						if (mounted) {
-							console.log("dead tweet");
-							setOriginalTweet(<DeadTweet />);
-						}
+						console.log("dead tweet");
+						setOriginalTweet(<DeadTweet />);
 					}
 				});
 		}
@@ -143,8 +138,6 @@ const Tweet = (props) => {
 
 	// do we have pictures?
 	useEffect(() => {
-		"pics use effect";
-
 		let mounted = true;
 		if (imageCount) {
 			let tempArray = [];
@@ -215,11 +208,15 @@ const Tweet = (props) => {
 				.ref("profile_pictures/" + tweeterID + ".png")
 				.getDownloadURL()
 				.then((url) => {
-					setImage(url);
+					if (mounted) {
+						setImage(url);
+					}
 				})
 				.catch((err) => {
 					console.log(err);
-					setImage(Leaf);
+					if (mounted) {
+						setImage(Leaf);
+					}
 				});
 
 			//set how long ago the tweet was
@@ -329,7 +326,15 @@ const Tweet = (props) => {
 	}, [toast]);
 
 	const imageLoad = () => {
-		setImageLoaded(true);
+		// if this is a tweet with replies, only show both tweets once the images are loaded.
+		if (original) {
+			setImageLoaded(true);
+			props.replyImageLoad(true);
+
+			// if we aren't waiting for an original tweet, we can show this as soon as the image is ready.
+		} else if (!replyTo || noOriginal) {
+			setImageLoaded(true);
+		}
 	};
 
 	const redirect = (e) => {

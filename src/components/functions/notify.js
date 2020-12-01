@@ -8,7 +8,7 @@ const notify = (type, userID, personID, objectID) => {
 		const oldCheckedNotes =
 			data.notifications.filter(
 				(note) => // don't allow duplicates
-					!(note.type === type && note.subject === userID && note.object === objectID)
+					!(note.type === type && note.subject === userID && (note.object === objectID))
 			) || [];
 		userRef.update({
 			notifications: [

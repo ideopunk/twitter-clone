@@ -50,14 +50,13 @@
 	white-space: pre-wrap;
 }
 
-.composer-input-container * {
-	padding-top: 0.5rem;
+.composer-input-container > * {
 	border: 1px solid transparent;
 	box-sizing: border-box;
 }
 
 .composer-hide {
-	color: transparent;
+	color: red;
 	caret-color: black;
 }
 

@@ -7,8 +7,8 @@ const LoaderContainer = (props) => {
 			<Loader
 				type="TailSpin"
 				color="rgb(29, 242, 161)"
-				height={100}
-				width={100}
+				height={50}
+				width={50}
 				timeout={3000} //3 secs
 			/>
 		</div>

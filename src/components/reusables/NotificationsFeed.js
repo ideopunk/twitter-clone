@@ -60,8 +60,15 @@ const NotificationsFeed = ({ notifications }) => {
 									}
 									setNotificationsMapped((n) => [
 										...n,
-										<div className="account-card" key={doc.id}>
-											<ProfileFilled style={{ fill: "blue" }} />
+										<div
+											className="account-card"
+											key={doc.id}
+											style={{ alignItems: "flex-start" }}
+										>
+											<ProfileFilled
+												style={{ fill: "blue" }}
+												className="notification-icon"
+											/>
 											<div>
 												<img
 													src={image}

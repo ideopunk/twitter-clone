@@ -28,7 +28,7 @@ const follow = (followID, userID, userFollows) => {
 					.then(() => console.log("added to follows list"))
 					.then(() => {
 						if (userID !== followID) {
-							notify("follow", userID, followID);
+							notify("follow", userID, followID, "");
 						}
 					});
 			});

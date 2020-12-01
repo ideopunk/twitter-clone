@@ -102,7 +102,11 @@ const ProfileFeed = (props) => {
 		};
 	}, [profileID, repliesIncluded, mediaOnly]);
 
-	return tweetDatas.length ? <Feed tweetDatas={tweetDatas} /> : <LoaderContainer />;
+	return tweetDatas.length ? (
+		<Feed tweetDatas={tweetDatas} getReplies={repliesIncluded ? true : false} />
+	) : (
+		<LoaderContainer />
+	);
 };
 
 export default ProfileFeed;

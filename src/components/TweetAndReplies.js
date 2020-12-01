@@ -34,9 +34,11 @@ const TweetAndReplies = (props) => {
 		db.collection("tweets")
 			.where("replyTo", "==", tweetID)
 			.onSnapshot((snapshot) => {
+
 				let tempArray = [];
 				snapshot.forEach((doc) => {
 					// don't include replies
+					console.log(doc.id)
 					tempArray.push({ ...doc.data(), id: doc.id });
 				});
 

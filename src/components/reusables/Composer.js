@@ -23,6 +23,7 @@ const Composer = (props) => {
 	const [previewIMGs, setPreviewIMGs] = useState([]);
 	const [toast, setToast] = useState(false);
 	const [line, setLine] = useState(false);
+	const [bonusRows, setBonusRows] = useState(0);
 
 	useEffect(() => {
 		if (modal) {
@@ -45,7 +46,7 @@ const Composer = (props) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (text || IMGs) {
+		if ((text || IMGs) && text.length < 281) {
 			if (replyData) {
 				const { tweetID, tweeterID } = replyData;
 				import("../functions/reply.js").then((reply) =>
@@ -76,6 +77,15 @@ const Composer = (props) => {
 	};
 
 	const handleChange = (e) => {
+		console.log(e.target.scrollHeight);
+		console.log(e.target.offsetHeight);
+		if (e.target.scrollHeight > e.target.offsetHeight + 5) {
+			setBonusRows((n) => n + 1);
+		} else if (e.target.value.length < 30) {
+			setBonusRows(0);
+		} else if (e.target.value.length + 40 < text.length) {
+			setBonusRows((n) => n - 1);
+		}
 		setText(e.target.value);
 	};
 
@@ -109,13 +119,6 @@ const Composer = (props) => {
 		if (!dragOver) {
 			setDragOver(true);
 		}
-	};
-
-	const handlePaste = (e) => {
-		// e.stopPropagation();
-		// e.preventDefault();
-		console.log(e.target);
-		console.log(e.dataTransfer);
 	};
 
 	const handleDragLeave = () => {
@@ -208,7 +211,7 @@ const Composer = (props) => {
 			)}
 			<div
 				className={modal ? "composer" : "flex"}
-				style={{ paddingTop: replyData ? "3px" : "1rem", border: modal? "0" : "" }}
+				style={{ paddingTop: replyData ? "3px" : "1rem", border: modal ? "0" : "" }}
 			>
 				<Link to={`/${userAt}`} className={`profile-image`}>
 					<img src={userImage} alt="user-profile" className="profile-image" />
@@ -223,11 +226,11 @@ const Composer = (props) => {
 						<textarea
 							className={`composer-input composer-hide`}
 							// hack
-							rows={Math.round(text.length / 70) + 1}
+							// rows={Math.ceil(text.length / 70) + 1 + bonusRows}
+							rows={1 + bonusRows}
 							onClick={() => setLine(true)}
 							onChange={handleChange}
 							onDrop={handleDrop}
-							onPaste={handlePaste}
 							placeholder={replyData ? "Tweet your reply" : "What's happening?"}
 							ref={inputEl}
 							value={text}
@@ -267,7 +270,9 @@ const Composer = (props) => {
 						</div>
 						<input
 							className={`btn tweet-btn ${
-								text || IMGs.length ? `active-button` : "no-hov"
+								(text || IMGs.length) && text.length < 281
+									? `active-button`
+									: "no-hov"
 							}`}
 							style={{ width: "100px", marginLeft: "auto" }}
 							type="submit"
