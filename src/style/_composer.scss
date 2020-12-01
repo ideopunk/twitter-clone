@@ -48,6 +48,8 @@
 	letter-spacing: 0;
 	line-height: 1.2;
 	white-space: pre-wrap;
+	padding: 2px;
+	border-width: 1px;
 }
 
 .composer-input-container > * {
@@ -56,8 +58,10 @@
 }
 
 .composer-hide {
-	color: red;
+	color: transparent;
 	caret-color: black;
+	resize: "none";
+	overflow: "auto";
 }
 
 .composer-mask {

@@ -234,7 +234,6 @@ const Composer = (props) => {
 							placeholder={replyData ? "Tweet your reply" : "What's happening?"}
 							ref={inputEl}
 							value={text}
-							style={{ resize: "none", overflow: "auto" }}
 						/>
 						<div className="composer-input composer-mask">{blueText}</div>
 						{previewIMGs.length > 1 ? (
