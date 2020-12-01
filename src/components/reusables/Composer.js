@@ -184,13 +184,13 @@ const Composer = (props) => {
 		// <form className={`${modal ? `modal` : ""} ${replyData ? "" : "composer"}`}>
 		<form className={`${modal ? `modal` : "composer"}`}>
 			{modal && (
-				<div className="modal-header">
+				<div className="modal-header" >
 					<CloseIcon onClick={() => toggle()} />
 				</div>
 			)}
 			{replyData && (
-				<div className="composer" style={{ border: "0" }}>
-					<div className="profile-image grey-line">
+				<div className="composer grey-line" style={{ border: "0" }}>
+					<div className="profile-image ">
 						<img src={replyImage} alt="user-profile" className="profile-image" />
 					</div>
 					<div className="tweet-main">

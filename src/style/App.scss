@@ -115,7 +115,7 @@ h3 {
 	width: 100vw;
 	height: 100vh;
 	background-color: rgba(128, 128, 128, 0.5);
-	z-index: 3;
+	z-index: 4;
 }
 
 * > .modal {
@@ -132,7 +132,7 @@ h3 {
 	border-radius: 1rem;
 	z-index: 20;
 	animation: $fastanimation;
-	// overflow: hidden;
+	overflow: hidden;
 }
 
 @media (max-width: 767px) {
@@ -151,6 +151,8 @@ h3 {
 	height: 3rem;
 	box-sizing: border-box;
 	padding-left: 1.2rem;
+	background-color: white;
+	z-index: 4;
 }
 
 .form-label {
@@ -276,6 +278,16 @@ h3 {
 	right: 0;
 	z-index: 1;
 }
+
+// change position of grey line if it's on a composer
+.composer::after {
+	top: 2.5rem;
+	left: 2.4rem;
+	z-index: 0;
+
+}
+
+
 
 .dead-tweet {
 	border: $siteborder;
