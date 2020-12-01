@@ -8,7 +8,7 @@ const NotFound = (props) => {
 
 	console.log(useLocation());
 	return (
-		<div className="profile center-feed">
+		<>
 			<div className="profile-header">
 				<Link
 					to="/"
@@ -31,7 +31,7 @@ const NotFound = (props) => {
 				<h3 style={{ marginBottom: "1rem" }}>This account doesn't exist lol</h3>
 				<p>Try searching for another.</p>
 			</div>
-		</div>
+		</>
 	);
 };
 
