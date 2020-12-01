@@ -12,13 +12,11 @@ const AccountList = ({ profileID, name }) => {
 
 	useEffect(() => {
 		if (url.includes("following")) {
-			document.title = `People following ${name}`
+			document.title = `People following ${name}`;
 		} else {
-			document.title = `People followed by ${name}`
-
+			document.title = `People followed by ${name}`;
 		}
-	}, [name, url])
-
+	}, [name, url]);
 
 	useEffect(() => {
 		db.collection("users")
@@ -28,15 +26,16 @@ const AccountList = ({ profileID, name }) => {
 				let accountDatas = [];
 				snapshot.forEach((account) => {
 					const data = account.data();
-					accountDatas.push(
-						<AccountCard
-							key={account.id}
-							bio={data.bio}
-							id={account.id}
-							name={data.name}
-							at={data.at}
-						/>
-					);
+					if (account.id !== profileID) {
+						accountDatas.push(
+							<AccountCard
+								key={account.id}
+								id={account.id}
+								name={data.name}
+								at={data.at}
+							/>
+						);
+					}
 				});
 
 				setAccounts(accountDatas);

@@ -187,7 +187,7 @@ const ProfileMain = (props) => {
 					<h3>{profileData.name}</h3>
 					<p className="grey">
 						@{profileData.at}{" "}
-						{userFollowers && userFollowers.includes(profileID) && (
+						{userFollowers && userFollowers.includes(profileID) && !userProfile && (
 							<span className="follows-you">Follows you</span>
 						)}
 					</p>
