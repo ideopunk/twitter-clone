@@ -135,7 +135,7 @@ const Menu = () => {
 						</NavLink>
 					</li>
 				)}
-				{userID && (
+				{userID !== -1 && (
 					<li
 						onClick={() => {
 							window.scrollY = 0;
@@ -161,7 +161,7 @@ const Menu = () => {
 						<span className="menu-item-text">Explore</span>
 					</NavLink>
 				</li>
-				{userID && (
+				{userID !== -1 && (
 					<li>
 						<NavLink
 							activeClassName="menu-item-active"
@@ -179,7 +179,7 @@ const Menu = () => {
 						</NavLink>
 					</li>
 				)}
-				{device !== "mobile" && userID && (
+				{device !== "mobile" && userID !== -1 && (
 					<li>
 						<NavLink
 							activeClassName="menu-item-active"
@@ -198,7 +198,7 @@ const Menu = () => {
 						</NavLink>
 					</li>
 				)}
-				{userID && device !== "mobile" && (
+				{userID !== -1  && device !== "mobile" && (
 					<li>
 						<div className="menu-item" onClick={toggleDropdown}>
 							<MoreIcon />
@@ -225,15 +225,15 @@ const Menu = () => {
 						/>
 					)}
 				</li>
-				{userID && (
+				{userID !== -1 && (
 					<li style={{ marginTop: device !== "mobile" ? "auto" : "" }}>
 						<button className="menu-profile-button" onClick={signOut}>
 							{device === "comp" && (
 								<>
 									<img
-										src={userImage}
+										src={userImage || ""}
 										alt="user-profile"
-										className="profile-image"
+										className={`profile-image ${userImage? "" : "transparent"}`}
 									/>
 									<div className="menu-profile-button-text">
 										<p>{userName}</p>

@@ -27,7 +27,7 @@ const Main = () => {
 		<div className="main">
 			<Menu />
 
-			{!userID && <LoginPrompt />}
+			{userID === -1 && <LoginPrompt />}
 
 			{userID ? (
 				<Suspense fallback={<LoaderContainer />}>
@@ -85,7 +85,7 @@ const Main = () => {
 				<div className="sidebar">
 					{/* mimic mobile twitter behavior */}
 					{location.pathname !== "/explore" && <Search />}
-					{!userID && <LoginCard />}
+					{userID === -1 && <LoginCard />}
 					<FollowSuggests />
 					<TOS />
 				</div>

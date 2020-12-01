@@ -52,7 +52,8 @@ const App = () => {
 						setUserData((u) => ({ ...u, image: Leaf }));
 					});
 			} else {
-				setUserID(null);
+				// don't start removing things until we're sure we don't have a user. 
+				setUserID(-1);
 				setUserData({});
 			}
 		});

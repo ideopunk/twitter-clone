@@ -107,12 +107,16 @@ const Tweet = (props) => {
 						// fine
 					} else if (mounted) {
 						console.log("dead tweet");
-						setOriginalTweet(<DeadTweet />);
+						if (location.pathname === "/") {
+							checkReply(tweetID);
+						} else {
+							setOriginalTweet(<DeadTweet />);
+						}
 					}
 				});
 		}
 		return () => (mounted = false);
-	}, [big, replyTo, deleteToast, checkReply, noOriginal]);
+	}, [big, replyTo, deleteToast, checkReply, noOriginal, location.pathname, tweetID]);
 
 	const hashedText = reactStringReplace(text, /(#\w+)/g, (match, i) => (
 		<Link
