@@ -77,8 +77,6 @@ const Composer = (props) => {
 	};
 
 	const handleChange = (e) => {
-		console.log(e.target.scrollHeight);
-		console.log(e.target.offsetHeight);
 		if (e.target.scrollHeight > e.target.offsetHeight + 5) {
 			setBonusRows((n) => n + 1);
 		} else if (e.target.value.length < 30) {
@@ -184,7 +182,7 @@ const Composer = (props) => {
 		// <form className={`${modal ? `modal` : ""} ${replyData ? "" : "composer"}`}>
 		<form className={`${modal ? `modal` : "composer"}`}>
 			{modal && (
-				<div className="modal-header" >
+				<div className="modal-header">
 					<CloseIcon onClick={() => toggle()} />
 				</div>
 			)}
@@ -225,8 +223,7 @@ const Composer = (props) => {
 					>
 						<textarea
 							className={`composer-input composer-hide`}
-							// hack
-							// rows={Math.ceil(text.length / 70) + 1 + bonusRows}
+							resize="none"
 							rows={1 + bonusRows}
 							onClick={() => setLine(true)}
 							onChange={handleChange}

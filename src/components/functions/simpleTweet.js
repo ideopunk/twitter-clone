@@ -3,7 +3,7 @@ import { db, storage } from "../../config/fbConfig";
 const simpleTweet = (props) => {
 	const { userName, text, userAt, userID, userTweets, IMGs } = props;
 	console.log(text);
-	console.log(new Date())
+	console.log(new Date());
 	const imgAmount = IMGs.length || 0;
 
 	const hashRE = /(?<=#)\w+/;
@@ -26,11 +26,6 @@ const simpleTweet = (props) => {
 			imageCount: imgAmount,
 		})
 		.then((newTweet) => {
-			console.log(newTweet);
-			db.collection("users")
-				.doc(userID)
-				.update({ tweets: [...userTweets, newTweet.id] });
-
 			for (const [index, img] of IMGs.entries()) {
 				const imgRef = storage.ref("tweet_pictures/" + newTweet.id + "/" + index + ".png");
 				const uploadTask = imgRef.put(img);
@@ -51,6 +46,10 @@ const simpleTweet = (props) => {
 					}
 				);
 			}
+			
+			db.collection("users")
+				.doc(userID)
+				.update({ tweets: [...userTweets, newTweet.id] });
 		});
 };
 

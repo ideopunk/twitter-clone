@@ -12,9 +12,9 @@
 
 @media (max-width: 767px) {
 	.composer {
-		overflow: scroll
+		overflow: scroll;
 	}
-	
+
 	.modal {
 		top: 0;
 		width: 100vw;
@@ -59,8 +59,9 @@
 
 .composer-hide {
 	color: transparent;
+	resize: none;
+
 	caret-color: black;
-	resize: "none";
 	overflow: "auto";
 }
 

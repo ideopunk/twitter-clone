@@ -35,7 +35,9 @@ const NotificationsFeed = ({ notifications }) => {
 	// display the notifications.
 	useEffect(() => {
 		setNotificationsMapped([]);
-		notifications.forEach((notification) => {
+		const sortedNotifications = notifications.sort((a, b) => (b.timeStamp.seconds - a.timeStamp.seconds));
+
+		sortedNotifications.forEach((notification) => {
 			const { type, subject, object } = notification;
 			console.log(notification);
 			switch (type) {

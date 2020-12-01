@@ -22,7 +22,8 @@ const Menu = () => {
 	const { userName, userAt, userID, userImage } = useContext(UserContext);
 	const { device } = useContext(DeviceContext);
 
-	const [homeNotice, setHomeNotice] = useState(0);
+	const [homeNotice, setHomeNotice] = useState(false);
+	const [amount, setAmount] = useState(0);
 	const [unseenNotes, setUnseenNotes] = useState(0);
 
 	const [composer, setComposer] = useState(false);
@@ -30,6 +31,12 @@ const Menu = () => {
 
 	let history = useHistory();
 	let location = useLocation();
+
+	useEffect(() => {
+		if (location.pathname === "/" && window.scrollY === 0 && homeNotice === true) {
+			setHomeNotice(false)
+		}
+	}, [location, homeNotice]);
 
 	// new home tweets watch
 	useEffect(() => {
@@ -41,12 +48,16 @@ const Menu = () => {
 
 				snapshot.forEach((doc) => {
 					const data = doc.data();
-					tempAmount = tempAmount + data.tweets.length;
+					tempAmount += data.tweets.length;
 				});
 
-				// if this is the first mount, set amount to 1.
-				// if new amount isn't 0 and isn't same as old amount, update to new amount.
-				setHomeNotice((t) => (t < tempAmount && t !== 0 ? tempAmount : 1));
+				setAmount((t) => {
+					if (t < tempAmount) {
+						// side effect!!!
+						setHomeNotice(true);
+						return tempAmount;
+					}
+				});
 			});
 
 		return () => unsub();
@@ -105,7 +116,12 @@ const Menu = () => {
 		<>
 			<ul className="menu">
 				{device !== "mobile" && (
-					<li onClick={() => setHomeNotice(1)}>
+					<li
+						onClick={() => {
+							window.scrollY = 0;
+							setHomeNotice(false);
+						}}
+					>
 						<NavLink
 							activeClassName="menu-item-active"
 							to="/"
@@ -120,7 +136,13 @@ const Menu = () => {
 					</li>
 				)}
 				{userID && (
-					<li onClick={() => setHomeNotice(1)}>
+					<li
+						onClick={() => {
+							window.scrollY = 0;
+
+							setHomeNotice(false);
+						}}
+					>
 						<NavLink
 							activeClassName="menu-item-active"
 							to="/"
@@ -128,7 +150,7 @@ const Menu = () => {
 							className="menu-item"
 						>
 							{location.pathname === "/" ? <HomeFilled /> : <HomeOutlineIcon />}
-							{homeNotice > 1 ? <div className="home-notice" /> : ""}
+							{homeNotice ? <div className="home-notice" /> : ""}
 							<span className="menu-item-text">Home</span>
 						</NavLink>
 					</li>

@@ -77,14 +77,11 @@ const Tweet = (props) => {
 				.doc(replyTo)
 				.get()
 				.then((doc) => {
-					console.log(doc.id);
 					const data = doc.data();
-					if (doc.exists) {
-						if (checkReply) {
-							console.log("check reply");
+					if (doc.exists && mounted) {
+						if (checkReply && mounted) {
 							checkReply(doc.id);
 						}
-						console.log("mounted live og tweet");
 						setOriginalTweet(
 							<Tweet
 								key={doc.id}
@@ -108,7 +105,7 @@ const Tweet = (props) => {
 						);
 						// }
 						// fine
-					} else {
+					} else if (mounted) {
 						console.log("dead tweet");
 						setOriginalTweet(<DeadTweet />);
 					}
@@ -139,12 +136,13 @@ const Tweet = (props) => {
 	// do we have pictures?
 	useEffect(() => {
 		let mounted = true;
-		if (imageCount) {
+		if (mounted && imageCount) {
 			let tempArray = [];
 			for (let i = 0; i < imageCount; i++) {
 				storage
 					.ref("tweet_pictures/" + tweetID + "/" + i + ".png")
 					.getDownloadURL()
+					// eslint-disable-next-line no-loop-func
 					.then((url) => {
 						const jsx = (
 							<a
@@ -165,13 +163,45 @@ const Tweet = (props) => {
 							</a>
 						);
 						tempArray.push(jsx);
+						if (mounted && i === imageCount - 1) {
+							setPics(tempArray);
+						}
 					})
 					.catch((err) => {
 						console.log(err);
+						if (err.code === "storage/object-not-found") {
+							setTimeout(() => {
+								storage
+									.ref("tweet_pictures/" + tweetID + "/" + i + ".png")
+									.getDownloadURL()
+									.then((url) => {
+										const jsx = (
+											<a
+												href={url}
+												target="_blank"
+												rel="noreferrer"
+												className="image-container"
+												onClick={(e) => {
+													e.stopPropagation();
+												}}
+												key={url}
+											>
+												<img
+													src={url}
+													alt="user-submitted-pic"
+													className="composer-preview-image"
+												/>
+											</a>
+										);
+										tempArray.push(jsx);
+										if (i === imageCount - 1) {
+											setPics(tempArray);
+										}
+									})
+									.catch((err) => console.log("well heck lmao"));
+							}, 4000);
+						}
 					});
-			}
-			if (mounted) {
-				setPics(tempArray);
 			}
 		}
 		return () => (mounted = false);
@@ -220,11 +250,11 @@ const Tweet = (props) => {
 				});
 
 			//set how long ago the tweet was
-			if (time && !big) {
+			if (time && !big && mounted) {
 				import("../functions/elapser.js").then((elapser) =>
 					setTimeSince(elapser.default(time))
 				);
-			} else if (time) {
+			} else if (time && mounted) {
 				setTimeSince(new Date(time.seconds * 1000).toDateString());
 			}
 		}
@@ -246,16 +276,6 @@ const Tweet = (props) => {
 		if (userID) {
 			setReply(!reply);
 		}
-	};
-
-	const deleteTweet = (e) => {
-		e.stopPropagation();
-		if (userID) {
-			import("../functions/deleteTweet.js").then((deleteTweet) =>
-				deleteTweet.default(tweetID, userTweets, userID)
-			);
-		}
-		props.deleteToast(true);
 	};
 
 	const like = (e) => {
@@ -338,8 +358,6 @@ const Tweet = (props) => {
 	};
 
 	const redirect = (e) => {
-		console.log(e);
-		console.log(e.target);
 		history.push({ pathname: `/tweet/${tweetID}`, state: { prevPath: location.pathname } });
 	};
 
@@ -397,12 +415,13 @@ const Tweet = (props) => {
 								{dropdown && (
 									<Suspense fallback={<LoaderContainer absolute={true} />}>
 										<TweetDropdown
-											deleteTweet={deleteTweet}
 											unfollow={unfollow}
 											follow={follow}
 											followed={followed}
 											tweetID={tweetID}
 											userID={userID}
+											userTweets={userTweets}
+											deleteToast={deleteToast}
 											tweeterID={tweeterID}
 											toggle={toggleDropdown}
 										/>
@@ -452,12 +471,13 @@ const Tweet = (props) => {
 									{dropdown && (
 										<Suspense fallback={<LoaderContainer absolute={true} />}>
 											<TweetDropdown
-												deleteTweet={deleteTweet}
 												unfollow={unfollow}
 												follow={follow}
 												followed={followed}
 												tweetID={tweetID}
 												userID={userID}
+												userTweets={userTweets}
+												deleteToast={deleteToast}
 												tweeterID={tweeterID}
 												toggle={toggleDropdown}
 											/>{" "}

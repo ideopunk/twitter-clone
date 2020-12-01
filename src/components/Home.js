@@ -9,10 +9,22 @@ import Composer from "./reusables/Composer";
 import Feed from "./reusables/Feed";
 import MobileProfileLink from "./reusables/MobileProfileLink";
 
+const arraysMatch = (arr1, arr2) => {
+	if (arr1.length !== arr2.length) return false;
+
+	// Check if all items exist and are in the same order
+	for (var i = 0; i < arr1.length; i++) {
+		if (arr1[i] !== arr2[i]) return false;
+	}
+
+	// Otherwise, return true
+	return true;
+}
+
 const Home = () => {
 	const { userFollows } = useContext(UserContext);
+	const [stopperUserFollows, setStopperUserFollows] = useState([]);
 	const { device } = useContext(DeviceContext);
-	console.log(userFollows);
 	const [tweetDatas, setTweetDatas] = useState([]);
 
 	useEffect(() => {
@@ -20,14 +32,23 @@ const Home = () => {
 	}, []);
 
 	useEffect(() => {
-		console.log("home use effect");
-		console.log("userfollowS: " + userFollows);
-		console.log("we're ago");
+		console.log(stopperUserFollows)
+		console.log(userFollows)
+
+		if (userFollows && (!arraysMatch(stopperUserFollows, userFollows))) {
+			console.log("setting stopperuserfollows")
+			setStopperUserFollows(userFollows);
+		}
+	}, [userFollows, stopperUserFollows]);
+
+	useEffect(() => {
+		setTweetDatas([]);
+
 		const unsub = db
 			.collection("tweets")
 			.orderBy("timeStamp", "desc")
 			.onSnapshot((snapshot) => {
-				console.log("snapshot");
+				console.log("home snapshot");
 				let tempArray = [];
 				let deletionArray = [];
 				const changes = snapshot.docChanges();
@@ -37,26 +58,21 @@ const Home = () => {
 						deletionArray.push(change.doc.id);
 					}
 				});
-				console.log("uh");
 				snapshot.forEach((doc) => {
 					const data = doc.data();
 
 					// include non-replies from follows
-					if (!data.replyTo && userFollows.includes(data.userID)) {
+					if (!data.replyTo && stopperUserFollows.includes(data.userID)) {
 						tempArray.push({ ...doc.data(), id: doc.id });
 						// include replies from follows if you also follow the original tweeter.
-					} else if (userFollows.includes(data.replyUserID)) {
+					} else if (stopperUserFollows.includes(data.replyUserID)) {
 						tempArray.push({ ...doc.data(), id: doc.id });
 					}
 				});
-				setTweetDatas(
-					tempArray
-						.sort((a, b) => b.timeStamp.seconds - a.timeStamp.seconds)
-						.filter((doc) => !deletionArray.includes(doc.id))
-				);
+				setTweetDatas(tempArray.filter((doc) => !deletionArray.includes(doc.id)));
 			});
 		return () => unsub();
-	}, [userFollows]);
+	}, [stopperUserFollows]);
 
 	return (
 		<div className="home center-feed">

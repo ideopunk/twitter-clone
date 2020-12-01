@@ -31,46 +31,10 @@ const ProfileMain = (props) => {
 	const [followed, setFollowed] = useState(false);
 	const [imageLoaded, setImageLoaded] = useState(false);
 
-	// set profile data
+	useEffect(() => {console.log('rerender')}, [])
+
+	// set nontweety data
 	useEffect(() => {
-		setProfileData({ follows: [], followers: [] });
-
-		// if it's the current user's profile...
-		userProfile
-			? setProfileData({
-					at: userAt,
-					name: userName,
-					follows: userFollows || [],
-					followers: userFollowers || [],
-					id: userID,
-					image: userImage,
-					bio: userBio,
-					tweetAmount: userTweets.length,
-
-					joinDate: new Date(userJoinDate.seconds * 1000),
-			  })
-			: // if it's somebody else...
-			  db
-					.collection("users")
-					.doc(profileID)
-					.get()
-					.then((doc) => {
-						const data = doc.data();
-
-						setProfileData((prevData) => ({
-							...prevData,
-							at: data.at,
-							name: data.name,
-							follows: data.follows || [],
-							followers: data.followers || [],
-							bio: data.bio,
-							id: doc.id,
-							website: data.website,
-							tweetAmount: data.tweets.length,
-							joinDate: new Date(data.joinDate.seconds * 1000),
-						}));
-					});
-
 		// !profileData.header &&
 		storage
 			.ref("header_pictures/" + profileID + ".png")
@@ -96,6 +60,47 @@ const ProfileMain = (props) => {
 					.catch((e) => {
 						console.log(e);
 						setProfileData((prevData) => ({ ...prevData, image: Leaf }));
+					});
+	}, [profileID, userImage, userProfile]);
+
+	// set profile data
+	useEffect(() => {
+		setProfileData((n) => ({ ...n, follows: [], followers: [] }));
+
+		// if it's the current user's profile...
+		userProfile
+			? setProfileData(n => ({...n,
+					at: userAt,
+					name: userName,
+					follows: userFollows || [],
+					followers: userFollowers || [],
+					id: userID,
+					image: userImage,
+					bio: userBio,
+					tweetAmount: userTweets.length,
+
+					joinDate: new Date(userJoinDate.seconds * 1000),
+			  }))
+			: // if it's somebody else...
+			  db
+					.collection("users")
+					.doc(profileID)
+					.get()
+					.then((doc) => {
+						const data = doc.data();
+
+						setProfileData((prevData) => ({
+							...prevData,
+							at: data.at,
+							name: data.name,
+							follows: data.follows || [],
+							followers: data.followers || [],
+							bio: data.bio,
+							id: doc.id,
+							website: data.website,
+							tweetAmount: data.tweets.length,
+							joinDate: new Date(data.joinDate.seconds * 1000),
+						}));
 					});
 	}, [
 		userProfile,
@@ -128,10 +133,7 @@ const ProfileMain = (props) => {
 		if (editor) {
 			document.body.style.position = "fixed";
 			body.style.top = `-${scroll}px`;
-		} else {
-			document.body.style.position = "";
-			window.scrollTo(0, -parseInt(body.style.top));
-		}
+		} 
 	}, [editor]);
 
 	const toggleEditor = () => {
@@ -146,7 +148,7 @@ const ProfileMain = (props) => {
 		<>
 			<Link to="/" className="top-link" style={{ textDecoration: "none", color: "black" }}>
 				<SideArrow />
-				<div className="top-link-text" style={{paddingLeft: "2rem"}}>
+				<div className="top-link-text" style={{ paddingLeft: "2rem" }}>
 					<h3 className="no-dec">{profileData.name}</h3>
 					<p className="grey">{profileData.tweetAmount} tweets</p>
 				</div>
@@ -204,13 +206,18 @@ const ProfileMain = (props) => {
 					<p>
 						<Link to={`${url}/following`} className="hover-under">
 							<span style={{ marginRight: "1rem" }}>
-								{profileData.follows.length} <span className="grey">Following</span>
+								{profileData.follows.length - 1 || ""}{" "}
+								<span className="grey">Following</span>
 							</span>
 						</Link>
 						<Link to={`${url}/followers`} className="hover-under">
 							<span>
-								{profileData.followers.length}{" "}
-								<span className="grey">Followers</span>
+								{profileData.followers.length - 1 || ""}{" "}
+								<span className="grey">
+									{profileData.followers.length - 1 > 1
+										? "Followers"
+										: "Follower"}
+								</span>
 							</span>
 						</Link>
 					</p>

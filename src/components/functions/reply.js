@@ -23,8 +23,8 @@ const reply = (props) => {
 			hashtags: hashFound || [],
 			userTags: palFound || [],
 			timeStamp: new Date(),
-			replyTo: tweetID,  // to load original tweet
-			replyUserID: tweeterID, 
+			replyTo: tweetID, // to load original tweet
+			replyUserID: tweeterID,
 			retweets: [],
 			likes: [],
 			replies: [],
@@ -32,7 +32,27 @@ const reply = (props) => {
 		})
 
 		.then((newTweet) => {
+			// create references for images.
+			for (const [index, img] of IMGs.entries()) {
+				const imgRef = storage.ref("tweet_pictures/" + newTweet.id + "/" + index + ".png");
+				const uploadTask = imgRef.put(img);
+				uploadTask.on(
+					"state_changed",
 
+					// how it's going
+					(snapshot) => {},
+
+					// how it goofed it
+					(error) => {
+						console.log(error);
+					},
+
+					// how it succeeded
+					() => {
+						console.log("success");
+					}
+				);
+			}
 			// add it to the user's tweets
 			console.log(newTweet);
 			db.collection("users")
@@ -56,28 +76,6 @@ const reply = (props) => {
 						notify("reply", userID, originalData.userID, newTweet.id);
 					}
 				});
-
-			// create references for images.
-			for (const [index, img] of IMGs.entries()) {
-				const imgRef = storage.ref("tweet_pictures/" + newTweet.id + "/" + index + ".png");
-				const uploadTask = imgRef.put(img);
-				uploadTask.on(
-					"state_changed",
-
-					// how it's going
-					(snapshot) => {},
-
-					// how it goofed it
-					(error) => {
-						console.log(error);
-					},
-
-					// how it succeeded
-					() => {
-						console.log("success");
-					}
-				);
-			}
 		});
 };
 
