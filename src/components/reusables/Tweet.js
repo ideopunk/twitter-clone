@@ -81,9 +81,10 @@ const Tweet = (props) => {
 					if (doc.exists && mounted) {
 
 						storage
-							.ref("profile_pictures/" + doc.userID + ".png")
+							.ref("profile_pictures/" + data.userID + ".png")
 							.getDownloadURL()
 							.then((url) => {
+								console.log(url)
 								setOriginalTweet(
 									<Tweet
 										key={doc.id}

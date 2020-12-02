@@ -72,13 +72,11 @@ const Feed = (props) => {
 					/>
 				);
 			});
-			console.log(tweets);
 			setUniqueTweets(tweets);
 		};
 
 		const check = (a, b) => {
 			if (a.length === b.length) {
-				console.log("a length equals b length");
 				finalImages.push(...b);
 				makeComponents();
 			}
