@@ -7,9 +7,7 @@ const MobileProfileLink = () => {
 
 	return (
 		<Link to={`/${userAt}`}>
-			{userImage && (
-				<img src={userImage} alt="user-profile" className="mobile-profile-image" />
-			)}
+			<img src={userImage} alt="user-profile" className="mobile-profile-image" />
 		</Link>
 	);
 };

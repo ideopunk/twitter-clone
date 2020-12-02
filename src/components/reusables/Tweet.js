@@ -54,9 +54,15 @@ const Tweet = (props) => {
 		noOriginal,
 	} = props;
 
-	const { userID, userAt, userLikes, userFollows, userTweets, userRetweets } = useContext(
-		UserContext
-	);
+	const {
+		userID,
+		userAt,
+		userLikes,
+		userFollows,
+		userTweets,
+		userRetweets,
+		userImage,
+	} = useContext(UserContext);
 
 	const liked = likes && likes.includes(userID); // has the user liked this tweet?
 	const followed = userFollows && userFollows.includes(tweeterID); // does the user follow this tweet?
@@ -233,36 +239,46 @@ const Tweet = (props) => {
 	useEffect(() => {
 		let mounted = true;
 
-		if (mounted) {
-			storage
-				.ref("profile_pictures/" + tweeterID + ".png")
-				.getDownloadURL()
-				.then((url) => {
-					if (mounted) {
-						setImage(url);
-					}
-				})
-				.catch((err) => {
-					console.log(err);
-					if (mounted) {
-						setImage(Leaf);
-					}
-				});
+		//set how long ago the tweet was
+		if (time && !big && mounted) {
+			import("../functions/elapser.js").then((elapser) => {
+				if (mounted) {
+					setTimeSince(elapser.default(time));
+				}
+			});
+		} else if (time && mounted) {
+			setTimeSince(new Date(time.seconds * 1000).toDateString());
+		}
 
-			//set how long ago the tweet was
-			if (time && !big && mounted) {
-				import("../functions/elapser.js").then((elapser) => {
-					if (mounted) {
-						setTimeSince(elapser.default(time));
-					}
-				});
-			} else if (time && mounted) {
-				setTimeSince(new Date(time.seconds * 1000).toDateString());
+		return () => (mounted = false);
+	}, [time, big]);
+
+	useEffect(() => {
+		let mounted = true;
+
+		if (mounted) {
+			if (userTweets && userTweets.includes(tweetID)) {
+				setImage(userImage);
+			} else {
+				storage
+					.ref("profile_pictures/" + tweeterID + ".png")
+					.getDownloadURL()
+					.then((url) => {
+						if (mounted) {
+							setImage(url);
+						}
+					})
+					.catch((err) => {
+						console.log(err);
+						if (mounted) {
+							setImage(Leaf);
+						}
+					});
 			}
 		}
 
 		return () => (mounted = false);
-	}, [tweeterID, time, text, big]);
+	}, [userImage, tweetID, tweeterID, userTweets]);
 
 	const toggleDropdown = (e) => {
 		e.stopPropagation();
