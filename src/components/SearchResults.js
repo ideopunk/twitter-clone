@@ -66,7 +66,6 @@ const SearchResults = () => {
 					<Search defaultValue={searchTerm} />
 				</div>
 			</div>
-			<div style={{ height: "4.75rem" }}></div>
 			{tweetDatas.length ? (
 				<Suspense fallback={<LoaderContainer />}>
 					<Feed tweetDatas={tweetDatas} />

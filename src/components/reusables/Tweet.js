@@ -255,9 +255,11 @@ const Tweet = (props) => {
 
 			//set how long ago the tweet was
 			if (time && !big && mounted) {
-				import("../functions/elapser.js").then((elapser) =>
-					setTimeSince(elapser.default(time))
-				);
+				import("../functions/elapser.js").then((elapser) => {
+					if (mounted) {
+						setTimeSince(elapser.default(time));
+					}
+				});
 			} else if (time && mounted) {
 				setTimeSince(new Date(time.seconds * 1000).toDateString());
 			}

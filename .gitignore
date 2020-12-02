@@ -25,3 +25,7 @@ yarn-error.log*
 todo.txt
 fakeaccounts.txt
 .VSCodeCounter
+
+.firebaserc
+firebase.json
+.firebase
