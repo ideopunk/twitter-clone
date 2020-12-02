@@ -20,12 +20,12 @@ const Explore = () => {
 	}, []);
 
 	useEffect(() => {
-
 		setTweetDatas([]);
 
 		const unsub = db
 			.collection("tweets")
 			.orderBy("timeStamp", "desc")
+			.limit(25)
 			.onSnapshot((snapshot) => {
 				let tempArray = [];
 				let deletionArray = [];
@@ -54,7 +54,8 @@ const Explore = () => {
 
 	return (
 		<div className="center-feed">
-			<div className="pad top-link">{device === "mobile" && userID && <MobileProfileLink />}
+			<div className="pad top-link">
+				{device === "mobile" && userID && <MobileProfileLink />}
 				<Search className="pad" />
 			</div>
 			{tweetDatas.length ? <Feed tweetDatas={tweetDatas} /> : <LoaderContainer />}

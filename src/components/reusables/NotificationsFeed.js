@@ -18,7 +18,6 @@ const NotificationsFeed = ({ notifications }) => {
 
 	const [notificationsMapped, setNotificationsMapped] = useState([]);
 	const [sorted, setSorted] = useState(false);
-	const [ignoreAmount, setIgnoreAmount] = useState(0);
 
 	// the notifications have been observed. Update that so that the menu stops alerting us to new notifications.
 	useEffect(() => {
@@ -35,10 +34,11 @@ const NotificationsFeed = ({ notifications }) => {
 				: [];
 			userRef.update({ notifications: seenNotes });
 		});
-	}, [userID]);
+	}, [userID, notifications]);
 
 	// display the notifications.
 	useEffect(() => {
+		// functions should have this covered already, but just in case...
 		const deleteDeadNotifications = (seconds) => {
 			db.collection("users")
 				.doc(userID)
@@ -49,13 +49,27 @@ const NotificationsFeed = ({ notifications }) => {
 				});
 		};
 
-		setNotificationsMapped([]);
+		// have we caught up to all the notifications? 
+		const finishedCheck = () => {
+			if (tempArray.length === notifications.length) {
+				setSorted(true);
+				setNotificationsMapped(
+					tempArray.sort((a, b) => {
+						console.log(a);
+						return b.props["data-timestamp"] - a.props["data-timestamp"];
+					})
+				);
+			}
+		};
 
+		console.log("NM should be 0 length!");
+
+		let noThankYouArray = [];
 		let tempArray = [];
 		notifications.forEach((notification) => {
 			const { type, subject, object, timeStamp } = notification;
-			if (!tempArray.includes(timeStamp.seconds)) {
-				tempArray.push(timeStamp.seconds);
+			if (!noThankYouArray.includes(timeStamp.seconds)) {
+				noThankYouArray.push(timeStamp.seconds);
 				switch (type) {
 					case "follow":
 						console.log("follow begin");
@@ -81,8 +95,7 @@ const NotificationsFeed = ({ notifications }) => {
 											}
 											console.log("follow");
 
-											setNotificationsMapped((n) => [
-												...n,
+											tempArray.push(
 												<div
 													className="account-card appear"
 													key={doc.id + "follow"}
@@ -114,8 +127,9 @@ const NotificationsFeed = ({ notifications }) => {
 															followed you
 														</p>
 													</div>
-												</div>,
-											]);
+												</div>
+											);
+											finishedCheck();
 										});
 								} else {
 									deleteDeadNotifications(timeStamp.seconds);
@@ -155,8 +169,7 @@ const NotificationsFeed = ({ notifications }) => {
 													}
 													console.log("retweet");
 
-													setNotificationsMapped((n) => [
-														...n,
+													tempArray.push(
 														<div
 															className="account-card appear"
 															key={doc.id + "retweet"}
@@ -197,8 +210,9 @@ const NotificationsFeed = ({ notifications }) => {
 																	{data.text}
 																</p>
 															</div>
-														</div>,
-													]);
+														</div>
+													);
+													finishedCheck();
 												});
 										})
 										.catch((err) => console.log(err));
@@ -219,8 +233,7 @@ const NotificationsFeed = ({ notifications }) => {
 									const data = doc.data();
 									console.log("reply");
 
-									setNotificationsMapped((n) => [
-										...n,
+									tempArray.push(
 										<Tweet
 											key={doc.id + "reply"}
 											tweetID={doc.id}
@@ -236,8 +249,9 @@ const NotificationsFeed = ({ notifications }) => {
 											replies={data.replies}
 											imageCount={data.imageCount}
 											data-timestamp={timeStamp.seconds}
-										/>,
-									]);
+										/>
+									);
+									finishedCheck();
 								} else {
 									deleteDeadNotifications(timeStamp.seconds);
 								}
@@ -277,8 +291,7 @@ const NotificationsFeed = ({ notifications }) => {
 													}
 													console.log("like");
 
-													setNotificationsMapped((n) => [
-														...n,
+													tempArray.push(
 														<div
 															className="account-card appear"
 															data-timestamp={timeStamp.seconds}
@@ -319,8 +332,9 @@ const NotificationsFeed = ({ notifications }) => {
 																	{data.text}
 																</p>
 															</div>
-														</div>,
-													]);
+														</div>
+													);
+													finishedCheck();
 												});
 										})
 										.catch((err) => console.log(err));
@@ -333,33 +347,9 @@ const NotificationsFeed = ({ notifications }) => {
 					default:
 						console.log("what?");
 				}
-			} else {
-				console.log("increment ignore amount");
-				setIgnoreAmount((a) => {
-					return a + 1;
-				});
 			}
 		});
 	}, [notifications, history, location.pathname, userID]);
-
-	useEffect(() => {
-		console.log(notificationsMapped.length);
-		console.log(notifications.length);
-		if (
-			notificationsMapped.length === notifications.length + ignoreAmount &&
-			notifications.length > 1 &&
-			!sorted
-		) {
-			console.log("lengths equivalent");
-			setNotificationsMapped(
-				notificationsMapped.sort((a, b) => {
-					console.log(a);
-					return b.props["data-timestamp"] - a.props["data-timestamp"];
-				})
-			);
-			setSorted(true);
-		}
-	}, [notifications, notificationsMapped, sorted, ignoreAmount]);
 
 	return <div className="feed">{sorted ? notificationsMapped : <LoaderContainer />}</div>;
 };

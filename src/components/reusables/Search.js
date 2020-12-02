@@ -13,7 +13,7 @@ const Search = (props) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (searchPhrase[0] === "#") {
+		if (searchPhrase[0] === "#" || searchPhrase[0] === "@") {
 			history.push(`/search/${searchPhrase.slice(1)}`);
 		} else {
 			history.push(`/search/${searchPhrase}`);

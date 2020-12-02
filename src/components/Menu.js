@@ -38,6 +38,8 @@ const Menu = () => {
 		}
 	}, [location, homeNotice]);
 
+
+
 	// new home tweets watch
 	useEffect(() => {
 		const unsub = db
