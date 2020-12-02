@@ -19,27 +19,31 @@ const App = () => {
 	// listen for auth status changes
 	useEffect(() => {
 		const unsubscribe = auth.onAuthStateChanged((user) => {
+			console.log(user);
 			if (user) {
-				console.log(user)
+				console.log(user.email);
 				setUserID(user.uid);
 				db.collection("users")
 					.doc(user.uid)
-					.onSnapshot((snapshot) => {
-						const data = snapshot.data();
-						// set optional data if we have it.
-						setUserData((u) => ({
-							...u,
-							joinDate: data.joinDate,
-							bio: data.bio || "",
-							retweets: data.retweets || [],
-							likes: data.likes || [],
-							tweets: data.tweets || [],
-							followers: data.followers || [],
-							follows: data.follows || [],
-							at: data.at,
-							name: data.name,
-						}));
-					});
+					.onSnapshot(
+						(snapshot) => {
+							const data = snapshot.data();
+							// set optional data if we have it.
+							setUserData((u) => ({
+								...u,
+								joinDate: data.joinDate,
+								bio: data.bio || "",
+								retweets: data.retweets || [],
+								likes: data.likes || [],
+								tweets: data.tweets || [],
+								followers: data.followers || [],
+								follows: data.follows || [],
+								at: data.at,
+								name: data.name,
+							}));
+						},
+						(err) => console.log(err)
+					);
 
 				// set user image and header,
 				storage

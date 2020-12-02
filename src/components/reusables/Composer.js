@@ -67,7 +67,8 @@ const Composer = (props) => {
 						setIMGs([]);
 						setPreviewIMGs([]);
 						setToast("Your tweet was sent");
-					});
+					})
+					.catch((err) => console.log(err));
 			} else {
 				import("../functions/simpleTweet.js")
 					.then((simpleTweet) =>
@@ -78,7 +79,8 @@ const Composer = (props) => {
 						setIMGs([]);
 						setPreviewIMGs([]);
 						setToast("Your tweet was sent");
-					});
+					})
+					.catch((err) => console.log(err));
 			}
 
 			if (toggle) {

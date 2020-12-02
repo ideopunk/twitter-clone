@@ -1,6 +1,6 @@
 const elapser = (time) => {
 	const elapsed = Date.now() - time.seconds * 1000;
-
+	console.log(elapsed)
 	// if time is above a certain point, return Date.
 	if (elapsed > 86400000) {
 		const date = new Date(time.seconds * 1000);

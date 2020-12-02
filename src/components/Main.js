@@ -89,7 +89,7 @@ const Main = () => {
 					{/* mimic mobile twitter behavior */}
 					{location.pathname !== "/explore" && <Search />}
 					{userID === -1 && <LoginCard />}
-					<FollowSuggests />
+					{userID !== -1 && userID && <FollowSuggests />}
 					<TOS />
 				</div>
 			)}
