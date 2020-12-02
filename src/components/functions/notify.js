@@ -5,12 +5,14 @@ const notify = (type, userID, personID, objectID) => {
 
 	userRef.get().then((doc) => {
 		const data = doc.data();
-		const oldCheckedNotes =
-			data.notifications.filter(
-				(
-					note // don't allow duplicates
-				) => !(note.type === type && note.subject === userID && note.object === objectID)
-			) || [];
+		const oldCheckedNotes = data.notifications
+			? data.notifications.filter(
+					(
+						note // don't allow duplicates
+					) =>
+						!(note.type === type && note.subject === userID && note.object === objectID)
+			  )
+			: [];
 		userRef.update({
 			notifications: [
 				...oldCheckedNotes,

@@ -63,9 +63,10 @@ const Home = () => {
 					if (!data.replyTo && stopperUserFollows.includes(data.userID)) {
 						tempArray.push({ ...doc.data(), id: doc.id });
 						// include replies from follows if you also follow the original tweeter.
-					} else if (stopperUserFollows.includes(data.replyUserID)) {
-						tempArray.push({ ...doc.data(), id: doc.id });
-					}
+					} 
+					// else if (stopperUserFollows.includes(data.replyUserID)) {
+					// 	tempArray.push({ ...doc.data(), id: doc.id });
+					// }
 				});
 				setTweetDatas(tempArray.filter((doc) => !deletionArray.includes(doc.id)));
 			});
