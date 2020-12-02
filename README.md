@@ -1,3 +1,5 @@
+This repo is [live](https://twitter-clone-12cf9.web.app/)
+
 This is a clone of Twitter, made as a final project for [The Odin Project](https://www.theodinproject.com/courses/javascript/lessons/final-project-116ff273-1e55-4055-bd7f-146c17d0ec9c). It includes core Twitter functionality, such as:
 
 - Tweeting
