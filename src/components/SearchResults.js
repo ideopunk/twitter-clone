@@ -17,7 +17,6 @@ const SearchResults = () => {
 
 	// search!
 	useEffect(() => {
-		console.log(searchTerm);
 		setTweetDatas([]);
 		db.collection("tweets")
 			.where("hashtags", "array-contains", searchTerm)
@@ -39,14 +38,18 @@ const SearchResults = () => {
 			])
 			.get()
 			.then((snapshot) => {
-				console.log(snapshot);
 				let tempArray = [];
 				snapshot.forEach((doc) => {
-					console.log(doc.id);
 					// don't include replies
 					tempArray.push({ ...doc.data(), id: doc.id });
 				});
-				setTweetDatas((t) => [...t, ...tempArray]);
+				setTweetDatas((t) => {
+					const IDs = tempArray.map((doc) => doc.id);
+					const newT = t.filter((doc) => {
+						return !IDs.includes(doc.id);
+					});
+					return [...newT, ...tempArray];
+				});
 			});
 
 		db.collection("tweets")
@@ -57,19 +60,20 @@ const SearchResults = () => {
 			])
 			.get()
 			.then((snapshot) => {
-				console.log(snapshot);
 				let tempArray = [];
 				snapshot.forEach((doc) => {
 					// don't include replies
 					tempArray.push({ ...doc.data(), id: doc.id });
 				});
-				setTweetDatas((t) => [...t, ...tempArray]);
+				setTweetDatas((t) => {
+					const IDs = tempArray.map((doc) => doc.id);
+					const newT = t.filter((doc) => {
+						return !IDs.includes(doc.id);
+					});
+					return [...newT, ...tempArray];
+				});
 			});
 	}, [searchTerm]);
-
-	useEffect(() => {
-		console.log(tweetDatas);
-	}, [tweetDatas]);
 
 	return (
 		<div className="home center-feed">
