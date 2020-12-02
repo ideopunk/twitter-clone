@@ -80,7 +80,6 @@ const Composer = (props) => {
 						setPreviewIMGs([]);
 						setToast("Your tweet was sent");
 					})
-					.catch((err) => console.log(err));
 			}
 
 			if (toggle) {

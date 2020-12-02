@@ -34,7 +34,6 @@ const TweetAndReplies = (props) => {
 		db.collection("tweets")
 			.where("replyTo", "==", tweetID)
 			.onSnapshot((snapshot) => {
-
 				let tempArray = [];
 				snapshot.forEach((doc) => {
 					// don't include replies
@@ -75,10 +74,12 @@ const TweetAndReplies = (props) => {
 				big={true}
 				imageCount={mainTweet.imageCount}
 			/>
-			{mainTweet.replies && (
+			{mainTweet.replies && mainTweet.replies.length ? (
 				<Suspense fallback={<LoaderContainer />}>
 					<Feed tweetDatas={tweetDatas} noOriginal={true} />
 				</Suspense>
+			) : (
+				""
 			)}
 		</div>
 	);

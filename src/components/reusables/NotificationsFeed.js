@@ -38,6 +38,9 @@ const NotificationsFeed = ({ notifications }) => {
 
 	// display the notifications.
 	useEffect(() => {
+		console.log("display the notifications");
+		console.log(userID);
+		console.log(notifications);
 		// functions should have this covered already, but just in case...
 		const deleteDeadNotifications = (seconds) => {
 			db.collection("users")
@@ -49,7 +52,7 @@ const NotificationsFeed = ({ notifications }) => {
 				});
 		};
 
-		// have we caught up to all the notifications? 
+		// have we caught up to all the notifications?
 		const finishedCheck = () => {
 			if (tempArray.length === notifications.length) {
 				setSorted(true);
@@ -61,7 +64,6 @@ const NotificationsFeed = ({ notifications }) => {
 			}
 		};
 
-
 		let noThankYouArray = [];
 		let tempArray = [];
 		notifications.forEach((notification) => {
@@ -70,7 +72,6 @@ const NotificationsFeed = ({ notifications }) => {
 				noThankYouArray.push(timeStamp.seconds);
 				switch (type) {
 					case "follow":
-
 						db.collection("users")
 							.doc(subject)
 							.get()
@@ -136,7 +137,6 @@ const NotificationsFeed = ({ notifications }) => {
 						break;
 
 					case "retweet":
-
 						db.collection("tweets")
 							.doc(object)
 							.get()
@@ -217,7 +217,6 @@ const NotificationsFeed = ({ notifications }) => {
 
 						break;
 					case "reply":
-
 						db.collection("tweets")
 							.doc(object)
 							.get()
@@ -227,7 +226,7 @@ const NotificationsFeed = ({ notifications }) => {
 
 									tempArray.push(
 										<Tweet
-											key={doc.id + "reply"}
+											key={doc.id + "reply" + timeStamp.seconds}
 											tweetID={doc.id}
 											tweeterID={data.userID}
 											name={data.name}
@@ -252,7 +251,6 @@ const NotificationsFeed = ({ notifications }) => {
 						break;
 
 					case "like":
-
 						db.collection("tweets")
 							.doc(object)
 							.get()
@@ -283,7 +281,9 @@ const NotificationsFeed = ({ notifications }) => {
 														<div
 															className="account-card appear"
 															data-timestamp={timeStamp.seconds}
-															key={doc.id + "like"}
+															key={
+																doc.id + "like" + timeStamp.seconds
+															}
 															style={{ alignItems: "flex-start" }}
 															onClick={() =>
 																history.push({

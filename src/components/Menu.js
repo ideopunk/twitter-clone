@@ -23,6 +23,7 @@ const Menu = () => {
 	const { device } = useContext(DeviceContext);
 
 	const [homeNotice, setHomeNotice] = useState(false);
+	// eslint-disable-next-line
 	const [amount, setAmount] = useState(0);
 	const [unseenNotes, setUnseenNotes] = useState(0);
 

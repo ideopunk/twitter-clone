@@ -3,7 +3,6 @@ import { Link, useLocation, useHistory } from "react-router-dom";
 
 import { db, storage } from "../../config/fbConfig";
 import UserContext from "../context/userContext.js";
-import Leaf from "../../assets/leaf-outline.svg";
 import LoaderContainer from "./LoaderContainer";
 import DeadTweet from "./DeadTweet";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -24,7 +23,6 @@ const reactStringReplace = require("react-string-replace");
 const Toast = lazy(() => import("./Toast"));
 
 const Tweet = (props) => {
-	const [image, setImage] = useState("");
 	const [timeSince, setTimeSince] = useState(null);
 	const [dropdown, setDropdown] = useState(false);
 	const [reply, setReply] = useState(false);
@@ -41,6 +39,7 @@ const Tweet = (props) => {
 		time,
 		text,
 		retweets,
+		image,
 		likes,
 		replyTo,
 		replies,
@@ -61,7 +60,6 @@ const Tweet = (props) => {
 		userFollows,
 		userTweets,
 		userRetweets,
-		userImage,
 	} = useContext(UserContext);
 
 	const liked = likes && likes.includes(userID); // has the user liked this tweet?
@@ -235,7 +233,7 @@ const Tweet = (props) => {
 		return () => (mounted = false);
 	}, [retweets, userID, userAt]);
 
-	// get picture for tweet, set to Leaf if no picture found.
+	// set post date.
 	useEffect(() => {
 		let mounted = true;
 
@@ -253,32 +251,7 @@ const Tweet = (props) => {
 		return () => (mounted = false);
 	}, [time, big]);
 
-	useEffect(() => {
-		let mounted = true;
 
-		if (mounted) {
-			if (userTweets && userTweets.includes(tweetID)) {
-				setImage(userImage);
-			} else {
-				storage
-					.ref("profile_pictures/" + tweeterID + ".png")
-					.getDownloadURL()
-					.then((url) => {
-						if (mounted) {
-							setImage(url);
-						}
-					})
-					.catch((err) => {
-						console.log(err);
-						if (mounted) {
-							setImage(Leaf);
-						}
-					});
-			}
-		}
-
-		return () => (mounted = false);
-	}, [userImage, tweetID, tweeterID, userTweets]);
 
 	const toggleDropdown = (e) => {
 		e.stopPropagation();
@@ -392,7 +365,7 @@ const Tweet = (props) => {
 					<PreviewLink to={`/${retweetedBy}`} className="hover-under">
 						<div className={`retweeted-by ${big ? "big-retweeted-by" : ""}`}>
 							<Retweet />
-							<p>Retweeted by {retweetedBy}</p>
+							<p>Retweeted by @{retweetedBy}</p>
 						</div>
 					</PreviewLink>
 				)}

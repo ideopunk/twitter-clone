@@ -50,15 +50,17 @@ const App = () => {
 					.ref("profile_pictures/" + user.uid + ".png")
 					.getDownloadURL()
 					.then((url) => {
+						console.log("set image again!");
 						setUserData((u) => ({ ...u, image: url }));
 					})
 					.catch(() => {
+						console.log("set image again!");
 						setUserData((u) => ({ ...u, image: Leaf }));
 					});
 			} else {
 				// don't start removing things until we're sure we don't have a user.
 				setUserID(-1);
-				setUserData({});
+				setUserData({ image: Leaf });
 			}
 		});
 
@@ -111,10 +113,12 @@ const App = () => {
 								{userID && userID !== -1 ? <Redirect to="/" /> : <SignupPage />}
 							</Route>
 							<Route path="/">
-								{/* This is bad for unlogged-in users */}
-								<Suspense fallback={<LoaderContainer />}>
-									<Main />
-								</Suspense>
+								{/* stop image flickering */}
+								{userData.image && (
+									<Suspense fallback={<LoaderContainer />}>
+										<Main />
+									</Suspense>
+								)}
 							</Route>
 						</Switch>
 					</UserContext.Provider>
