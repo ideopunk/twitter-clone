@@ -18,6 +18,7 @@ const NotificationsFeed = ({ notifications }) => {
 
 	const [notificationsMapped, setNotificationsMapped] = useState([]);
 	const [sorted, setSorted] = useState(false);
+	const [ignoreAmount, setIgnoreAmount] = useState(0);
 
 	// the notifications have been observed. Update that so that the menu stops alerting us to new notifications.
 	useEffect(() => {
@@ -47,6 +48,8 @@ const NotificationsFeed = ({ notifications }) => {
 				tempArray.push(timeStamp.seconds);
 				switch (type) {
 					case "follow":
+						console.log("follow begin");
+
 						db.collection("users")
 							.doc(subject)
 							.get()
@@ -65,6 +68,8 @@ const NotificationsFeed = ({ notifications }) => {
 										} else {
 											image = err;
 										}
+										console.log("follow");
+
 										setNotificationsMapped((n) => [
 											...n,
 											<div
@@ -99,11 +104,14 @@ const NotificationsFeed = ({ notifications }) => {
 											</div>,
 										]);
 									});
-							});
+							})
+							.catch((err) => console.log(err));
 
 						break;
 
 					case "retweet":
+						console.log("retweet begin");
+
 						db.collection("tweets")
 							.doc(object)
 							.get()
@@ -129,6 +137,8 @@ const NotificationsFeed = ({ notifications }) => {
 													} else {
 														image = err;
 													}
+													console.log("retweet");
+
 													setNotificationsMapped((n) => [
 														...n,
 														<div
@@ -174,17 +184,22 @@ const NotificationsFeed = ({ notifications }) => {
 														</div>,
 													]);
 												});
-										});
+										})
+										.catch((err) => console.log(err));
 								}
 							});
 
 						break;
 					case "reply":
+						console.log("reply begin");
+
 						db.collection("tweets")
 							.doc(object)
 							.get()
 							.then((doc) => {
 								const data = doc.data();
+								console.log("reply");
+
 								setNotificationsMapped((n) => [
 									...n,
 									<Tweet
@@ -204,14 +219,19 @@ const NotificationsFeed = ({ notifications }) => {
 										data-timestamp={timeStamp.seconds}
 									/>,
 								]);
-							});
+							})
+							.catch((err) => console.log(err));
 						break;
 
 					case "like":
+						console.log("like begin");
+
 						db.collection("tweets")
 							.doc(object)
 							.get()
 							.then((doc) => {
+								console.log(doc.data())
+								console.log(doc.exists)
 								if (doc.exists) {
 									const data = doc.data();
 									db.collection("users")
@@ -233,6 +253,8 @@ const NotificationsFeed = ({ notifications }) => {
 													} else {
 														image = err;
 													}
+													console.log("like");
+
 													setNotificationsMapped((n) => [
 														...n,
 														<div
@@ -278,7 +300,8 @@ const NotificationsFeed = ({ notifications }) => {
 														</div>,
 													]);
 												});
-										});
+										})
+										.catch((err) => console.log(err));
 								}
 							});
 
@@ -286,26 +309,34 @@ const NotificationsFeed = ({ notifications }) => {
 					default:
 						console.log("what?");
 				}
+			} else {
+				console.log("increment ignore amount");
+				setIgnoreAmount((a) => {
+					return a + 1;
+				});
 			}
 		});
 	}, [notifications, history, location.pathname]);
 
 	useEffect(() => {
-		console.log(notifications.length)
 		console.log(notificationsMapped.length)
-		if (notificationsMapped.length === notifications.length && notifications.length > 1 && !sorted) {
-			console.log("lengths equivalent")
+		console.log(notifications.length)
+		if (
+			notificationsMapped.length === notifications.length + ignoreAmount &&
+			notifications.length > 1 &&
+			!sorted
+		) {
+			console.log("lengths equivalent");
 			setNotificationsMapped(
 				notificationsMapped
 					.sort((a, b) => {
-						console.log(a)
+						console.log(a);
 						return b.props["data-timestamp"] - a.props["data-timestamp"];
 					})
-					.reverse()
 			);
 			setSorted(true);
 		}
-	}, [notifications, notificationsMapped, sorted]);
+	}, [notifications, notificationsMapped, sorted, ignoreAmount]);
 
 	return <div className="feed">{sorted ? notificationsMapped : <LoaderContainer />}</div>;
 };
