@@ -7,6 +7,7 @@ import LoaderContainer from "./LoaderContainer";
 import DeadTweet from "./DeadTweet";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import PreviewLink from "./Preview";
+import Leaf from "../../assets/leaf-outline.svg";
 
 import { ReactComponent as Quote } from "../../assets/quote-outline.svg";
 import { ReactComponent as Retweet } from "../../assets/retweet-icon.svg";
@@ -48,19 +49,14 @@ const Tweet = (props) => {
 		big,
 		imageCount,
 		original,
-		checkReply,
+		
 		deleteToast,
 		noOriginal,
 	} = props;
 
-	const {
-		userID,
-		userAt,
-		userLikes,
-		userFollows,
-		userTweets,
-		userRetweets,
-	} = useContext(UserContext);
+	const { userID, userAt, userLikes, userFollows, userTweets, userRetweets } = useContext(
+		UserContext
+	);
 
 	const liked = likes && likes.includes(userID); // has the user liked this tweet?
 	const followed = userFollows && userFollows.includes(tweeterID); // does the user follow this tweet?
@@ -76,47 +72,72 @@ const Tweet = (props) => {
 	useEffect(() => {
 		let mounted = true;
 
-		if (mounted && replyTo && !noOriginal) {
+		if (mounted && replyTo && !noOriginal && !original) {
 			db.collection("tweets")
 				.doc(replyTo)
 				.get()
 				.then((doc) => {
 					const data = doc.data();
 					if (doc.exists && mounted) {
-						if (checkReply && mounted) {
-							checkReply(doc.id);
-						}
-						setOriginalTweet(
-							<Tweet
-								key={doc.id}
-								tweetID={doc.id}
-								tweeterID={data.userID}
-								name={data.name}
-								at={data.at}
-								time={data.timeStamp}
-								text={data.text}
-								retweets={data.retweets}
-								replyTo={data.replyTo}
-								likes={data.likes}
-								getReplies={false}
-								replies={data.replies}
-								imageCount={data.imageCount}
-								deleteToast={deleteToast}
-								original={true}
-								replyImageLoad={setImageLoaded}
-							/>
-						);
-					} else if (mounted) {
-						if (location.pathname === "/") {
-							checkReply(tweetID);
-						} else {
-							setOriginalTweet(<DeadTweet />);
-						}
+
+						storage
+							.ref("profile_pictures/" + doc.userID + ".png")
+							.getDownloadURL()
+							.then((url) => {
+								setOriginalTweet(
+									<Tweet
+										key={doc.id}
+										tweetID={doc.id}
+										tweeterID={data.userID}
+										name={data.name}
+										at={data.at}
+										time={data.timeStamp}
+										text={data.text}
+										retweets={data.retweets}
+										replyTo={data.replyTo}
+										likes={data.likes}
+										getReplies={false}
+										replies={data.replies}
+										imageCount={data.imageCount}
+										deleteToast={deleteToast}
+										original={true}
+										image={url}
+										replyImageLoad={setImageLoaded}
+									/>
+								);
+							})
+							.catch((err) => {
+								setOriginalTweet(
+									<Tweet
+										key={doc.id}
+										tweetID={doc.id}
+										tweeterID={data.userID}
+										name={data.name}
+										at={data.at}
+										time={data.timeStamp}
+										text={data.text}
+										retweets={data.retweets}
+										replyTo={data.replyTo}
+										likes={data.likes}
+										getReplies={false}
+										replies={data.replies}
+										imageCount={data.imageCount}
+										image={Leaf}
+										deleteToast={deleteToast}
+										original={true}
+										replyImageLoad={setImageLoaded}
+									/>
+								);
+							});
 					}
 				});
+		} else if (mounted) {
+			if (location.pathname !== "/") {
+				setOriginalTweet(<DeadTweet />);
+			}
 		}
 		return () => (mounted = false);
-	}, [big, replyTo, deleteToast, checkReply, noOriginal, location.pathname, tweetID]);
+	}, [big, replyTo, deleteToast, original, noOriginal, location.pathname, tweetID]);
 
 	const hashedText = reactStringReplace(text, /(#\w+)/g, (match, i) => (
 		<Link
@@ -250,8 +271,6 @@ const Tweet = (props) => {
 
 		return () => (mounted = false);
 	}, [time, big]);
-
-
 
 	const toggleDropdown = (e) => {
 		e.stopPropagation();
