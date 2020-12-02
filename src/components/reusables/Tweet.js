@@ -422,6 +422,7 @@ const Tweet = (props) => {
 											unfollow={unfollow}
 											follow={follow}
 											followed={followed}
+											replyTo={replyTo}
 											tweetID={tweetID}
 											userID={userID}
 											userTweets={userTweets}

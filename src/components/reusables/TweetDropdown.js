@@ -7,7 +7,7 @@ const Cover = lazy(() => import("./Cover"));
 const Warning = lazy(() => import("./Warning"));
 
 const TweetDropdown = (props) => {
-	const { followed, tweetID, userID, tweeterID, userTweets } = props;
+	const { followed, tweetID, userID, tweeterID, userTweets, replyTo } = props;
 	const [userTweet, setUserTweet] = useState(false);
 	const [warning, setWarning] = useState(false);
 
@@ -17,7 +17,7 @@ const TweetDropdown = (props) => {
 		e.stopPropagation();
 		if (userID) {
 			import("../functions/deleteTweet.js").then((deleteTweet) =>
-				deleteTweet.default(tweetID, userTweets, userID)
+				deleteTweet.default(tweetID, userTweets, userID, replyTo)
 			);
 		}
 		props.deleteToast(true);

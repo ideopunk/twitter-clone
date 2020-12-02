@@ -12,6 +12,18 @@ const unlike = (doomedTweet, userID, userLikes) => {
 				.update({ likes: newLikes })
 				.then(() => console.log("tweet loses a like"))
 				.catch((err) => console.log(err));
+
+			// amend notifications
+			const userRef = db.collection("users").doc(snapshot.data().userID);
+			userRef.get().then((doc) => {
+				const data = doc.data();
+				userRef.update({
+					notifications: data.notifications.filter(
+						(notification) =>
+							notification.type !== "like" || notification.object !== doomedTweet
+					),
+				});
+			});
 		})
 		.catch((err) => console.log(err));
 

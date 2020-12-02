@@ -39,6 +39,16 @@ const NotificationsFeed = ({ notifications }) => {
 
 	// display the notifications.
 	useEffect(() => {
+		const deleteDeadNotifications = (seconds) => {
+			db.collection("users")
+				.doc(userID)
+				.update({
+					notifications: notifications.filter(
+						(notification) => notification.timeStamp.seconds !== seconds
+					),
+				});
+		};
+
 		setNotificationsMapped([]);
 
 		let tempArray = [];
@@ -54,56 +64,62 @@ const NotificationsFeed = ({ notifications }) => {
 							.doc(subject)
 							.get()
 							.then((doc) => {
-								const data = doc.data();
-								storage
-									.ref("profile_pictures/" + doc.id + ".png")
-									.getDownloadURL()
-									.then((url) => {
-										throw url;
-									})
-									.catch((err) => {
-										let image;
-										if (err["code"]) {
-											image = Leaf;
-										} else {
-											image = err;
-										}
-										console.log("follow");
+								if (doc.exists) {
+									const data = doc.data();
+									storage
+										.ref("profile_pictures/" + doc.id + ".png")
+										.getDownloadURL()
+										.then((url) => {
+											throw url;
+										})
+										.catch((err) => {
+											let image;
+											if (err["code"]) {
+												image = Leaf;
+											} else {
+												image = err;
+											}
+											console.log("follow");
 
-										setNotificationsMapped((n) => [
-											...n,
-											<div
-												className="account-card appear"
-												key={doc.id + "follow"}
-												style={{ alignItems: "flex-start" }}
-												data-timestamp={timeStamp.seconds}
-												onClick={() =>
-													history.push({
-														pathname: `/${doc.id}`,
-														state: {
-															prevPath: location.pathname,
-														},
-													})
-												}
-											>
-												<ProfileFilled
-													style={{ fill: "blue" }}
-													className="notification-icon"
-												/>
-												<div>
-													<img
-														src={image}
-														alt="headshot"
-														className="profile-image small-profile-image"
+											setNotificationsMapped((n) => [
+												...n,
+												<div
+													className="account-card appear"
+													key={doc.id + "follow"}
+													style={{ alignItems: "flex-start" }}
+													data-timestamp={timeStamp.seconds}
+													onClick={() =>
+														history.push({
+															pathname: `/${doc.id}`,
+															state: {
+																prevPath: location.pathname,
+															},
+														})
+													}
+												>
+													<ProfileFilled
+														style={{ fill: "blue" }}
+														className="notification-icon"
 													/>
-													<p style={{ marginTop: "0.5rem" }}>
-														<span className="bold">{data.name}</span>{" "}
-														followed you
-													</p>
-												</div>
-											</div>,
-										]);
-									});
+													<div>
+														<img
+															src={image}
+															alt="headshot"
+															className="profile-image small-profile-image"
+														/>
+														<p style={{ marginTop: "0.5rem" }}>
+															<span className="bold">
+																{data.name}
+															</span>{" "}
+															followed you
+														</p>
+													</div>
+												</div>,
+											]);
+										});
+								} else {
+									deleteDeadNotifications(timeStamp.seconds);
+								}
 							})
 							.catch((err) => console.log(err));
 
@@ -186,6 +202,8 @@ const NotificationsFeed = ({ notifications }) => {
 												});
 										})
 										.catch((err) => console.log(err));
+								} else {
+									deleteDeadNotifications(timeStamp.seconds);
 								}
 							});
 
@@ -197,28 +215,32 @@ const NotificationsFeed = ({ notifications }) => {
 							.doc(object)
 							.get()
 							.then((doc) => {
-								const data = doc.data();
-								console.log("reply");
+								if (doc.exists) {
+									const data = doc.data();
+									console.log("reply");
 
-								setNotificationsMapped((n) => [
-									...n,
-									<Tweet
-										key={doc.id + "reply"}
-										tweetID={doc.id}
-										tweeterID={data.userID}
-										name={data.name}
-										at={data.at}
-										time={data.timeStamp}
-										text={data.text}
-										retweets={data.retweets}
-										replyTo={data.replyTo}
-										likes={data.likes}
-										getReplies={false}
-										replies={data.replies}
-										imageCount={data.imageCount}
-										data-timestamp={timeStamp.seconds}
-									/>,
-								]);
+									setNotificationsMapped((n) => [
+										...n,
+										<Tweet
+											key={doc.id + "reply"}
+											tweetID={doc.id}
+											tweeterID={data.userID}
+											name={data.name}
+											at={data.at}
+											time={data.timeStamp}
+											text={data.text}
+											retweets={data.retweets}
+											replyTo={data.replyTo}
+											likes={data.likes}
+											getReplies={false}
+											replies={data.replies}
+											imageCount={data.imageCount}
+											data-timestamp={timeStamp.seconds}
+										/>,
+									]);
+								} else {
+									deleteDeadNotifications(timeStamp.seconds);
+								}
 							})
 							.catch((err) => console.log(err));
 						break;
@@ -230,8 +252,8 @@ const NotificationsFeed = ({ notifications }) => {
 							.doc(object)
 							.get()
 							.then((doc) => {
-								console.log(doc.data())
-								console.log(doc.exists)
+								console.log(doc.data());
+								console.log(doc.exists);
 								if (doc.exists) {
 									const data = doc.data();
 									db.collection("users")
@@ -302,6 +324,8 @@ const NotificationsFeed = ({ notifications }) => {
 												});
 										})
 										.catch((err) => console.log(err));
+								} else {
+									deleteDeadNotifications(timeStamp.seconds);
 								}
 							});
 
@@ -316,11 +340,11 @@ const NotificationsFeed = ({ notifications }) => {
 				});
 			}
 		});
-	}, [notifications, history, location.pathname]);
+	}, [notifications, history, location.pathname, userID]);
 
 	useEffect(() => {
-		console.log(notificationsMapped.length)
-		console.log(notifications.length)
+		console.log(notificationsMapped.length);
+		console.log(notifications.length);
 		if (
 			notificationsMapped.length === notifications.length + ignoreAmount &&
 			notifications.length > 1 &&
@@ -328,11 +352,10 @@ const NotificationsFeed = ({ notifications }) => {
 		) {
 			console.log("lengths equivalent");
 			setNotificationsMapped(
-				notificationsMapped
-					.sort((a, b) => {
-						console.log(a);
-						return b.props["data-timestamp"] - a.props["data-timestamp"];
-					})
+				notificationsMapped.sort((a, b) => {
+					console.log(a);
+					return b.props["data-timestamp"] - a.props["data-timestamp"];
+				})
 			);
 			setSorted(true);
 		}
