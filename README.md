@@ -1,16 +1,22 @@
-Twitter clone.
+This is a clone of Twitter, made as a final project for [The Odin Project](https://www.theodinproject.com/courses/javascript/lessons/final-project-116ff273-1e55-4055-bd7f-146c17d0ec9c). It includes core Twitter functionality, such as:
 
-- context
-- user file upload
-- complex database
-- lots of promise practice
-- code splitting
-- error catching practice. 
+- Tweeting
+- Interacting with the tweets of others through liking, retweeting, or replying. 
+- Following and unfollowing users. 
+- Adding images to tweets. 
+- Notifications
+- Profiles
+- Hashtags
+- Searches for users and hashtags
+- Previews on hover
 
-structured urls a little differently. tweets are not branches of profiles.
 
-no pinned tweets, bookmarks, lists, messages
+Along with practicing existing skills, new things I learned included:
 
-login and signup pages are simplified. 
-
-partial styles within input via absolute div and pointer-events none.
+- React Context
+- Handling user file uploads
+- Lots of promise practice
+- Managing a slightly complicated database. 
+- Cloud Storage with Firebase
+- Code-splitting with dynamic imports
+- Error-catching for Firebase.
