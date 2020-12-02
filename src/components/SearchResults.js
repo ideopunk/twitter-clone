@@ -17,6 +17,7 @@ const SearchResults = () => {
 
 	// search!
 	useEffect(() => {
+		console.log(searchTerm);
 		setTweetDatas([]);
 		db.collection("tweets")
 			.where("hashtags", "array-contains", searchTerm)
@@ -31,11 +32,17 @@ const SearchResults = () => {
 			});
 
 		db.collection("tweets")
-			.where("at", "==", searchTerm)
+			.where("at", "in", [
+				searchTerm,
+				searchTerm.toUpperCase(),
+				searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1),
+			])
 			.get()
 			.then((snapshot) => {
+				console.log(snapshot);
 				let tempArray = [];
 				snapshot.forEach((doc) => {
+					console.log(doc.id);
 					// don't include replies
 					tempArray.push({ ...doc.data(), id: doc.id });
 				});
@@ -43,9 +50,14 @@ const SearchResults = () => {
 			});
 
 		db.collection("tweets")
-			.where("name", "==", searchTerm)
+			.where("name", "in", [
+				searchTerm,
+				searchTerm.toUpperCase(),
+				searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1),
+			])
 			.get()
 			.then((snapshot) => {
+				console.log(snapshot);
 				let tempArray = [];
 				snapshot.forEach((doc) => {
 					// don't include replies
@@ -54,6 +66,10 @@ const SearchResults = () => {
 				setTweetDatas((t) => [...t, ...tempArray]);
 			});
 	}, [searchTerm]);
+
+	useEffect(() => {
+		console.log(tweetDatas);
+	}, [tweetDatas]);
 
 	return (
 		<div className="home center-feed">

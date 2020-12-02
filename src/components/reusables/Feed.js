@@ -28,6 +28,7 @@ const Feed = (props) => {
 
 	// this saves the app from requesting the url from storage for each tweet.
 	useEffect(() => {
+		console.log(tweetDatas)
 		let finalImages = [];
 
 		// now that we have the images, make the components
@@ -84,6 +85,7 @@ const Feed = (props) => {
 
 		// do we have the ingredients and haven't done this yet? Get the images.
 		if (userID && userImage && tweetDatas.length && !finalImages.length) {
+			console.log("feeder")
 			const tweeterIDs = tweetDatas.map((tweet) => {
 				return tweet.userID;
 			});
