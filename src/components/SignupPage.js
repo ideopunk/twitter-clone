@@ -49,12 +49,12 @@ const SignupPage = () => {
 	};
 
 	const handleUserNameChange = (e) => {
-		setUserAt(e.target.value);
+		setUserName(e.target.value);
 	};
 
 	const resetError = () => {
-		setError("")
-	}
+		setError("");
+	};
 
 	const handleEmailChange = (e) => {
 		setEmail(e.target.value);
@@ -68,49 +68,58 @@ const SignupPage = () => {
 	const handleSubmit = (e) => {
 		if (legitAt) {
 			e.preventDefault();
-			console.log(userAt, userName, password, email);
+
 			auth.createUserWithEmailAndPassword(email, password)
 				.then((cred) => {
+					console.log(userAt);
+					console.log(userName);
+					console.log(cred.user.uid);
 					db.collection("users")
 						.doc(cred.user.uid)
 						.set({
-							at: userAt,
 							name: userName,
 							likes: [],
-							follows: [cred.user.id],
-							followers: [cred.user.id],
+							tweets: [],
+							follows: [cred.user.uid],
+							followers: [cred.user.uid],
 							joinDate: new Date(),
+							at: userAt,
+						})
+						.then(() => {
+							setPassword("");
+							setEmail("");
+							setUserAt("");
+							setUserName("");
 						});
-					return cred.user.uid;
-				})
-				.then((uid) => {
-					const storageRef = storage.ref("profile_pictures/" + uid);
-					const uploadTask = storageRef.put(image);
-					uploadTask.on(
-						"state_changed",
 
-						// how it's going
-						(snapshot) => {},
+					if (image) {
+						const storageRef = storage.ref("profile_pictures/" + cred.user.uid);
+						const uploadTask = storageRef.put(image);
+						uploadTask.on(
+							"state_changed",
 
-						// how it goofed it
-						(error) => {
-							console.log(error);
-						},
+							// how it's going
+							(snapshot) => {},
 
-						// how it succeeded
-						() => {
-							console.log("success");
-						}
-					);
-				})
-				.then(() => {
-					setPassword("");
-					setEmail("");
-					setUserAt("");
-					setUserName("");
+							// how it goofed it
+							(error) => {
+								console.log(error);
+							},
+
+							// how it succeeded
+							() => {
+								console.log("success");
+							}
+						);
+					}
 				})
 				.catch((err) => {
-					console.log(err)
+					console.log(err);
+					console.log(Object.keys(err));
+					console.log(err.code);
+					console.log(err.name);
+					console.log(err.toString);
+					console.log(err.toString());
 					if (err.code === "auth/email-already-in-use") {
 						setError(err.message);
 					}
@@ -125,7 +134,11 @@ const SignupPage = () => {
 				<form className="login-form" onSubmit={(e) => handleSubmit(e)}>
 					<label className="form-label">
 						<span className="form-name">Profile picture</span>
-						<input className="form-input file-input" type="file" onChange={handleFileChange} />
+						<input
+							className="form-input file-input"
+							type="file"
+							onChange={handleFileChange}
+						/>
 					</label>
 					<label className="form-label">
 						<span className="form-name">At</span>

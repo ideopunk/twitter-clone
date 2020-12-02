@@ -31,7 +31,9 @@ const ProfileMain = (props) => {
 	const [followed, setFollowed] = useState(false);
 	const [imageLoaded, setImageLoaded] = useState(false);
 
-	useEffect(() => {console.log('rerender')}, [])
+	useEffect(() => {
+		console.log("rerender");
+	}, []);
 
 	// set nontweety data
 	useEffect(() => {
@@ -69,7 +71,8 @@ const ProfileMain = (props) => {
 
 		// if it's the current user's profile...
 		userProfile
-			? setProfileData(n => ({...n,
+			? setProfileData((n) => ({
+					...n,
 					at: userAt,
 					name: userName,
 					follows: userFollows || [],
@@ -133,7 +136,7 @@ const ProfileMain = (props) => {
 		if (editor) {
 			document.body.style.position = "fixed";
 			body.style.top = `-${scroll}px`;
-		} 
+		}
 	}, [editor]);
 
 	const toggleEditor = () => {
@@ -204,22 +207,30 @@ const ProfileMain = (props) => {
 						</span>
 					</p>
 					<p>
-						<Link to={`${url}/following`} className="hover-under">
-							<span style={{ marginRight: "1rem" }}>
-								{profileData.follows.length - 1 || ""}{" "}
-								<span className="grey">Following</span>
-							</span>
-						</Link>
-						<Link to={`${url}/followers`} className="hover-under">
-							<span>
-								{profileData.followers.length - 1 || ""}{" "}
-								<span className="grey">
-									{profileData.followers.length - 1 > 1
-										? "Followers"
-										: "Follower"}
+						{profileData.follows.length - 1 ? (
+							<Link to={`${url}/following`} className="hover-under">
+								<span style={{ marginRight: "1rem" }}>
+									{profileData.follows.length - 1 || ""}{" "}
+									<span className="grey">Following</span>
 								</span>
-							</span>
-						</Link>
+							</Link>
+						) : (
+							""
+						)}
+						{profileData.followers.length - 1 ? (
+							<Link to={`${url}/followers`} className="hover-under">
+								<span>
+									{profileData.followers.length - 1 || ""}{" "}
+									<span className="grey">
+										{profileData.followers.length - 1 > 1
+											? "Followers"
+											: "Follower"}
+									</span>
+								</span>
+							</Link>
+						) : (
+							""
+						)}
 					</p>
 				</div>
 				<div className="profile-feed-selector-container">

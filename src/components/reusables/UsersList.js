@@ -28,7 +28,7 @@ const UsersList = ({ tweetID, type, clear, noBio }) => {
 
 				setAccounts(accountDatas);
 			});
-	}, [tweetID, type]);
+	}, [tweetID, type, noBio]);
 
 	return (
 		<div className="modal">

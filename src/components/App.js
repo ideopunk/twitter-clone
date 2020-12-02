@@ -20,6 +20,7 @@ const App = () => {
 	useEffect(() => {
 		const unsubscribe = auth.onAuthStateChanged((user) => {
 			if (user) {
+				console.log(user)
 				setUserID(user.uid);
 				db.collection("users")
 					.doc(user.uid)

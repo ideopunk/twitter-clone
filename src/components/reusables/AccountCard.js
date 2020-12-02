@@ -40,7 +40,7 @@ const AccountCard = (props) => {
 							<p className="tweeter-name hover-under">{name}</p>
 							<p className="tweeter-at ">
 								@{at}{" "}
-								{userFollowers.includes(id) && (
+								{userFollowers && userFollowers.includes(id) && (
 									<span className="follows-you">Follows you</span>
 								)}
 							</p>
