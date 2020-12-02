@@ -26,11 +26,10 @@ const SignupPage = () => {
 	}, []);
 
 	const handleFileChange = (e) => {
-		e.target.files[0] ? setImage(e.target.files[0]) : console.log("naw");
+		e.target.files[0] ? setImage(e.target.files[0]) : console.log("set image fail");
 	};
 
 	const handleUserAtChange = (e) => {
-		console.log(e.target.value);
 		allAts.includes(e.target.value) ? setLegitAt(false) : setLegitAt(true);
 		switch (e.target.value) {
 			case "profile":
@@ -43,7 +42,7 @@ const SignupPage = () => {
 				setLegitAt(false);
 				break;
 			default:
-				console.log("all good");
+				console.log("user at is legit");
 		}
 		setUserAt(e.target.value);
 	};
@@ -71,9 +70,6 @@ const SignupPage = () => {
 
 			auth.createUserWithEmailAndPassword(email, password)
 				.then((cred) => {
-					console.log(userAt);
-					console.log(userName);
-					console.log(cred.user.uid);
 					db.collection("users")
 						.doc(cred.user.uid)
 						.set({
@@ -114,12 +110,6 @@ const SignupPage = () => {
 					}
 				})
 				.catch((err) => {
-					console.log(err);
-					console.log(Object.keys(err));
-					console.log(err.code);
-					console.log(err.name);
-					console.log(err.toString);
-					console.log(err.toString());
 					if (err.code === "auth/email-already-in-use") {
 						setError(err.message);
 					}

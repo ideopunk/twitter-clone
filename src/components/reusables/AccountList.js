@@ -6,7 +6,6 @@ import LoaderContainer from "./LoaderContainer";
 
 const AccountList = ({ profileID, name }) => {
 	const { url } = useRouteMatch();
-	console.log(useRouteMatch());
 
 	const [accounts, setAccounts] = useState([]);
 

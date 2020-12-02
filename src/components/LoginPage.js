@@ -19,10 +19,8 @@ const LoginPage = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(email, password);
 		auth.signInWithEmailAndPassword(email, password)
 			.then((cred) => {
-				console.log(cred.user);
 				setEmail("");
 				setPassword("");
 			})

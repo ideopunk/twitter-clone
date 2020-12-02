@@ -2,8 +2,6 @@ import { db, storage } from "../../config/fbConfig";
 
 const simpleTweet = (props) => {
 	const { userName, text, userAt, userID, userTweets, IMGs } = props;
-	console.log(text);
-	console.log(new Date());
 	const imgAmount = IMGs.length || 0;
 
 	const hashRE = /(?<=#)\w+/;

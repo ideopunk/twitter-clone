@@ -55,14 +55,12 @@ const NotificationsFeed = ({ notifications }) => {
 				setSorted(true);
 				setNotificationsMapped(
 					tempArray.sort((a, b) => {
-						console.log(a);
 						return b.props["data-timestamp"] - a.props["data-timestamp"];
 					})
 				);
 			}
 		};
 
-		console.log("NM should be 0 length!");
 
 		let noThankYouArray = [];
 		let tempArray = [];
@@ -72,7 +70,6 @@ const NotificationsFeed = ({ notifications }) => {
 				noThankYouArray.push(timeStamp.seconds);
 				switch (type) {
 					case "follow":
-						console.log("follow begin");
 
 						db.collection("users")
 							.doc(subject)
@@ -93,7 +90,6 @@ const NotificationsFeed = ({ notifications }) => {
 											} else {
 												image = err;
 											}
-											console.log("follow");
 
 											tempArray.push(
 												<div
@@ -140,7 +136,6 @@ const NotificationsFeed = ({ notifications }) => {
 						break;
 
 					case "retweet":
-						console.log("retweet begin");
 
 						db.collection("tweets")
 							.doc(object)
@@ -167,7 +162,6 @@ const NotificationsFeed = ({ notifications }) => {
 													} else {
 														image = err;
 													}
-													console.log("retweet");
 
 													tempArray.push(
 														<div
@@ -223,7 +217,6 @@ const NotificationsFeed = ({ notifications }) => {
 
 						break;
 					case "reply":
-						console.log("reply begin");
 
 						db.collection("tweets")
 							.doc(object)
@@ -231,7 +224,6 @@ const NotificationsFeed = ({ notifications }) => {
 							.then((doc) => {
 								if (doc.exists) {
 									const data = doc.data();
-									console.log("reply");
 
 									tempArray.push(
 										<Tweet
@@ -260,14 +252,11 @@ const NotificationsFeed = ({ notifications }) => {
 						break;
 
 					case "like":
-						console.log("like begin");
 
 						db.collection("tweets")
 							.doc(object)
 							.get()
 							.then((doc) => {
-								console.log(doc.data());
-								console.log(doc.exists);
 								if (doc.exists) {
 									const data = doc.data();
 									db.collection("users")
@@ -289,7 +278,6 @@ const NotificationsFeed = ({ notifications }) => {
 													} else {
 														image = err;
 													}
-													console.log("like");
 
 													tempArray.push(
 														<div

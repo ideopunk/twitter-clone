@@ -10,9 +10,6 @@ const Feed = lazy(() => import("./reusables/Feed"));
 const Hashtag = () => {
 	const { tag } = useParams();
 
-	useEffect(() => {
-		console.log(tag);
-	}, [tag]);
 
 	const [tweetDatas, setTweetDatas] = useState([]);
 

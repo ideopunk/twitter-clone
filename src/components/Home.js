@@ -34,7 +34,6 @@ const Home = () => {
 	// only refresh if there are new follows
 	useEffect(() => {
 		if (userFollows && !arraysMatch(stopperUserFollows, userFollows)) {
-			console.log("setting stopperuserfollows");
 			setStopperUserFollows(userFollows);
 		}
 	}, [userFollows, stopperUserFollows]);
@@ -46,7 +45,6 @@ const Home = () => {
 			.collection("tweets")
 			.orderBy("timeStamp", "desc")
 			.onSnapshot((snapshot) => {
-				console.log("home snapshot");
 				let tempArray = [];
 				let deletionArray = [];
 				const changes = snapshot.docChanges();

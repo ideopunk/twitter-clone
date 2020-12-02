@@ -10,7 +10,7 @@ const LikeFeed = (props) => {
 	// set doc title
 	useEffect(() => {
 		document.title = `Tweets liked by ${name}`
-	}, []);
+	}, [name]);
 
 	useEffect(() => {
 		db.collection("tweets")

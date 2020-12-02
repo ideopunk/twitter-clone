@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { db } from "../config/fbConfig";
-import { Link, useRouteMatch, NavLink, useLocation } from "react-router-dom";
+import { Link, useRouteMatch, NavLink } from "react-router-dom";
 import { ReactComponent as SideArrow } from "../assets/side-arrow-icon.svg";
 import UserContext from "./context/userContext.js";
 import AccountList from "./reusables/AccountList";
@@ -9,10 +9,7 @@ const ProfileFollows = (props) => {
 	const { profileID, userProfile } = props;
 	const { userName, userAt } = useContext(UserContext);
 
-	const { path, url, params } = useRouteMatch();
-	console.log(useRouteMatch());
-	console.log(path, url, params);
-	console.log(useLocation());
+	const { params } = useRouteMatch();
 	const [stuff, setStuff] = useState({});
 
 	useEffect(() => {

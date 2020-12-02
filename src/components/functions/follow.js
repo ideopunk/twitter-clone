@@ -14,7 +14,6 @@ const follow = (followID, userID, userFollows) => {
 				return [...(followers || []), userID];
 			})
 			.then((newFollowers) => {
-				console.log(newFollowers);
 				db.collection("users")
 					.doc(followID)
 					.update({ followers: [...new Set(newFollowers)] });

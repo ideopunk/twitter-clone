@@ -33,7 +33,6 @@ const Editor = (props) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(newHeader, newProPic);
 		db.collection("users")
 			.doc(userID)
 			.update({ name: name || "", bio: newBio || "", website: newWebsite || "" })
@@ -89,7 +88,6 @@ const Editor = (props) => {
 	};
 
 	const handleNameChange = (e) => {
-		console.log("setname");
 		setName(e.target.value);
 	};
 
@@ -102,7 +100,6 @@ const Editor = (props) => {
 	};
 
 	const handleHeaderPicChange = (e) => {
-		console.log(e.target.files[0]);
 		e.target.files[0] ? setNewHeader(e.target.files[0]) : console.log("naw");
 	};
 

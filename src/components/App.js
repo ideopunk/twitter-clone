@@ -25,7 +25,6 @@ const App = () => {
 				db.collection("users")
 					.doc(user.uid)
 					.onSnapshot((snapshot) => {
-						console.log("app snapshot");
 						const data = snapshot.data();
 						// set optional data if we have it.
 						setUserData((u) => ({

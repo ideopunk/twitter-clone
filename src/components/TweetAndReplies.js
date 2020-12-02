@@ -38,7 +38,6 @@ const TweetAndReplies = (props) => {
 				let tempArray = [];
 				snapshot.forEach((doc) => {
 					// don't include replies
-					console.log(doc.id)
 					tempArray.push({ ...doc.data(), id: doc.id });
 				});
 
@@ -86,5 +85,3 @@ const TweetAndReplies = (props) => {
 };
 
 export default TweetAndReplies;
-
-// relevant people side-link

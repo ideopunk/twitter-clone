@@ -1,12 +1,9 @@
 .composer {
-	// width: 100%;
 	border-bottom: $siteborder;
 	border-bottom-width: 0.5rem;
 	display: flex;
 	padding: 1rem;
 	box-sizing: border-box;
-	// max-height: 400px;
-	// height: fit-content;
 	overflow: hidden;
 }
 
@@ -80,7 +77,6 @@
 	padding: 0.5rem 0 0 0;
 	display: flex;
 	width: 100%;
-	// justify-content: flex-start;
 	justify-content: space-between;
 	align-items: center;
 }
@@ -91,7 +87,6 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	// margin-right: 2rem;
 	border-radius: 50%;
 }
 
@@ -123,8 +118,6 @@
 }
 
 .composer-circle-container > svg {
-	// width: inherit;
-	// height: inherit;
 	transition: all linear 0.3s;
 }
 
@@ -162,7 +155,6 @@ circle {
 	gap: 0.5rem;
 	min-height: fit-content;
 	max-height: 284px;
-	// padding: 0.75rem;
 }
 
 @media (max-width: 767px) {
@@ -192,7 +184,6 @@ circle {
 	overflow: hidden;
 	flex-basis: 0;
 	flex-grow: 1;
-	// flex: 1 50%;
 	box-sizing: border-box;
 	position: relative;
 	margin-bottom: 0.5rem;

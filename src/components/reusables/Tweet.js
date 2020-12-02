@@ -97,16 +97,12 @@ const Tweet = (props) => {
 								getReplies={false}
 								replies={data.replies}
 								imageCount={data.imageCount}
-								// "change"? Hmmm.
 								deleteToast={deleteToast}
 								original={true}
 								replyImageLoad={setImageLoaded}
 							/>
 						);
-						// }
-						// fine
 					} else if (mounted) {
-						console.log("dead tweet");
 						if (location.pathname === "/") {
 							checkReply(tweetID);
 						} else {
@@ -393,7 +389,6 @@ const Tweet = (props) => {
 					{big ? (
 						<div className="tweet-top-data pad">
 							<PreviewLink to={`/${at}`}>
-								{/* // <Link to={`/${at}`} onMouseOver=> */}
 								{image ? (
 									<img
 										className={`profile-image`}

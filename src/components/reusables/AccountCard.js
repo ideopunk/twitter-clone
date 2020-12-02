@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { storage } from "../../config/fbConfig";
 import Leaf from "../../assets/leaf-outline.svg";
 import PreviewLink from "./Preview";
@@ -8,7 +7,7 @@ import UserContext from "../context/userContext.js";
 
 const AccountCard = (props) => {
 	const { bio, id, name, at } = props;
-	const { userID, userFollows, userFollowers } = useContext(UserContext);
+	const { userFollows, userFollowers } = useContext(UserContext);
 	const [image, setImage] = useState("");
 
 	useEffect(() => {
@@ -46,12 +45,14 @@ const AccountCard = (props) => {
 							</p>
 						</div>
 					</PreviewLink>
-					<FollowButton
-						tweeterID={id}
-						account={true}
-						small={true}
-						followed={userFollows.includes(id)}
-					/>
+					{userFollows && (
+						<FollowButton
+							tweeterID={id}
+							account={true}
+							small={true}
+							followed={userFollows.includes(id)}
+						/>
+					)}
 				</div>
 				{bio ? <p>{bio}</p> : ""}
 			</div>

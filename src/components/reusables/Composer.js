@@ -49,27 +49,38 @@ const Composer = (props) => {
 		if ((text || IMGs) && text.length < 281) {
 			if (replyData) {
 				const { tweetID, tweeterID } = replyData;
-				import("../functions/reply.js").then((reply) =>
-					reply.default({
-						tweetID,
-						tweeterID,
-						userName,
-						userID,
-						userAt,
-						userTweets,
-						text,
-						IMGs,
-					})
-				);
+				import("../functions/reply.js")
+					.then((reply) =>
+						reply.default({
+							tweetID,
+							tweeterID,
+							userName,
+							userID,
+							userAt,
+							userTweets,
+							text,
+							IMGs,
+						})
+					)
+					.then(() => {
+						setText("");
+						setIMGs([]);
+						setPreviewIMGs([]);
+						setToast("Your tweet was sent");
+					});
 			} else {
-				import("../functions/simpleTweet.js").then((simpleTweet) =>
-					simpleTweet.default({ userName, text, userAt, userID, userTweets, IMGs })
-				);
+				import("../functions/simpleTweet.js")
+					.then((simpleTweet) =>
+						simpleTweet.default({ userName, text, userAt, userID, userTweets, IMGs })
+					)
+					.then(() => {
+						setText("");
+						setIMGs([]);
+						setPreviewIMGs([]);
+						setToast("Your tweet was sent");
+					});
 			}
-			setText("");
-			setIMGs([]);
-			setPreviewIMGs([]);
-			setToast("Your tweet was sent");
+
 			if (toggle) {
 				toggle();
 			}
@@ -93,8 +104,6 @@ const Composer = (props) => {
 		const file = e.dataTransfer.files[0];
 		addImage(file);
 		setDragOver(false);
-		console.log(file);
-		console.log(e.dataTransfer);
 	};
 
 	const handleUpload = (e) => {
@@ -102,7 +111,6 @@ const Composer = (props) => {
 	};
 
 	const addImage = (file) => {
-		console.log(file);
 		const names = IMGs.map((IMG) => IMG.name);
 		if (IMGs.length > 3) {
 			setToast("Please choose up to 4 photos.");
@@ -120,25 +128,19 @@ const Composer = (props) => {
 	};
 
 	const handleDragLeave = () => {
-		console.log("drag leave");
 		setDragOver(false);
 	};
 
 	// when an image is uploaded, create a preview.
 	useEffect(() => {
 		const removeImage = (name) => {
-			console.log(name);
-			console.log(IMGs);
 			setIMGs((prev) => prev.filter((img) => img.name !== name));
-			// setPreviewIMGs((prev) => prev.filter((img) => img.name !== name));
 		};
 
 		if (IMGs.length) {
 			let tempArray = [];
 			for (const img of IMGs) {
 				const file = URL.createObjectURL(img);
-				console.log(file);
-				console.log(img);
 				const jsx = (
 					<div className="image-container" key={img.name} name={img.name}>
 						<img
@@ -153,7 +155,6 @@ const Composer = (props) => {
 				);
 				tempArray.push(jsx);
 			}
-			console.log(tempArray);
 			setPreviewIMGs(tempArray);
 		} else {
 			setPreviewIMGs([]);
@@ -179,7 +180,6 @@ const Composer = (props) => {
 	}, [modal]);
 
 	return (
-		// <form className={`${modal ? `modal` : ""} ${replyData ? "" : "composer"}`}>
 		<form className={`${modal ? `modal` : "composer"}`}>
 			{modal && (
 				<div className="modal-header">

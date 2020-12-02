@@ -31,9 +31,7 @@ const ProfileMain = (props) => {
 	const [followed, setFollowed] = useState(false);
 	const [imageLoaded, setImageLoaded] = useState(false);
 
-	useEffect(() => {
-		console.log("rerender");
-	}, []);
+
 
 	// set nontweety data
 	useEffect(() => {

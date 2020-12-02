@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, Switch, Route, useRouteMatch, NavLink } from "react-router-dom";
+import { Switch, Route, useRouteMatch } from "react-router-dom";
 import { db } from "../config/fbConfig";
 import UserContext from "./context/userContext.js";
 import LoaderContainer from "./reusables/LoaderContainer";
@@ -10,7 +10,7 @@ import NotFound from "./NotFound";
 const ProfileRoutes = () => {
 	const { userAt, userID } = useContext(UserContext);
 
-	const { path, url, params } = useRouteMatch();
+	const { path, params } = useRouteMatch();
 	const urlAt = params.profile;
 
 	const [userProfile, setUserProfile] = useState(null);
@@ -18,7 +18,6 @@ const ProfileRoutes = () => {
 
 	// figure out if this is a real user. If not, 404 them.
 	useEffect(() => {
-		console.log('profile route')
 		if (userAt === urlAt) {
 			setProfileID(userID);
 			setUserProfile(true);

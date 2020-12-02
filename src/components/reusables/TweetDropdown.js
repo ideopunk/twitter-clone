@@ -30,14 +30,13 @@ const TweetDropdown = (props) => {
 		if (warning) {
 			document.body.style.position = "";
 			window.scrollTo(0, -parseInt(body.style.top));
-		} 
+		}
 
 		setWarning(!warning);
 	};
 
 	// freeze if modal up
 	useEffect(() => {
-		console.log("uh tweet dropdown");
 		const body = document.body;
 		const scroll = window.scrollY;
 
