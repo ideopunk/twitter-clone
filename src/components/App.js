@@ -18,7 +18,7 @@ const App = () => {
 
 	// listen for auth status changes
 	useEffect(() => {
-		const unsubscribe = auth.onAuthStateChanged((user) => {
+		auth.onAuthStateChanged((user) => {
 			console.log(user);
 			if (user) {
 				console.log(user.email);
@@ -64,7 +64,7 @@ const App = () => {
 			}
 		});
 
-		return () => unsubscribe();
+		// return () => unsubscribe();
 	}, []);
 
 	useEffect(() => {

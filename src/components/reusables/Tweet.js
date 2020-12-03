@@ -49,7 +49,7 @@ const Tweet = (props) => {
 		big,
 		imageCount,
 		original,
-		
+
 		deleteToast,
 		noOriginal,
 	} = props;
@@ -79,7 +79,6 @@ const Tweet = (props) => {
 				.then((doc) => {
 					const data = doc.data();
 					if (doc.exists && mounted) {
-
 						storage
 							.ref("profile_pictures/" + data.userID + ".png")
 							.getDownloadURL()
@@ -384,7 +383,11 @@ const Tweet = (props) => {
 					<PreviewLink to={`/${retweetedBy}`} className="hover-under">
 						<div className={`retweeted-by ${big ? "big-retweeted-by" : ""}`}>
 							<Retweet />
-							<p>Retweeted by @{retweetedBy}</p>
+							<p>
+								{userAt === retweetedBy
+									? "You Retweeted"
+									: `Retweeted by @${retweetedBy}`}
+							</p>
 						</div>
 					</PreviewLink>
 				)}

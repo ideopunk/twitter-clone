@@ -223,26 +223,53 @@ const NotificationsFeed = ({ notifications }) => {
 							.then((doc) => {
 								if (doc.exists) {
 									const data = doc.data();
-
-									tempArray.push(
-										<Tweet
-											key={doc.id + "reply" + timeStamp.seconds}
-											tweetID={doc.id}
-											tweeterID={data.userID}
-											name={data.name}
-											at={data.at}
-											time={data.timeStamp}
-											text={data.text}
-											retweets={data.retweets}
-											replyTo={data.replyTo}
-											likes={data.likes}
-											getReplies={false}
-											replies={data.replies}
-											imageCount={data.imageCount}
-											data-timestamp={timeStamp.seconds}
-										/>
-									);
-									finishedCheck();
+									storage
+										.ref("profile_pictures/" + data.userID + ".png")
+										.getDownloadURL()
+										.then((url) => {
+											tempArray.push(
+												<Tweet
+													key={doc.id + "reply" + timeStamp.seconds}
+													tweetID={doc.id}
+													tweeterID={data.userID}
+													name={data.name}
+													at={data.at}
+													time={data.timeStamp}
+													text={data.text}
+													retweets={data.retweets}
+													replyTo={data.replyTo}
+													likes={data.likes}
+													getReplies={false}
+													image={url}
+													replies={data.replies}
+													imageCount={data.imageCount}
+													data-timestamp={timeStamp.seconds}
+												/>
+											);
+											finishedCheck();
+										})
+										.catch((err) => {
+											tempArray.push(
+												<Tweet
+													key={doc.id + "reply" + timeStamp.seconds}
+													tweetID={doc.id}
+													tweeterID={data.userID}
+													name={data.name}
+													at={data.at}
+													time={data.timeStamp}
+													text={data.text}
+													retweets={data.retweets}
+													replyTo={data.replyTo}
+													likes={data.likes}
+													getReplies={false}
+													image={Leaf}
+													replies={data.replies}
+													imageCount={data.imageCount}
+													data-timestamp={timeStamp.seconds}
+												/>
+											);
+											finishedCheck();
+										});
 								} else {
 									deleteDeadNotifications(timeStamp.seconds);
 								}
