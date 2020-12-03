@@ -72,6 +72,7 @@ const Tweet = (props) => {
 	useEffect(() => {
 		let mounted = true;
 
+		// if this is a reply and
 		if (mounted && replyTo && !noOriginal && !original) {
 			db.collection("tweets")
 				.doc(replyTo)
@@ -130,7 +131,7 @@ const Tweet = (props) => {
 							});
 					}
 				});
-		} else if (mounted) {
+		} else if (mounted && replyTo && !noOriginal) {
 			if (location.pathname !== "/") {
 				setOriginalTweet(<DeadTweet />);
 			}

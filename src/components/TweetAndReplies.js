@@ -3,7 +3,9 @@ import Tweet from "./reusables/Tweet";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { ReactComponent as SideArrow } from "../assets/side-arrow-icon.svg";
 
-import { db } from "../config/fbConfig";
+import Leaf from "../assets/leaf-outline.svg";
+
+import { db, storage } from "../config/fbConfig";
 import LoaderContainer from "./reusables/LoaderContainer";
 const Feed = lazy(() => import("./reusables/Feed"));
 
@@ -11,7 +13,7 @@ const TweetAndReplies = (props) => {
 	const { tweetID } = useParams();
 	const [mainTweet, setMainTweet] = useState({});
 	const [tweetDatas, setTweetDatas] = useState([]);
-
+	const [image, setImage] = useState("");
 	const location = useLocation();
 
 	useEffect(() => {
@@ -20,12 +22,22 @@ const TweetAndReplies = (props) => {
 		}
 	}, [mainTweet]);
 
-	// get the tweet
+	// get the tweet, get the image
 	useEffect(() => {
 		db.collection("tweets")
 			.doc(tweetID)
 			.onSnapshot((doc) => {
-				setMainTweet({ ...doc.data(), id: doc.id });
+				const data = doc.data();
+				setMainTweet({ ...data, id: doc.id });
+				storage
+					.ref("profile_pictures/" + data.userID + ".png")
+					.getDownloadURL()
+					.then((url) => {
+						setImage(url);
+					})
+					.catch(() => {
+						setImage(Leaf);
+					});
 			});
 	}, [tweetID]);
 
@@ -72,6 +84,7 @@ const TweetAndReplies = (props) => {
 				getReplies={false}
 				replies={mainTweet.replies}
 				big={true}
+				image={image}
 				imageCount={mainTweet.imageCount}
 			/>
 			{mainTweet.replies && mainTweet.replies.length ? (
