@@ -6,12 +6,12 @@ import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
 import UserContext from "./context/userContext.js";
 import DeviceContext from "./context/deviceContext.js";
-
 import "../style/App.scss";
 import Leaf from "../assets/leaf-outline.svg";
 const Main = lazy(() => import("./Main"));
 
 const App = () => {
+	console.log("app");
 	const [userID, setUserID] = useState(null);
 	const [userData, setUserData] = useState({});
 	const [width, setWidth] = useState(767);

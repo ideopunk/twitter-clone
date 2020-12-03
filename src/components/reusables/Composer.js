@@ -8,6 +8,9 @@ import ComposerCircle from "./ComposerCircle";
 import LoaderContainer from "./LoaderContainer";
 import { ReactComponent as CloseIcon } from "../../assets/close.svg";
 
+// import reply from "../functions/reply.js";
+// import simpleTweet from "../functions/simpleTweet.js";
+
 const reactStringReplace = require("react-string-replace");
 
 const Toast = lazy(() => import("./Toast"));
@@ -49,6 +52,7 @@ const Composer = (props) => {
 		if ((text || IMGs) && text.length < 281) {
 			if (replyData) {
 				const { tweetID, tweeterID } = replyData;
+				// reply(tweetID, tweeterID, userName, userID, userAt, userTweets, text, IMGs);
 				import("../functions/reply.js")
 					.then((reply) =>
 						reply.default({
@@ -70,6 +74,7 @@ const Composer = (props) => {
 					})
 					.catch((err) => console.log(err));
 			} else {
+				// simpleTweet({ userName, text, userAt, userID, userTweets, IMGs });
 				import("../functions/simpleTweet.js")
 					.then((simpleTweet) =>
 						simpleTweet.default({ userName, text, userAt, userID, userTweets, IMGs })
@@ -80,6 +85,7 @@ const Composer = (props) => {
 						setPreviewIMGs([]);
 						setToast("Your tweet was sent");
 					})
+					.catch((err) => console.log(err));
 			}
 
 			if (toggle) {

@@ -19,6 +19,7 @@ const TweetAndReplies = lazy(() => import("./TweetAndReplies"));
 const Hashtag = lazy(() => import("./Hashtag"));
 
 const Main = () => {
+	console.log("main")
 	const { userID } = useContext(UserContext);
 	const { device } = useContext(DeviceContext);
 	const location = useLocation();
