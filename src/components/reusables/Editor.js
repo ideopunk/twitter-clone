@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import UserContext from "../context/userContext.js";
 import DeviceContext from "../context/deviceContext.js";
 import { db, storage } from "../../config/fbConfig";
+import resizeFile from "../functions/resizeFile.js";
 
 import { ReactComponent as CloseIcon } from "../../assets/close.svg";
 import { ReactComponent as CameraIcon } from "../../assets/camera-icon.svg";
@@ -59,6 +60,7 @@ const Editor = (props) => {
 				// how it succeeded
 				() => {
 					console.log("success");
+					toggle();
 				}
 			);
 		}
@@ -99,12 +101,28 @@ const Editor = (props) => {
 		setNewWebsite(e.target.value);
 	};
 
-	const handleHeaderPicChange = (e) => {
-		e.target.files[0] ? setNewHeader(e.target.files[0]) : console.log("naw");
+	const handleHeaderPicChange = async (e) => {
+		if (e.target.files[0]) {
+			const file = e.target.files[0];
+			// shrink the image
+			const blob = await resizeFile(file, 600, 200);
+			console.log(blob);
+			setNewHeader(blob);
+		} else {
+			console.log("set header fail");
+		}
 	};
 
-	const handleProfilePicChange = (e) => {
-		e.target.files[0] ? setNewProPic(e.target.files[0]) : console.log("naw");
+	const handleProfilePicChange = async (e) => {
+		if (e.target.files[0]) {
+			const file = e.target.files[0];
+			// shrink the image
+			const blob = await resizeFile(file, 112, 112);
+			console.log(blob);
+			setNewProPic(blob);
+		} else {
+			console.log("set image fail");
+		}
 	};
 
 	return (
@@ -132,9 +150,14 @@ const Editor = (props) => {
 				<img src={previewHeader} className="profile-header-image" alt="header" />
 				<div className="header-icons">
 					<label htmlFor="header-input">
-						<CameraIcon style={{margin: "0.5rem"}}/>
+						<CameraIcon style={{ margin: "0.5rem" }} />
 					</label>
-					<input id="header-input" type="file" onChange={handleHeaderPicChange} />
+					<input
+						id="header-input"
+						type="file"
+						accept="image/*"
+						onChange={handleHeaderPicChange}
+					/>
 				</div>
 			</div>
 			<div className="edit-form-text">
@@ -143,7 +166,12 @@ const Editor = (props) => {
 					<label htmlFor="profile-pic-input">
 						<CameraIcon className="main-image main-image-camera" />
 					</label>
-					<input id="profile-pic-input" type="file" onChange={handleProfilePicChange} />
+					<input
+						id="profile-pic-input"
+						type="file"
+						accept="image/*"
+						onChange={handleProfilePicChange}
+					/>
 				</div>
 
 				<label className="form-label">

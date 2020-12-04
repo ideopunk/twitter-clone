@@ -31,8 +31,6 @@ const ProfileMain = (props) => {
 	const [followed, setFollowed] = useState(false);
 	const [imageLoaded, setImageLoaded] = useState(false);
 
-
-
 	// set nontweety data
 	useEffect(() => {
 		// !profileData.header &&
@@ -154,11 +152,9 @@ const ProfileMain = (props) => {
 					<p className="grey">{profileData.tweetAmount} tweets</p>
 				</div>
 			</Link>
-			<div className={`profile-header ${!imageLoaded ? "hide" : ""}`}>
-				{/* <div style={{ height: "3.5rem" }}></div> */}
-
+			<div className={`profile-header `}>
 				<img
-					className="profile-header-image"
+					className={`profile-header-image ${!imageLoaded ? "transparent" : ""}`}
 					src={profileData.header}
 					onLoad={imageLoad}
 					alt="header"

@@ -1,6 +1,7 @@
 .profile-header {
 	border-bottom: $siteborder;
 	width: 100%;
+	min-height: 450px;
 }
 
 .top-link {
@@ -68,7 +69,7 @@
 }
 
 .main-image {
-	object-fit: contain;
+	object-fit: cover;
 	width: 7rem;
 	height: 7rem;
 	border-radius: 50%;
@@ -81,7 +82,7 @@
 }
 
 .fake-image {
-	object-fit: contain;
+	object-fit: cover;
 	width: 7rem;
 	height: 7rem;
 	border-radius: 50%;

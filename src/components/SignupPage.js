@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { auth, db, storage } from "../config/fbConfig";
+import resizeFile from "./functions/resizeFile.js";
 
 const SignupPage = () => {
 	const [userAt, setUserAt] = useState("");
@@ -25,8 +26,17 @@ const SignupPage = () => {
 			.then(setAllAts(tempArray));
 	}, []);
 
-	const handleFileChange = (e) => {
-		e.target.files[0] ? setImage(e.target.files[0]) : console.log("set image fail");
+
+
+	const handleFileChange = async (e) => {
+		if (e.target.files[0]) {
+			const file = e.target.files[0];
+			const blob = await resizeFile(file, 112, 112);
+			console.log(blob)
+			setImage(blob);
+		} else {
+			console.log("set image fail");
+		}
 	};
 
 	const handleUserAtChange = (e) => {
@@ -127,6 +137,7 @@ const SignupPage = () => {
 						<input
 							className="form-input file-input"
 							type="file"
+							accept="image/*"
 							onChange={handleFileChange}
 						/>
 					</label>

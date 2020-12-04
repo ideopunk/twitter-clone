@@ -11,6 +11,7 @@ This is a clone of Twitter, made as a final project for [The Odin Project](https
 - Hashtags
 - Searches for users and hashtags
 - Previews on hover
+- Image resizing on user upload
 
 
 Along with practicing existing skills, new things I learned included:

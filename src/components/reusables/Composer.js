@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState, useRef, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
+import resizeFile from "../functions/resizeFile.js";
 
 import { ReactComponent as Picture } from "../../assets/picture-icon.svg";
 import { ReactComponent as Close } from "../../assets/close.svg";
@@ -13,8 +14,6 @@ import { ReactComponent as CloseIcon } from "../../assets/close.svg";
 
 const reactStringReplace = require("react-string-replace");
 const Toast = lazy(() => import("./Toast"));
-
-
 
 const Composer = (props) => {
 	const { modal, replyData, replyImage, toggle } = props;
@@ -114,8 +113,16 @@ const Composer = (props) => {
 		setDragOver(false);
 	};
 
-	const handleUpload = (e) => {
-		e.target.files[0] ? addImage(e.target.files[0]) : console.log("naw");
+	const handleUpload = async (e) => {
+		if (e.target.files[0]) {
+			const file = e.target.files[0];
+			// shrink the image
+			const blob = await resizeFile(file, 1000, 1000);
+			console.log(blob);
+			addImage(blob);
+		} else {
+			console.log("that's not a picture");
+		}
 	};
 
 	const addImage = (file) => {
@@ -271,6 +278,7 @@ const Composer = (props) => {
 								className="hide"
 								type="file"
 								onChange={handleUpload}
+								accept="image/*"
 							/>
 						</div>
 						<div className="composer-circle-container">
