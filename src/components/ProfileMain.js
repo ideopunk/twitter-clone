@@ -136,6 +136,13 @@ const ProfileMain = (props) => {
 	}, [editor]);
 
 	const toggleEditor = () => {
+		const body = document.body;
+
+		if (editor) {
+			document.body.style.position = "";
+			window.scrollTo(0, -parseInt(body.style.top));
+		}
+
 		setEditor(!editor);
 	};
 
@@ -160,7 +167,11 @@ const ProfileMain = (props) => {
 					alt="header"
 				/>
 				<div className="profile-card">
-					<img className="main-image" src={profileData.image} alt="profile" />
+					<img
+						className={`main-image ${profileData.image ? "" : "transparent"}`}
+						src={profileData.image}
+						alt="profile"
+					/>
 					{userProfile ? (
 						<div>
 							<button

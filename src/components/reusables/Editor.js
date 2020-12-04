@@ -86,6 +86,9 @@ const Editor = (props) => {
 			);
 		}
 
+		if (newHeader === header && newProPic === userImage) {
+			toggle();
+		}
 		// stuff for images
 	};
 
