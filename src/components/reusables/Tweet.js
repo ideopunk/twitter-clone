@@ -437,6 +437,7 @@ const Tweet = (props) => {
 											userTweets={userTweets}
 											deleteToast={deleteToast}
 											tweeterID={tweeterID}
+											prevPath={location.state.prevPath}
 											toggle={toggleDropdown}
 										/>
 									</Suspense>

@@ -3,7 +3,7 @@ import Loader from "react-loader-spinner";
 
 const LoaderContainer = (props) => {
 	return (
-		<div className="center" style={{ position: props.absolute ? "absolute" : "" }}>
+		<div className="center" style={{ position: props.absolute ? "absolute" : "", marginTop: "1rem" }}>
 			<Loader
 				type="TailSpin"
 				color="rgb(29, 242, 161)"

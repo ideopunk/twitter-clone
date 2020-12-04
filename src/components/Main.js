@@ -1,4 +1,4 @@
-import React, { useContext, Suspense, lazy } from "react";
+import React, { useContext, lazy, Suspense } from "react";
 import { Switch, Route, useLocation } from "react-router-dom";
 import LoginPrompt from "./LoginPrompt";
 import LoaderContainer from "./reusables/LoaderContainer";
@@ -19,7 +19,6 @@ const TweetAndReplies = lazy(() => import("./TweetAndReplies"));
 const Hashtag = lazy(() => import("./Hashtag"));
 
 const Main = () => {
-	console.log("main")
 	const { userID } = useContext(UserContext);
 	const { device } = useContext(DeviceContext);
 	const location = useLocation();
@@ -87,7 +86,6 @@ const Main = () => {
 			)}
 			{device === "comp" && (
 				<div className="sidebar">
-					{/* mimic mobile twitter behavior */}
 					{location.pathname !== "/explore" && <Search />}
 					{userID === -1 && <LoginCard />}
 					{userID !== -1 && userID && <FollowSuggests />}

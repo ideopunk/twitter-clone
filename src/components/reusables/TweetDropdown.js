@@ -2,26 +2,31 @@ import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { ReactComponent as Garbage } from "../../assets/garbage.svg";
 import { ReactComponent as ProfileIcon } from "../../assets/profile-outline.svg";
 import LoaderContainer from "./LoaderContainer";
+import { useHistory } from "react-router-dom";
+
 const Cover = lazy(() => import("./Cover"));
 
 const Warning = lazy(() => import("./Warning"));
 
 const TweetDropdown = (props) => {
-	const { followed, tweetID, userID, tweeterID, userTweets, replyTo } = props;
+	const { followed, tweetID, userID, tweeterID, userTweets, replyTo, prevPath } = props;
 	const [userTweet, setUserTweet] = useState(false);
 	const [warning, setWarning] = useState(false);
 
 	const ref = useRef(null);
 
+	const history = useHistory();
+
 	const deleteTweet = (e) => {
 		e.stopPropagation();
-		if (userID) {
-			import("../functions/deleteTweet.js").then((deleteTweet) =>
-				deleteTweet.default(tweetID, userTweets, userID, replyTo)
-			);
-		}
-		props.deleteToast(true);
 		toggleWarning(false);
+		if (userID) {
+			import("../functions/deleteTweet.js").then((deleteTweet) => {
+				deleteTweet.default(tweetID, userTweets, userID, replyTo);
+				history.push("/");
+			});
+		}
+		// props.deleteToast(true);
 	};
 
 	const toggleWarning = () => {
@@ -87,7 +92,7 @@ const TweetDropdown = (props) => {
 							action={deleteTweet}
 							actionName="Delete"
 							message={`This can't be undone and it will be removed from your profile, 
-									the timeline of any accounts that follow you, and from Twitter search results.`}
+									the timeline of any accounts that follow you, and from Fake Twitter search results.`}
 						/>
 					</Cover>
 				</Suspense>

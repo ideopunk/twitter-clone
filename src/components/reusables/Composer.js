@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef, lazy, Suspense } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import resizeFile from "../functions/resizeFile.js";
 
@@ -6,14 +6,11 @@ import { ReactComponent as Picture } from "../../assets/picture-icon.svg";
 import { ReactComponent as Close } from "../../assets/close.svg";
 import UserContext from "../context/userContext.js";
 import ComposerCircle from "./ComposerCircle";
-import LoaderContainer from "./LoaderContainer";
 import { ReactComponent as CloseIcon } from "../../assets/close.svg";
 
-// import reply from "../functions/reply.js";
-// import simpleTweet from "../functions/simpleTweet.js";
+import Toast from "./Toast";
 
 const reactStringReplace = require("react-string-replace");
-const Toast = lazy(() => import("./Toast"));
 
 const Composer = (props) => {
 	const { modal, replyData, replyImage, toggle } = props;
@@ -52,7 +49,6 @@ const Composer = (props) => {
 		if ((text || IMGs) && text.length < 281) {
 			if (replyData) {
 				const { tweetID, tweeterID } = replyData;
-				// reply(tweetID, tweeterID, userName, userID, userAt, userTweets, text, IMGs);
 				import("../functions/reply.js")
 					.then((reply) =>
 						reply.default({
@@ -74,7 +70,6 @@ const Composer = (props) => {
 					})
 					.catch((err) => console.log(err));
 			} else {
-				// simpleTweet({ userName, text, userAt, userID, userTweets, IMGs });
 				import("../functions/simpleTweet.js")
 					.then((simpleTweet) =>
 						simpleTweet.default({ userName, text, userAt, userID, userTweets, IMGs })
@@ -299,10 +294,10 @@ const Composer = (props) => {
 				</div>
 			</div>
 			{toast ? (
-				<Suspense fallback={<LoaderContainer />}>
-					<Toast message={toast} />
-				</Suspense>
+				// <Suspense fallback={<LoaderContainer />}>
+				<Toast message={toast} />
 			) : (
+				// </Suspense>
 				""
 			)}
 		</form>

@@ -6,11 +6,12 @@ const reply = (props) => {
 
 	const imgAmount = IMGs.length || 0;
 
-	const hashRE = /(?<=#)\w+/;
-	const hashFound = text.match(hashRE);
-
-	const palRE = /(?<=@)\w+/;
-	const palFound = text.match(palRE);
+	const hashRE = /#\w+/;
+	const hashFound = text.match(hashRE) || [];
+	const hashSliced = hashFound.map((word) => word.slice(1));
+	const palRE = /@\w+/;
+	const palFound = text.match(palRE) || [];
+	const palSliced = palFound.map((word) => word.slice(1));
 
 	db.collection("tweets")
 		//create the new tweet
@@ -19,8 +20,8 @@ const reply = (props) => {
 			text: text,
 			at: userAt,
 			userID: userID,
-			hashtags: hashFound || [],
-			userTags: palFound || [],
+			hashtags: hashSliced || [],
+			userTags: palSliced || [],
 			timeStamp: new Date(),
 			replyTo: tweetID, // to load original tweet
 			replyUserID: tweeterID,

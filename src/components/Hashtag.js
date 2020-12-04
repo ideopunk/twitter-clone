@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { db } from "../config/fbConfig";
 
 import { Link, useParams } from "react-router-dom";
@@ -9,7 +9,6 @@ const Feed = lazy(() => import("./reusables/Feed"));
 
 const Hashtag = () => {
 	const { tag } = useParams();
-
 
 	const [tweetDatas, setTweetDatas] = useState([]);
 

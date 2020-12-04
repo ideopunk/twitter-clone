@@ -4,19 +4,21 @@ const simpleTweet = (props) => {
 	const { userName, text, userAt, userID, userTweets, IMGs } = props;
 	const imgAmount = IMGs.length || 0;
 
-	const hashRE = /(?<=#)\w+/;
-	const hashFound = text.match(hashRE);
+	const hashRE = /#\w+/;
+	const hashFound = text.match(hashRE) || [];
+	const hashSliced = hashFound.map((word) => word.slice(1));
+	const palRE = /@\w+/;
+	const palFound = text.match(palRE) || [];
+	const palSliced = palFound.map((word) => word.slice(1));
 
-	const palRE = /(?<=@)\w+/;
-	const palFound = text.match(palRE);
 	db.collection("tweets")
 		.add({
 			name: userName,
 			text: text,
 			at: userAt,
 			userID: userID,
-			hashtags: hashFound || [],
-			userTags: palFound || [],
+			hashtags: hashSliced || [],
+			userTags: palSliced || [],
 			timeStamp: new Date(),
 			retweets: [],
 			likes: [],
@@ -44,7 +46,7 @@ const simpleTweet = (props) => {
 					}
 				);
 			}
-			
+
 			db.collection("users")
 				.doc(userID)
 				.update({ tweets: [...userTweets, newTweet.id] });

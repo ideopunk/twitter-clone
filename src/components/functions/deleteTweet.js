@@ -20,7 +20,7 @@ const deleteTweet = (doomedTweet, userTweets, userID, replyTo) => {
 			snapshot.forEach((user) => {
 				const data = user.data();
 				const newRetweets = data.retweets.filter((retweet) => retweet !== doomedTweet);
-				user.update({ retweets: newRetweets });
+				db.collection("users").doc(user.id).update({ retweets: newRetweets });
 			});
 		});
 
@@ -31,8 +31,9 @@ const deleteTweet = (doomedTweet, userTweets, userID, replyTo) => {
 		.then((snapshot) => {
 			snapshot.forEach((user) => {
 				const data = user.data();
-				const newLikes = data.likes.filter((like) => like !== doomedTweet);
-				user.update({ likes: newLikes });
+				console.log(data);
+				const newLikes = data.likes.filter((like) => like !== doomedTweet) || [];
+				db.collection("users").doc(user.id).update({ likes: newLikes });
 			});
 		});
 

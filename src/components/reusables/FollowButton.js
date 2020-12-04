@@ -11,7 +11,6 @@ const FollowButton = (props) => {
 
 	// freeze if modal up
 	useEffect(() => {
-
 		const body = document.body;
 		const scroll = window.scrollY;
 

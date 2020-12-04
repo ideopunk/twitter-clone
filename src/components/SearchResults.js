@@ -1,4 +1,4 @@
-import React, { useState, Suspense, lazy, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { db } from "../config/fbConfig";
 import { ReactComponent as SideArrow } from "../assets/side-arrow-icon.svg";
 import Search from "./reusables/Search";

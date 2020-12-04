@@ -1,17 +1,16 @@
-import React, { useEffect, useState, lazy, Suspense } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Redirect, Switch, Route } from "react-router-dom";
 import { db, auth, storage } from "../config/fbConfig";
 import LoaderContainer from "./reusables/LoaderContainer";
+import Main from "./Main";
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
 import UserContext from "./context/userContext.js";
 import DeviceContext from "./context/deviceContext.js";
 import "../style/App.scss";
 import Leaf from "../assets/leaf-outline.svg";
-const Main = lazy(() => import("./Main"));
 
 const App = () => {
-	console.log("app");
 	const [userID, setUserID] = useState(null);
 	const [userData, setUserData] = useState({});
 	const [width, setWidth] = useState(767);
@@ -112,14 +111,7 @@ const App = () => {
 							<Route exact path="/signup">
 								{userID && userID !== -1 ? <Redirect to="/" /> : <SignupPage />}
 							</Route>
-							<Route path="/">
-								{/* stop image flickering */}
-								{userData.image && (
-									<Suspense fallback={<LoaderContainer />}>
-										<Main />
-									</Suspense>
-								)}
-							</Route>
+							<Route path="/">{userData.image && <Main />}</Route>
 						</Switch>
 					</UserContext.Provider>
 				</DeviceContext.Provider>

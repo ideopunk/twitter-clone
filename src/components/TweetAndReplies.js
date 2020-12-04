@@ -1,12 +1,12 @@
-import React, { lazy, Suspense, useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import Tweet from "./reusables/Tweet";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { ReactComponent as SideArrow } from "../assets/side-arrow-icon.svg";
-
 import Leaf from "../assets/leaf-outline.svg";
-
 import { db, storage } from "../config/fbConfig";
 import LoaderContainer from "./reusables/LoaderContainer";
+import Toast from "./reusables/Toast";
+
 const Feed = lazy(() => import("./reusables/Feed"));
 
 const TweetAndReplies = (props) => {
@@ -14,6 +14,8 @@ const TweetAndReplies = (props) => {
 	const [mainTweet, setMainTweet] = useState({});
 	const [tweetDatas, setTweetDatas] = useState([]);
 	const [image, setImage] = useState("");
+	const [deleteToast, setDeleteToast] = useState(false);
+
 	const location = useLocation();
 
 	useEffect(() => {
@@ -22,6 +24,18 @@ const TweetAndReplies = (props) => {
 		}
 	}, [mainTweet]);
 
+	// toasts last one second.
+	useEffect(() => {
+		let timer = null;
+		if (deleteToast) {
+			timer = setTimeout(() => {
+				setDeleteToast(false);
+			}, 1000);
+		}
+
+		return () => clearTimeout(timer);
+	}, [deleteToast]);
+
 	// get the tweet, get the image
 	useEffect(() => {
 		db.collection("tweets")
@@ -29,15 +43,17 @@ const TweetAndReplies = (props) => {
 			.onSnapshot((doc) => {
 				const data = doc.data();
 				setMainTweet({ ...data, id: doc.id });
-				storage
-					.ref("profile_pictures/" + data.userID + ".png")
-					.getDownloadURL()
-					.then((url) => {
-						setImage(url);
-					})
-					.catch(() => {
-						setImage(Leaf);
-					});
+				if (data) {
+					storage
+						.ref("profile_pictures/" + data.userID + ".png")
+						.getDownloadURL()
+						.then((url) => {
+							setImage(url);
+						})
+						.catch(() => {
+							setImage(Leaf);
+						});
+				}
 			});
 	}, [tweetID]);
 
@@ -85,6 +101,7 @@ const TweetAndReplies = (props) => {
 				replies={mainTweet.replies}
 				big={true}
 				image={image}
+				deleteToast={setDeleteToast}
 				imageCount={mainTweet.imageCount}
 			/>
 			{mainTweet.replies && mainTweet.replies.length ? (
@@ -94,6 +111,7 @@ const TweetAndReplies = (props) => {
 			) : (
 				""
 			)}
+			{deleteToast ? <Toast message="Your Tweet was deleted wahh" /> : ""}
 		</div>
 	);
 };

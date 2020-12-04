@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useContext, lazy, Suspense } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import LoaderContainer from "./LoaderContainer";
 import { storage } from "../../config/fbConfig";
 import Leaf from "../../assets/leaf-outline.svg";
 import UserContext from "../context/userContext.js";
-
 import Tweet from "./Tweet";
-const Toast = lazy(() => import("./Toast"));
+import Toast from "./Toast";
 
 const Feed = (props) => {
 	const { tweetDatas, getReplies, noOriginal } = props;
@@ -116,13 +115,7 @@ const Feed = (props) => {
 	return (
 		<div className="feed">
 			{uniqueTweets.length > 0 ? uniqueTweets : <LoaderContainer />}
-			{deleteToast ? (
-				<Suspense fallback={<LoaderContainer />}>
-					<Toast message="Your Tweet was deleted wahh" />
-				</Suspense>
-			) : (
-				""
-			)}
+			{deleteToast ? <Toast message="Your Tweet was deleted wahh" /> : ""}
 		</div>
 	);
 };
