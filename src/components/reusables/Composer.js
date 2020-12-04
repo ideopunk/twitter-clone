@@ -12,8 +12,9 @@ import { ReactComponent as CloseIcon } from "../../assets/close.svg";
 // import simpleTweet from "../functions/simpleTweet.js";
 
 const reactStringReplace = require("react-string-replace");
-
 const Toast = lazy(() => import("./Toast"));
+
+
 
 const Composer = (props) => {
 	const { modal, replyData, replyImage, toggle } = props;
