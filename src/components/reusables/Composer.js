@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import { auth } from "../../config/fbConfig";
 import resizeFile from "../functions/resizeFile.js";
 
 import { ReactComponent as Picture } from "../../assets/picture-icon.svg";
@@ -46,7 +47,7 @@ const Composer = (props) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if ((text || IMGs) && text.length < 281) {
+		if ((text || IMGs) && text.length < 281 && auth.currentUser.emailVerified) {
 			if (replyData) {
 				const { tweetID, tweeterID } = replyData;
 				import("../functions/reply.js")

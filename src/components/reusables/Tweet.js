@@ -394,9 +394,7 @@ const Tweet = (props) => {
 				)}
 
 				<div
-					className={`tweet-inside ${big ? "big-tweet-inside" : ""} ${
-						original ? "grey-line" : ""
-					}`}
+					className={`tweet-inside ${big ? "column" : ""} ${original ? "grey-line" : ""}`}
 				>
 					{big ? (
 						<div className="tweet-top-data pad">

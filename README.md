@@ -24,6 +24,6 @@ Along with practicing existing skills, new things I learned included:
 - Error-catching for Firebase
 
 Challenges:
-- The app (or code-split chunks) kept failing silently in iOS due to an unsupported regex symbol. Debugging this was an issue because it presented itself as a problem with code-splitting. 
-- Using a database without joins was a problem. If I were to redo the app now, I'd probably stuff  more information in each document so as to reduce calls. 
+- The app (or code-split chunks) failed silently in iOS due to an unsupported regex symbol. Debugging this was an issue because it presented itself as a problem with code-splitting. 
+- Using a database without joins and with request limits was a problem. If I were to redo the app now, I'd probably stuff  more information in each document so as to reduce calls. 
 - Managing the stylesheets. I mostly separated concerns by component, but there's a lot of overlap that could have been fixed with more planning. 

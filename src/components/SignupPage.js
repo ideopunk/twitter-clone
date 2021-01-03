@@ -80,6 +80,7 @@ const SignupPage = () => {
 
 			auth.createUserWithEmailAndPassword(email, password)
 				.then((cred) => {
+					cred.user.sendEmailVerification()
 					db.collection("users")
 						.doc(cred.user.uid)
 						.set({

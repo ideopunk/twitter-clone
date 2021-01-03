@@ -9,12 +9,20 @@
 	font-weight: bold;
 }
 
+.border {
+	border: $siteborder;
+}
+
 .center {
 	align-items: center;
 	display: flex;
 	height: 100%;
 	justify-content: center;
 	width: 100%;
+}
+
+.column {
+	flex-direction: column;
 }
 
 .flex {
@@ -55,10 +63,15 @@
 	fill: $sitecolor;
 }
 
+.spread {
+	justify-content: space-around;
+}
+
 .transparent {
 	opacity: 0;
 }
 
 .appear {
+	opacity: 1;
 	animation: $lightanimation;
 }

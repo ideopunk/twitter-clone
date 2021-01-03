@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Redirect, Switch, Route } from "react-router-dom";
 import { db, auth, storage } from "../config/fbConfig";
-import LoaderContainer from "./reusables/LoaderContainer";
+import VerificationPrompt from "./VerificationPrompt";
 import Main from "./Main";
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
@@ -14,13 +14,14 @@ const App = () => {
 	const [userID, setUserID] = useState(null);
 	const [userData, setUserData] = useState({});
 	const [width, setWidth] = useState(767);
+	const [verified, setVerified] = useState(false);
 
 	// listen for auth status changes
 	useEffect(() => {
 		auth.onAuthStateChanged((user) => {
 			console.log(user);
 			if (user) {
-				console.log(user.email);
+				setVerified(user.emailVerified);
 				setUserID(user.uid);
 				db.collection("users")
 					.doc(user.uid)
@@ -87,35 +88,37 @@ const App = () => {
 	return (
 		<BrowserRouter>
 			<div className="App">
-				{/* If the user is logged in, wait to render until the context is set */}
-				<DeviceContext.Provider value={{ device: width }}>
-					<UserContext.Provider
-						value={{
-							userID: userID,
-							userImage: userData.image,
-							userAt: userData.at,
-							userName: userData.name,
-							userFollows: userData.follows,
-							userFollowers: userData.followers,
-							userTweets: userData.tweets,
-							userLikes: userData.likes,
-							userRetweets: userData.retweets,
-							userBio: userData.bio,
-							userJoinDate: userData.joinDate,
-						}}
-					>
-						<Switch>
-							<Route exact path="/login">
-								{userID && userID !== -1 ? <Redirect to="/" /> : <LoginPage />}
-							</Route>
-							<Route exact path="/signup">
-								{userID && userID !== -1 ? <Redirect to="/" /> : <SignupPage />}
-							</Route>
-							<Route path="/">{userData.image && <Main />}</Route>
-						</Switch>
-					</UserContext.Provider>
-				</DeviceContext.Provider>
-				{/* )} */}
+				{userID && userID !== -1 && !verified ? (
+					<VerificationPrompt at={userData.at} />
+				) : (
+					<DeviceContext.Provider value={{ device: width }}>
+						<UserContext.Provider
+							value={{
+								userID: userID,
+								userImage: userData.image,
+								userAt: userData.at,
+								userName: userData.name,
+								userFollows: userData.follows,
+								userFollowers: userData.followers,
+								userTweets: userData.tweets,
+								userLikes: userData.likes,
+								userRetweets: userData.retweets,
+								userBio: userData.bio,
+								userJoinDate: userData.joinDate,
+							}}
+						>
+							<Switch>
+								<Route exact path="/login">
+									{userID && userID !== -1 ? <Redirect to="/" /> : <LoginPage />}
+								</Route>
+								<Route exact path="/signup">
+									{userID && userID !== -1 ? <Redirect to="/" /> : <SignupPage />}
+								</Route>
+								<Route path="/">{userData.image && <Main />}</Route>
+							</Switch>
+						</UserContext.Provider>
+					</DeviceContext.Provider>
+				)}
 			</div>
 		</BrowserRouter>
 	);

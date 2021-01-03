@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import UserContext from "../context/userContext.js";
 import DeviceContext from "../context/deviceContext.js";
-import { db, storage } from "../../config/fbConfig";
+import { auth, db, storage } from "../../config/fbConfig";
 import resizeFile from "../functions/resizeFile.js";
 
 import { ReactComponent as CloseIcon } from "../../assets/close.svg";
@@ -34,62 +34,63 @@ const Editor = (props) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		db.collection("users")
-			.doc(userID)
-			.update({ name: name || "", bio: newBio || "", website: newWebsite || "" })
-			.then(() =>
-				import("../functions/updateName.js").then((updateName) =>
-					updateName.default(userID, name)
-				)
-			);
+		if (auth.currentUser.emailVerified) {
+			db.collection("users")
+				.doc(userID)
+				.update({ name: name || "", bio: newBio || "", website: newWebsite || "" })
+				.then(() =>
+					import("../functions/updateName.js").then((updateName) =>
+						updateName.default(userID, name)
+					)
+				);
 
-		if (newProPic !== userImage) {
-			const profileRef = storage.ref("profile_pictures/" + userID + ".png");
-			const uploadTask = profileRef.put(newProPic);
-			uploadTask.on(
-				"state_changed",
+			if (newProPic !== userImage) {
+				const profileRef = storage.ref("profile_pictures/" + userID + ".png");
+				const uploadTask = profileRef.put(newProPic);
+				uploadTask.on(
+					"state_changed",
 
-				// how it's going
-				(snapshot) => {},
+					// how it's going
+					(snapshot) => {},
 
-				// how it goofed it
-				(error) => {
-					console.log(error);
-				},
+					// how it goofed it
+					(error) => {
+						console.log(error);
+					},
 
-				// how it succeeded
-				() => {
-					console.log("success");
-					toggle();
-				}
-			);
+					// how it succeeded
+					() => {
+						console.log("success");
+						toggle();
+					}
+				);
+			}
+			if (newHeader !== header) {
+				const headerRef = storage.ref("header_pictures/" + userID + ".png");
+				const uploadTask = headerRef.put(newHeader);
+				uploadTask.on(
+					"state_changed",
+
+					// how it's going
+					() => {},
+
+					// how it goofed it
+					(error) => {
+						console.log(error);
+					},
+
+					// how it succeeded
+					() => {
+						console.log("success");
+						toggle();
+					}
+				);
+			}
+
+			if (newHeader === header && newProPic === userImage) {
+				toggle();
+			}
 		}
-		if (newHeader !== header) {
-			const headerRef = storage.ref("header_pictures/" + userID + ".png");
-			const uploadTask = headerRef.put(newHeader);
-			uploadTask.on(
-				"state_changed",
-
-				// how it's going
-				() => {},
-
-				// how it goofed it
-				(error) => {
-					console.log(error);
-				},
-
-				// how it succeeded
-				() => {
-					console.log("success");
-					toggle();
-				}
-			);
-		}
-
-		if (newHeader === header && newProPic === userImage) {
-			toggle();
-		}
-		// stuff for images
 	};
 
 	const handleNameChange = (e) => {
